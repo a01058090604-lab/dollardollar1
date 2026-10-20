@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="달러달러에서 미국 달러를 원화로 간편하게 환산해 보세요. 최신 기준 환율을 불러와 금액을 계산할 수 있습니다.">
+  <meta name="theme-color" content="#0f766e">
+  <title>달러달러 | 달러 원화 환율 계산기</title>
+  <style>
+    :root {
+      --green: #0f766e;
+      --green-dark: #115e59;
+      --green-light: #ccfbf1;
+      --ink: #17211f;
+      --muted: #66736f;
+      --line: #e1e9e6;
+      --paper: #ffffff;
+      --bg: #f3f8f6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    .wrap { width: min(720px, calc(100% - 32px)); margin: 0 auto; }
+    header { padding: 24px 0 18px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 46px; height: 46px; display: grid; place-items: center;
+      border-radius: 14px; background: var(--green); color: white;
+      font-size: 25px; font-weight: 800;
+    }
+    .brand-name { font-size: 23px; font-weight: 850; letter-spacing: -0.7px; }
+    .brand-sub { font-size: 13px; color: var(--muted); margin-top: 1px; }
+    main { padding: 18px 0 44px; }
+    .intro { margin: 0 0 22px; }
+    h1 { font-size: clamp(26px, 5vw, 36px); letter-spacing: -1.2px; margin: 0 0 8px; line-height: 1.2; }
+    .intro p { color: var(--muted); margin: 0; }
+    .card {
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: 22px; padding: clamp(20px, 5vw, 30px);
+      box-shadow: 0 12px 32px rgba(18, 55, 47, 0.06);
+    }
+    .rate-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 24px; }
+    .rate-label { font-size: 13px; color: var(--muted); }
+    .rate-value { font-size: 14px; font-weight: 750; margin-top: 3px; }
+    .status { font-size: 12px; border-radius: 999px; padding: 7px 10px; background: #f0f4f2; color: #52615c; white-space: nowrap; }
+    .status.ok { background: var(--green-light); color: var(--green-dark); }
+    .field-label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .input-wrap { display: flex; align-items: center; gap: 10px; border: 1px solid #d5e1dd; border-radius: 14px; padding: 0 16px; background: white; }
+    .currency { font-weight: 800; color: var(--green); }
+    input {
+      width: 100%; min-width: 0; border: 0; outline: 0; padding: 17px 0;
+      font: inherit; font-size: 23px; font-weight: 700; color: var(--ink); background: transparent;
+    }
+    .swap { display: grid; place-items: center; width: 38px; height: 38px; margin: 12px auto; border: 1px solid var(--line); border-radius: 50%; color: var(--green); font-size: 20px; background: #f8fbfa; }
+    .result { margin-top: 22px; padding: 22px; border-radius: 16px; background: #effaf7; }
+    .result-label { font-size: 13px; color: var(--green-dark); }
+    .result-value { margin-top: 4px; font-size: clamp(29px, 7vw, 40px); font-weight: 850; letter-spacing: -1.2px; overflow-wrap: anywhere; }
+    .result-note { margin-top: 8px; font-size: 12px; color: var(--muted); }
+    .actions { display: flex; gap: 10px; margin-top: 16px; }
+    button { cursor: pointer; font: inherit; }
+    .primary, .secondary { border-radius: 12px; padding: 12px 15px; font-weight: 750; }
+    .primary { border: 0; color: white; background: var(--green); flex: 1; }
+    .primary:hover { background: var(--green-dark); }
+    .secondary { border: 1px solid var(--line); color: var(--ink); background: white; }
+    .message { min-height: 20px; margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+    .info { margin-top: 24px; padding: 0 2px; }
+    h2 { font-size: 18px; margin: 0 0 8px; letter-spacing: -0.4px; }
+    .info p, .info li { font-size: 14px; color: #52615c; }
+    .info p { margin: 0 0 12px; }
+    .info ul { padding-left: 20px; margin: 8px 0 0; }
+    .disclaimer { font-size: 12px !important; color: var(--muted) !important; }
+    footer { border-top: 1px solid var(--line); padding: 20px 0 30px; color: var(--muted); font-size: 12px; }
+    a { color: var(--green-dark); }
+    @media (max-width: 440px) {
+      .rate-row { align-items: flex-start; flex-direction: column; }
+      .status { align-self: flex-start; }
+      .actions { flex-direction: column; }
+      .secondary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">$</div>
+      <div>
+        <div class="brand-name">달러달러</div>
+        <div class="brand-sub">DollarDollar · 간편 환율 계산기</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h1>달러를 원화로,<br>간편하게 계산하세요.</h1>
+      <p>미국 달러(USD)를 대한민국 원(KRW)으로 환산합니다.</p>
+    </section>
+
+    <section class="card" aria-label="달러 원화 환율 계산기">
+      <div class="rate-row">
+        <div>
+          <div class="rate-label">현재 적용 환율</div>
+          <div class="rate-value" id="rateText">환율을 불러오는 중...</div>
+        </div>
+        <div class="status" id="status" role="status">환율 확인 중</div>
+      </div>
+
+      <label class="field-label" for="usdInput">보낼 금액 (미국 달러)</label>
+      <div class="input-wrap">
+        <span class="currency">USD $</span>
+        <input id="usdInput" type="number" min="0" step="any" value="100" inputmode="decimal" aria-label="미국 달러 금액">
+      </div>
+
+      <div class="swap" aria-hidden="true">↓</div>
+
+      <div class="field-label">환산 금액 (대한민국 원)</div>
+      <div class="input-wrap">
+        <span class="currency">KRW ₩</span>
+        <input id="krwOutput" type="text" value="계산 중..." readonly aria-label="환산된 원화 금액">
+      </div>
+
+      <div class="result">
+        <div class="result-label">환산 결과</div>
+        <div class="result-value" id="resultValue">계산 중...</div>
+        <div class="result-note" id="updatedText">공식 환율 제공 데이터 연결 중입니다.</div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="refreshBtn" type="button">환율 새로고침</button>
+        <button class="secondary" id="copyBtn" type="button">결과 복사</button>
+      </div>
+      <p class="message" id="message" aria-live="polite"></p>
+    </section>
+
+    <section class="info">
+      <h2>달러 원화 계산 방법</h2>
+      <p>원화 환산 금액은 입력한 미국 달러 금액에 적용 환율을 곱해 계산합니다. 예를 들어 1달러가 1,400원일 때 100달러는 140,000원입니다.</p>
+      <h2>환율 이용 시 참고하세요</h2>
+      <ul>
+        <li>표시되는 환율은 참고용 기준 환율이며 실제 은행 환전 금액과 다를 수 있습니다.</li>
+        <li>은행 수수료, 환전 우대율 및 거래 시점에 따라 실제 적용 금액이 달라질 수 있습니다.</li>
+        <li>환율 데이터는 매일 업데이트되는 기준 환율 데이터이며 초 단위 실시간 시세가 아닙니다.</li>
+      </ul>
+      <p class="disclaimer">달러달러는 정보 제공용 계산기이며 금융 거래나 투자 결정을 위한 보증 자료가 아닙니다.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <strong>달러달러</strong> · 달러 원화 환율 계산기<br>
+      환율 데이터: <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter API</a>
+    </div>
+  </footer>
+
+  <script>
+    const usdInput = document.getElementById("usdInput");
+    const krwOutput = document.getElementById("krwOutput");
+    const resultValue = document.getElementById("resultValue");
+    const rateText = document.getElementById("rateText");
+    const updatedText = document.getElementById("updatedText");
+    const status = document.getElementById("status");
+    const message = document.getElementById("message");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    let currentRate = null;
+    let rateDate = "";
+
+    const numberFormat = new Intl.NumberFormat("ko-KR", {
+      maximumFractionDigits: 2
+    });
+    const wonFormat = new Intl.NumberFormat("ko-KR", {
+      maximumFractionDigits: 0
+    });
+
+    function updateCalculation() {
+      const amount = Number(usdInput.value);
+      if (usdInput.value.trim() === "" || !Number.isFinite(amount) || amount < 0) {
+        krwOutput.value = "";
+        resultValue.textContent = "올바른 금액을 입력해 주세요";
+        return;
+      }
+      if (!currentRate) {
+        krwOutput.value = "";
+        resultValue.textContent = "환율을 불러오는 중...";
+        return;
+      }
+      const won = amount * currentRate;
+      krwOutput.value = numberFormat.format(won) + "원";
+      resultValue.textContent = wonFormat.format(won) + "원";
+    }
+
+    async function loadRate() {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = "불러오는 중...";
+      status.textContent = "환율 확인 중";
+      status.classList.remove("ok");
+      message.textContent = "";
+      try {
+        const response = await fetch("https://api.frankfurter.dev/v2/rate/usd/krw", {
+          cache: "no-store"
+        });
+        if (!response.ok) throw new Error("환율 서버에서 응답하지 않았습니다.");
+        const data = await response.json();
+        if (!Number.isFinite(data.rate) || data.rate <= 0) {
+          throw new Error("받아온 환율 데이터가 올바르지 않습니다.");
+        }
+        currentRate = data.rate;
+        rateDate = data.date || "";
+        rateText.textContent = "1 USD = " + numberFormat.format(currentRate) + " KRW";
+        updatedText.textContent = (rateDate ? "기준 날짜: " + rateDate + " · " : "") +
+          "일별 기준 환율이며 실제 환전 금액과 다를 수 있습니다.";
+        status.textContent = "환율 연결 완료";
+        status.classList.add("ok");
+        updateCalculation();
+      } catch (error) {
+        status.textContent = "환율 연결 실패";
+        rateText.textContent = "환율을 불러오지 못했습니다.";
+        updatedText.textContent = "인터넷 연결을 확인한 뒤 새로고침을 눌러 주세요.";
+        message.textContent = "환율 서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.";
+        resultValue.textContent = "환율 데이터가 필요합니다";
+        krwOutput.value = "";
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = "환율 새로고침";
+      }
+    }
+
+    usdInput.addEventListener("input", updateCalculation);
+    refreshBtn.addEventListener("click", loadRate);
+    copyBtn.addEventListener("click", async () => {
+      if (!currentRate || !krwOutput.value) {
+        message.textContent = "먼저 환율을 불러오고 금액을 입력해 주세요.";
+        return;
+      }
+      const amount = usdInput.value;
+      const text = `${amount} USD = ${krwOutput.value} (1 USD = ${numberFormat.format(currentRate)} KRW${rateDate ? ", 기준 날짜 " + rateDate : ""})`;
+      try {
+        await navigator.clipboard.writeText(text);
+        message.textContent = "계산 결과를 복사했습니다.";
+      } catch {
+        message.textContent = "복사가 지원되지 않는 환경입니다. 결과를 직접 선택해 복사해 주세요.";
+      }
+    });
+
+    loadRate();
+  </script>
+</body>
+</html>
