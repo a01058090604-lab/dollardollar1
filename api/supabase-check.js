@@ -39,9 +39,10 @@ export default async function handler(req, res) {
       database: "connected"
     });
   } catch (error) {
-  return res.status(502).json({
-    ok: false,
-    error: "Connection failed",
-    reason: error?.cause?.code || error?.name || "Unknown"
-  });
+    return res.status(502).json({
+      ok: false,
+      error: "Connection failed",
+      reason: error?.cause?.code || error?.name || "Unknown"
+    });
+  }
 }
