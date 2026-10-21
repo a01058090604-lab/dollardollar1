@@ -38,10 +38,10 @@ export default async function handler(req, res) {
       ok: true,
       database: "connected"
     });
-  } catch {
-    return res.status(502).json({
-      ok: false,
-      error: "Connection failed"
-    });
-  }
+  } catch (error) {
+  return res.status(502).json({
+    ok: false,
+    error: "Connection failed",
+    reason: error?.cause?.code || error?.name || "Unknown"
+  });
 }
