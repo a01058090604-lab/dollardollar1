@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>DollarDollar · 콘텐츠 관리자</title>
+<title>DollarDollar · 밈 관리자</title>
 <style>
 :root{
   --lime:#d5f477;
@@ -29,7 +29,8 @@ header{
 .tag,.muted{font-size:13px;color:var(--muted)}
 main{width:min(950px,92%);margin:32px auto 60px}
 h1{font-size:clamp(27px,5vw,38px);margin:0 0 8px}
-h2{font-size:19px;margin:0 0 18px}
+h2{font-size:19px;margin:0 0 12px}
+h3{font-size:16px}
 .intro{color:var(--muted);line-height:1.6;margin-bottom:25px}
 .card{
   background:#fff;border:1px solid var(--line);
@@ -59,7 +60,6 @@ button:disabled{opacity:.55;cursor:wait}
 #message.error{color:var(--danger);background:#fff0f0}
 #message.success{background:#eff8d8}
 .item{padding:18px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
-.item:first-child{border-top:0}
 .item-title{font-weight:800;font-size:16px;margin-bottom:7px}
 .item-meta{font-size:13px;color:var(--muted);line-height:1.7}
 .item a{color:#454a31;overflow-wrap:anywhere}
@@ -75,11 +75,16 @@ button:disabled{opacity:.55;cursor:wait}
   border:1px solid var(--line);border-radius:12px
 }
 .candidate-title{font-weight:800;overflow-wrap:anywhere;margin-bottom:8px}
-.candidate-status{font-size:12px;font-weight:700;margin:8px 0;color:#694a00}
-.candidate img{
-  display:block;width:auto;max-width:100%;max-height:220px;
-  object-fit:contain;border-radius:8px;margin:10px 0
+.trend-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;margin-top:18px
 }
+.trend-card{
+  padding:16px;border:1px solid var(--line);
+  border-radius:13px;background:#fafbf6
+}
+.trend-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.trend-card button{width:100%}
 footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
 @media(max-width:520px){
   header{padding:16px 4%}
@@ -87,6 +92,7 @@ footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
   .card{padding:18px}
   .actions button{flex:1}
   .tag{text-align:right}
+  .trend-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -97,10 +103,11 @@ footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
 </header>
 
 <main>
-  <h1>콘텐츠 관리</h1>
+  <h1>밈 콘텐츠 관리</h1>
   <p class="intro">
-    콘텐츠 후보를 찾고, 권리 증빙을 확인하고, 등록된 콘텐츠를 관리해.
+    TikTok에서 밈을 찾고, 권리 증빙을 검토하고, 콘텐츠를 관리해.
   </p>
+
   <div id="message" role="status" aria-live="polite">
     관리자 로그인이 필요해.
   </div>
@@ -121,26 +128,38 @@ footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
   </section>
 
   <div id="dashboard" class="hidden">
+
+    <!-- TikTok 밈 검색 -->
     <section class="card">
-      <h2>라이선스 콘텐츠 후보 검색</h2>
+      <h2>🔥 요즘 유행하는 밈 찾기</h2>
       <p class="note">
-        Wikimedia Commons에서 이미지 후보를 검색해.
-        검색 결과의 라이선스 정보는 참고 자료이며,
-        상업적 이용 가능 여부를 직접 확인해야 해.
+        검색어로 TikTok 영상을 찾고, 공식 Creative Center에서
+        한국 인기 해시태그와 트렌드를 확인해.
+        아래 키워드는 검색 바로가기이며 실시간 순위는 아니야.
       </p>
-      <form id="sourceSearchForm">
-        <label for="sourceQuery">검색어</label>
-        <input id="sourceQuery" maxlength="100"
-          placeholder="예: funny cat" required>
+
+      <form id="tiktokSearchForm">
+        <label for="tiktokQuery">밈·영상 검색어</label>
+        <input id="tiktokQuery" maxlength="100"
+          placeholder="예: 웃긴 영상, 한국 밈, storytime" required>
         <div class="actions">
-          <button class="primary" id="sourceSearchButton" type="submit">
-            후보 검색
+          <button class="primary" type="submit">TikTok에서 검색</button>
+          <button type="button" id="trendsButton">
+            인기 트렌드 보기
           </button>
         </div>
       </form>
-      <div id="sourceResults" aria-live="polite"></div>
+
+      <div class="trend-grid" id="trendList"></div>
+
+      <p class="note">
+        검색 결과는 후보야. 원본 영상의 상업적 이용, 수정 가능 여부,
+        저작자 표시 조건과 필요한 허가를 별도로 확인해.
+        검색 결과만으로 재사용 권리가 생기지는 않아.
+      </p>
     </section>
 
+    <!-- 콘텐츠 등록 -->
     <section class="card" id="registrationCard">
       <h2>새 콘텐츠 등록</h2>
       <form id="contentForm">
@@ -153,15 +172,15 @@ footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
 
         <label for="licenseType">라이선스 종류</label>
         <input id="licenseType" maxlength="200"
-          placeholder="예: CC BY 4.0">
+          placeholder="예: 상업적 이용 허가 / CC BY 4.0">
 
         <label for="evidenceUrl">권리 증빙 URL</label>
         <input id="evidenceUrl" type="url" maxlength="2048"
-          placeholder="공식 라이선스 또는 허가 페이지">
+          placeholder="공식 라이선스 또는 원작자의 허가 페이지">
 
         <label for="evidenceNotes">권리 증빙 메모</label>
         <textarea id="evidenceNotes" maxlength="3000"
-          placeholder="저작자, 상업적 이용 조건, 수정 가능 여부, 출처 표시 조건"></textarea>
+          placeholder="권리자, 허가 내용, 상업적 이용, 수정, 출처 표시 조건"></textarea>
 
         <label for="expiresAt">권리 만료일 (선택)</label>
         <input id="expiresAt" type="date">
@@ -176,19 +195,20 @@ footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
       </form>
     </section>
 
+    <!-- 등록 콘텐츠 -->
     <section class="card">
       <h2>등록된 콘텐츠</h2>
       <p class="note">
-        승인 버튼은 관리자 검토 상태만 변경해.
-        실제 권리 검증이나 자동 게시 허가를 의미하지 않아.
-        권리가 불확실하거나 만료된 콘텐츠는 게시 대상에서 제외해야 해.
+        승인 버튼은 관리자 검토 상태를 변경해.
+        입력된 증빙이 실제 권리를 보장하는 것은 아니야.
+        권리가 불확실하거나 만료된 콘텐츠는 게시하지 마.
       </p>
       <div id="items">목록을 불러오는 중...</div>
     </section>
   </div>
 </main>
 
-<footer>DollarDollar · Rights-aware content workflow</footer>
+<footer>DollarDollar · TikTok Meme Discovery</footer>
 
 <script>
 "use strict";
@@ -198,7 +218,6 @@ const loginCard = $("loginCard");
 const dashboard = $("dashboard");
 const message = $("message");
 const items = $("items");
-const sourceResults = $("sourceResults");
 
 function showMessage(text, type = "") {
   message.textContent = text;
@@ -227,12 +246,17 @@ async function api(path, options = {}) {
       loginCard.classList.remove("hidden");
       dashboard.classList.add("hidden");
     }
-    throw new Error(
-      response.status === 401
-        ? "로그인이 만료됐어. 다시 로그인해 줘."
-        : (data.error || "요청에 실패했어.")
-    );
+
+    const errors = {
+      401: "로그인이 만료됐어. 다시 로그인해 줘.",
+      409: "승인 조건을 충족하지 못했어. 증빙과 만료일을 확인해 줘.",
+      502: "서버 또는 데이터베이스 요청에 실패했어."
+    };
+
+    throw new Error(errors[response.status] || data.error ||
+      "요청에 실패했어.");
   }
+
   return data;
 }
 
@@ -249,7 +273,7 @@ function addSafeLink(parent, label, value) {
 
   try {
     const url = new URL(value);
-    if (url.protocol !== "https:" && url.protocol !== "http:") return;
+    if (!["https:", "http:"].includes(url.protocol)) return;
 
     const link = document.createElement("a");
     link.href = url.href;
@@ -258,7 +282,7 @@ function addSafeLink(parent, label, value) {
     link.textContent = label;
     parent.appendChild(link);
   } catch {
-    // 잘못된 URL은 링크로 표시하지 않음
+    // 유효하지 않은 주소는 링크로 만들지 않아.
   }
 }
 
@@ -269,140 +293,179 @@ function addActionButton(parent, label, className, callback) {
   return button;
 }
 
-/* 후보 정보를 기존 콘텐츠 등록 양식에 입력 */
-function useCandidate(candidate) {
-  $("title").value = candidate.title || "";
-  $("sourceUrl").value = candidate.source_url || "";
-  $("licenseType").value = candidate.license_type || "";
+/* TikTok 검색 바로가기 */
+const memeTrends = [
+  {
+    name: "한국 인기 밈",
+    desc: "한국어 밈과 반응 영상 검색",
+    query: "한국 밈 웃긴 영상"
+  },
+  {
+    name: "모몽가",
+    desc: "캐릭터 밈과 패러디",
+    query: "모몽가 밈"
+  },
+  {
+    name: "스토리타임",
+    desc: "경험담·웃긴 썰 형식",
+    query: "스토리타임 웃긴 썰"
+  },
+  {
+    name: "웃긴 상황극",
+    desc: "짧은 코미디와 공감 상황",
+    query: "웃긴 상황극 밈"
+  },
+  {
+    name: "AI 밈",
+    desc: "AI 캐릭터와 합성 코미디",
+    query: "AI 밈 웃긴 영상"
+  },
+  {
+    name: "동물 밈",
+    desc: "고양이·강아지 반응 영상",
+    query: "웃긴 고양이 밈"
+  },
+  {
+    name: "댄스 챌린지",
+    desc: "유행하는 춤과 챌린지",
+    query: "틱톡 댄스 챌린지"
+  },
+  {
+    name: "해외 밈",
+    desc: "영어권 밈과 리액션",
+    query: "viral memes funny"
+  }
+];
 
-  $("evidenceUrl").value =
-    candidate.license_url || candidate.source_url || "";
+const trendList = $("trendList");
 
-  $("evidenceNotes").value =
-    "출처: " + (candidate.source_url || "확인 필요") + "\n" +
-    "저작자: " + (candidate.author || "확인 필요") + "\n" +
-    "라이선스 URL: " + (candidate.license_url || "확인 필요") + "\n" +
-    "검색 메타데이터는 권리 보증이 아님. 원본 설명 페이지에서 " +
-    "상업적 이용, 변경, 출처 표시 및 기타 조건을 직접 확인할 것.";
+for (const trend of memeTrends) {
+  const card = document.createElement("article");
+  card.className = "trend-card";
 
-  $("registrationCard").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
+  addText(card, "div", trend.name, "candidate-title");
+  addText(card, "p", trend.desc);
+
+  addActionButton(card, "TikTok에서 찾기", "primary", () => {
+    const url = "https://www.tiktok.com/search?q=" +
+      encodeURIComponent(trend.query);
+
+    window.open(url, "_blank", "noopener,noreferrer");
   });
 
-  showMessage(
-    "후보 정보를 양식에 넣었어. 원본과 라이선스를 확인한 뒤 등록해 줘.",
-    "success"
-  );
+  trendList.appendChild(card);
 }
 
-/* 검색 결과 렌더링 */
-function renderSourceCandidates(candidates) {
-  sourceResults.replaceChildren();
+$("tiktokSearchForm").addEventListener("submit", event => {
+  event.preventDefault();
 
-  if (!Array.isArray(candidates) || candidates.length === 0) {
-    addText(
-      sourceResults, "p",
-      "검색 결과가 없어. 다른 검색어를 입력해 줨.",
-      "note"
-    );
+  const query = $("tiktokQuery").value.trim();
+  if (!query) return;
+
+  window.open(
+    "https://www.tiktok.com/search?q=" + encodeURIComponent(query),
+    "_blank",
+    "noopener,noreferrer"
+  );
+});
+
+$("trendsButton").addEventListener("click", () => {
+  window.open(
+    "https://ads.tiktok.com/creative/creativeCenter/trends/hashtag?countryCode=KR&period=7&region=KR",
+    "_blank",
+    "noopener,noreferrer"
+  );
+});
+
+/* 콘텐츠 목록 렌더링 */
+function renderItems(list) {
+  items.replaceChildren();
+
+  if (!Array.isArray(list) || list.length === 0) {
+    addText(items, "p", "아직 등록된 콘텐츠가 없어.", "note");
     return;
   }
 
-  for (const candidate of candidates) {
+  for (const item of list) {
     const article = document.createElement("article");
-    article.className = "candidate";
+    article.className = "item";
 
-    addText(
-      article, "div",
-      candidate.title || "제목 없음",
-      "candidate-title"
-    );
-
-    const license = candidate.license_type || "라이선스 정보 없음";
-    addText(article, "div", "라이선스: " + license, "item-meta");
-
+    addText(article, "div", item.title || "제목 없음", "item-title");
     addText(
       article,
       "div",
-      candidate.license_candidate
-        ? "후보 조건에 부합할 가능성 있음 · 원본 확인 필수"
-        : "라이선스 조건을 자동 판별하지 못함 · 직접 확인 필수",
-      "candidate-status"
+      "상태: " + (item.review_status || "미지정"),
+      "item-meta"
     );
 
-    if (candidate.author) {
-      addText(article, "div", "저작자: " + candidate.author, "item-meta");
+    const source = document.createElement("div");
+    source.className = "item-meta";
+    addSafeLink(source, "원본 콘텐츠 열기", item.source_url);
+    article.appendChild(source);
+
+    if (item.license_type) {
+      addText(article, "div", "라이선스: " + item.license_type, "item-meta");
     }
 
-    if (candidate.description) {
+    if (item.rights_evidence_url) {
+      const evidence = document.createElement("div");
+      evidence.className = "item-meta";
+      addSafeLink(evidence, "권리 증빙 열기", item.rights_evidence_url);
+      article.appendChild(evidence);
+    }
+
+    if (item.rights_evidence_notes) {
       addText(
         article, "p",
-        "설명: " + candidate.description,
+        "증빙 메모: " + item.rights_evidence_notes,
         "item-meta"
       );
     }
 
-    const sourceLinks = document.createElement("div");
-    sourceLinks.className = "item-meta";
-    addSafeLink(sourceLinks, "원본 설명 페이지 열기", candidate.source_url);
-    article.appendChild(sourceLinks);
-
-    if (candidate.license_url) {
-      const licenseLinks = document.createElement("div");
-      licenseLinks.className = "item-meta";
-      addSafeLink(licenseLinks, "라이선스 페이지 열기", candidate.license_url);
-      article.appendChild(licenseLinks);
+    if (item.expires_at) {
+      addText(article, "div", "만료일: " + item.expires_at, "item-meta");
     }
 
-    addActionButton(
-      article,
-      "후보를 등록 양식에 넣기",
-      "primary",
-      () => useCandidate(candidate)
-    );
+    if (item.review_reason) {
+      addText(article, "div", "검토 메모: " + item.review_reason, "item-meta");
+    }
 
-    sourceResults.appendChild(article);
+    const statusText =
+      item.review_status === "approved" ? "관리자 승인 상태" :
+      item.review_status === "hold" ? "보류 상태" :
+      "검토 대기";
+
+    const statusClass =
+      item.review_status === "approved" ? "approved" :
+      item.review_status === "hold" ? "hold" : "";
+
+    addText(article, "span", statusText, "status " + statusClass);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    addActionButton(actions, "검토 승인", "primary",
+      () => changeStatus(item.id, "approve"));
+
+    addActionButton(actions, "보류", "warn",
+      () => changeStatus(item.id, "hold"));
+
+    addActionButton(actions, "삭제", "danger",
+      () => changeStatus(item.id, "delete"));
+
+    article.appendChild(actions);
+    items.appendChild(article);
   }
-
-  addText(
-    sourceResults,
-    "p",
-    "주의: 후보 검색 결과만으로 상업적 이용 권리가 확인되는 것은 아니야.",
-    "note"
-  );
 }
 
-/* 검색 API 호출 */
-$("sourceSearchForm").addEventListener("submit", async event => {
-  event.preventDefault();
+/* 데이터베이스에서 목록 불러오기 */
+async function loadItems() {
+  items.textContent = "목록을 불러오는 중...";
+  const data = await api("/api/meme-contents");
+  renderItems(data.items);
+}
 
-  const button = $("sourceSearchButton");
-  const query = $("sourceQuery").value.trim();
-
-  if (query.length < 2) {
-    showMessage("검색어를 두 글자 이상 입력해 줘.", "error");
-    return;
-  }
-
-  button.disabled = true;
-  sourceResults.textContent = "검색 중...";
-
-  try {
-    const data = await api(
-      "/api/collect-sources?q=" + encodeURIComponent(query)
-    );
-    renderSourceCandidates(data.candidates);
-    showMessage("검색 완료. 후보는 자동 승인되지 않아.", "success");
-  } catch (error) {
-    sourceResults.replaceChildren();
-    showMessage(error.message, "error");
-  } finally {
-    button.disabled = false;
-  }
-});
-
-/* 등록된 콘텐츠의 상태 변경 */
+/* 승인·보류·삭제 */
 async function changeStatus(id, action) {
   let reason = "";
 
@@ -434,7 +497,7 @@ async function changeStatus(id, action) {
         ? "콘텐츠를 삭제했어."
         : action === "hold"
           ? "콘텐츠를 보류했어."
-          : "관리자 검토 상태를 변경했어. 실제 권리 검증을 의미하지는 않아.",
+          : "관리자 검토 상태가 변경됐어. 실제 권리 검증은 별도로 필요해.",
       "success"
     );
 
@@ -444,118 +507,7 @@ async function changeStatus(id, action) {
   }
 }
 
-/* 콘텐츠 목록 렌더링 */
-function renderItems(list) {
-  items.replaceChildren();
-
-  if (!Array.isArray(list) || list.length === 0) {
-    addText(items, "p", "아직 등록된 콘텐츠가 없어.", "note");
-    return;
-  }
-
-  for (const item of list) {
-    const article = document.createElement("article");
-    article.className = "item";
-
-    addText(
-      article, "div",
-      item.title || "제목 없음",
-      "item-title"
-    );
-
-    addText(
-      article, "div",
-      "상태: " + (item.review_status || "미지정"),
-      "item-meta"
-    );
-
-    const source = document.createElement("div");
-    source.className = "item-meta";
-    addSafeLink(source, "원본 콘텐츠 열기", item.source_url);
-    article.appendChild(source);
-
-    if (item.license_type) {
-      addText(
-        article, "div",
-        "라이선스: " + item.license_type,
-        "item-meta"
-      );
-    }
-
-    if (item.rights_evidence_url) {
-      const evidence = document.createElement("div");
-      evidence.className = "item-meta";
-      addSafeLink(evidence, "권리 증빙 열기", item.rights_evidence_url);
-      article.appendChild(evidence);
-    }
-
-    if (item.rights_evidence_notes) {
-      addText(
-        article, "p",
-        "증빙 메모: " + item.rights_evidence_notes,
-        "item-meta"
-      );
-    }
-
-    if (item.expires_at) {
-      addText(
-        article, "div",
-        "만료일: " + item.expires_at,
-        "item-meta"
-      );
-    }
-
-    const statusText =
-      item.review_status === "approved" ? "관리자 승인 상태" :
-      item.review_status === "hold" ? "보류 상태" :
-      "검토 대기";
-
-    addText(
-      article,
-      "span",
-      statusText,
-      "status " + (item.review_status || "")
-    );
-
-    if (item.review_reason) {
-      addText(
-        article, "div",
-        "메모: " + item.review_reason,
-        "item-meta"
-      );
-    }
-
-    const actions = document.createElement("div");
-    actions.className = "actions";
-
-    addActionButton(
-      actions, "검토 승인", "primary",
-      () => changeStatus(item.id, "approve")
-    );
-
-    addActionButton(
-      actions, "보류", "warn",
-      () => changeStatus(item.id, "hold")
-    );
-
-    addActionButton(
-      actions, "삭제", "danger",
-      () => changeStatus(item.id, "delete")
-    );
-
-    article.appendChild(actions);
-    items.appendChild(article);
-  }
-}
-
-/* DB에서 목록 불러오기 */
-async function loadItems() {
-  items.textContent = "목록을 불러오는 중...";
-  const data = await api("/api/meme-contents");
-  renderItems(data.items);
-}
-
-/* 관리자 로그인 */
+/* 로그인 */
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
 
@@ -565,9 +517,7 @@ $("loginForm").addEventListener("submit", async event => {
   try {
     await api("/api/admin-login", {
       method: "POST",
-      body: JSON.stringify({
-        token: $("adminToken").value
-      })
+      body: JSON.stringify({ token: $("adminToken").value })
     });
 
     $("adminToken").value = "";
@@ -611,7 +561,7 @@ $("contentForm").addEventListener("submit", async event => {
     });
 
     event.target.reset();
-    showMessage("콘텐츠를 등록했어. 검토 대기 상태야.", "success");
+    showMessage("콘텐츠 등록 완료. 검토 대기 상태야.", "success");
     await loadItems();
   } catch (error) {
     showMessage(error.message, "error");
@@ -643,15 +593,12 @@ $("logoutButton").addEventListener("click", async () => {
       body: JSON.stringify({})
     });
 
-    if (!response.ok) {
-      throw new Error("로그아웃 API 요청 실패");
-    }
+    if (!response.ok) throw new Error("로그아웃 요청에 실패했어.");
 
     dashboard.classList.add("hidden");
     loginCard.classList.remove("hidden");
     $("adminToken").value = "";
     items.replaceChildren();
-    sourceResults.replaceChildren();
 
     showMessage("로그아웃 완료.", "success");
   } catch (error) {
