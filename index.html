@@ -1,4 +1,4 @@
-
+```html
 <!doctype html>
 <html lang="ko">
 <head>
@@ -12,39 +12,43 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
+button:disabled{opacity:.5;cursor:wait}
 .hidden{display:none!important}
 .wrap{max-width:1180px;margin:auto;padding:24px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px}
+.top,.between,.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900}
 .logo{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--accent);font-size:23px}
 .muted{color:var(--muted);font-size:13px;line-height:1.6}
 .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;min-width:0}
 .login{max-width:420px;margin:9vh auto}
-h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-1.2px}
-h2{font-size:18px;margin:0 0 16px}
+h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-1px}
+h2{font-size:18px;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:20px;align-items:start}
 .stack{display:flex;flex-direction:column;gap:16px}
 .field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 label{font-size:13px;font-weight:750}
-input[type=text],input[type=password],textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:12px 13px;outline:none}
+input[type=text],input[type=password],input[type=file],textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:12px 13px;outline:none}
 input:focus,textarea:focus,select:focus{border-color:#9ab44b}
 textarea{resize:vertical;min-height:80px;line-height:1.6}
 input[type=range]{width:100%;accent-color:#819d35}
-input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line);border-radius:10px;background:#fff}
+input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line);border-radius:10px}
 .row{display:flex;gap:10px;align-items:center}
 .row>*{min-width:0}
-.between,.section-title{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.btn{border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:white;color:var(--ink);font-weight:750}
+.btn{border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:white;color:var(--ink);font-weight:750;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:6px}
 .btn.primary{background:var(--accent);border-color:var(--accent)}
 .btn.dark{background:#22251f;border-color:#22251f;color:white}
 .btn.small{padding:8px 10px;font-size:12px}
 .btn.full{width:100%}
-.value{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.chip{border:1px solid var(--line);border-radius:99px;padding:6px 10px;background:#fafbf7;font-size:12px}
-.note{background:#f6f8ed;border:1px solid #e5ebd3;padding:12px;border-radius:12px}
 .status{font-size:13px;min-height:20px;color:#5c732a;line-height:1.5}
+.note{background:#f6f8ed;border:1px solid #e5ebd3;padding:12px;border-radius:12px}
+.topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.topic-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:white;display:flex;flex-direction:column}
+.topic-card img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#eceee7}
+.topic-card-body{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:12px;flex:1}
+.topic-category{font-size:11px;color:#667b32;font-weight:800}
+.topic-title{font-size:15px;line-height:1.45;font-weight:850;overflow-wrap:anywhere}
+.topic-desc{color:var(--muted);font-size:12px;line-height:1.6;flex:1;white-space:pre-wrap;overflow-wrap:anywhere}
+.topic-card .btn{font-size:12px;padding:10px 8px}
 .preview-wrap{position:sticky;top:18px}
 .preview{width:100%;aspect-ratio:4/5;background:#e6e8df;position:relative;overflow:hidden;border-radius:18px;isolation:isolate}
 .preview-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
@@ -61,23 +65,17 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
 .preview.align-center .kicker{align-self:center}
 .preview.align-right .kicker{align-self:flex-end}
 .preview-footer{font-size:10px;color:#ffffffbf;font-weight:700}
-.topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
-.topic-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:#fff;display:flex;flex-direction:column}
-.topic-card img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#eceee7}
-.topic-card-body{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:12px;flex:1}
-.topic-category{font-size:11px;color:#667b32;font-weight:800}
-.topic-title{font-size:15px;line-height:1.45;font-weight:850;overflow-wrap:anywhere}
-.topic-desc{color:var(--muted);font-size:12px;line-height:1.6;flex:1}
-.topic-card .btn{font-size:12px;padding:10px 8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:6px 10px;background:#fafbf7;font-size:12px}
 @media(max-width:800px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.preview-wrap{position:static}.preview{max-width:520px;margin:auto}.card{padding:17px}.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:420px){.topic-grid{grid-template-columns:1fr}}
+@media(max-width:420px){.topic-grid{grid-template-columns:1fr}.top{align-items:flex-start}}
 </style>
 </head>
 <body>
 
 <div id="loginScreen" class="wrap">
   <div class="card login">
-    <div class="brand"><div class="logo">₩</div> DollarDollar Studio</div>
+    <div class="brand"><div class="logo">₩</div>DollarDollar Studio</div>
     <p class="muted">관리자 로그인 후 콘텐츠 제작을 시작하세요.</p>
     <form id="loginForm">
       <div class="field">
@@ -85,7 +83,7 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
         <input id="password" type="password" autocomplete="current-password" required>
       </div>
       <button class="btn primary full" type="submit">로그인</button>
-      <p id="loginStatus" class="status"></p>
+      <p id="loginStatus" class="status" aria-live="polite"></p>
     </form>
   </div>
 </div>
@@ -93,30 +91,42 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
 <div id="app" class="hidden">
 <div class="wrap">
   <header class="top">
-    <div class="brand"><div class="logo">₩</div> DollarDollar <span class="muted">STUDIO</span></div>
+    <div class="brand"><div class="logo">₩</div>DollarDollar <span class="muted">STUDIO</span></div>
     <button id="logoutBtn" class="btn small">로그아웃</button>
   </header>
 
   <div style="margin-bottom:22px">
     <h1>오늘의 콘텐츠를 만들자.</h1>
-    <p class="muted">주제를 선택하고 사진과 게시물 디자인을 준비하세요.</p>
+    <p class="muted">밈 주제나 실제 뉴스를 선택하고 기존 편집기로 게시물을 준비하세요.</p>
   </div>
 
-  <!-- 주제 아이디어 영역 -->
+  <!-- AI 밈 주제 생성 -->
   <section class="card" style="margin-bottom:20px">
     <div class="section-title">
       <div>
-        <h2>🔥 오늘의 콘텐츠 아이디어</h2>
-        <p class="muted">주제를 선택하면 제목·본문·사진을 편집기에 적용합니다.</p>
+        <h2>🤣 AI 밈 주제 생성</h2>
+        <p class="muted">친구 태그, 일상 공감, 웃긴 상황을 주제로 아이디어를 만들어요.</p>
       </div>
-      <button class="btn primary" id="refreshTopics" type="button">↻ 새로고침</button>
+      <button id="generateMemeTopics" class="btn primary" type="button">✨ 주제 생성</button>
+    </div>
+    <p id="memeStatus" class="status" aria-live="polite"></p>
+    <div id="memeCards" class="topic-grid"></div>
+  </section>
+
+  <!-- 실제 뉴스 검색 -->
+  <section class="card" style="margin-bottom:20px">
+    <div class="section-title">
+      <div>
+        <h2>📰 지금 이슈 뉴스</h2>
+        <p class="muted">실제 뉴스 피드의 기사 제목·출처·날짜를 표시합니다.</p>
+      </div>
+      <button id="searchNews" class="btn primary" type="button">뉴스 불러오기</button>
     </div>
     <div class="row" style="margin:14px 0">
-      <input id="customTopic" type="text" placeholder="원하는 주제를 입력하세요. 예: AI가 바꾸는 일상">
-      <button class="btn" id="makeCustomTopic" type="button">주제 만들기</button>
+      <input id="newsQuery" type="text" value="한국 주요 뉴스" placeholder="예: AI, 연예, 경제, 스포츠">
     </div>
-    <p id="topicStatus" class="status" aria-live="polite"></p>
-    <div id="topicCards" class="topic-grid"></div>
+    <p id="newsStatus" class="status" aria-live="polite"></p>
+    <div id="newsCards" class="topic-grid"></div>
   </section>
 
   <div class="grid">
@@ -185,7 +195,6 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
         <div class="field">
           <div class="section-title"><label for="gradientHeight">그라데이션 높이</label><span id="gradientHeightValue" class="value">45%</span></div>
           <input id="gradientHeight" type="range" min="15" max="80" value="45">
-          <div class="row between muted"><span>낮게</span><span>높게</span></div>
         </div>
         <div class="field">
           <div class="section-title"><label for="gradientOpacity">검정색 농도</label><span id="gradientOpacityValue" class="value">88%</span></div>
@@ -207,16 +216,16 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
 
       <section class="card">
         <div class="section-title">
-          <h2>04. 키워드 자동 추출</h2>
+          <h2>04. 키워드·해시태그</h2>
           <button type="button" class="btn small" id="extractKeywords">다시 추출</button>
         </div>
-        <p class="muted">제목과 본문에서 핵심 단어를 추출해 해시태그 초안을 만듭니다.</p>
+        <p class="muted">제목과 본문에서 핵심 단어를 추출합니다.</p>
         <div class="field">
           <label for="caption">게시물 본문</label>
           <textarea id="caption" rows="5">작은 습관이 모여 큰 변화를 만듭니다. 오늘부터 실천할 수 있는 것 하나를 시작해 보세요.</textarea>
         </div>
         <div class="field">
-          <label>추출된 키워드 (눌러서 해시태그에 추가)</label>
+          <label>추출된 키워드 (눌러서 추가)</label>
           <div id="keywordChips" class="chips"></div>
         </div>
         <div class="field">
@@ -235,7 +244,7 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
 
       <section class="card">
         <h2>05. 이미지 내보내기</h2>
-        <div class="note muted">현재 디자인을 JPG 이미지로 저장합니다. 이 기능은 인스타그램에 직접 게시하지 않습니다.</div>
+        <div class="note muted">현재 디자인을 JPG로 저장합니다. 인스타그램에 직접 게시하지는 않습니다.</div>
         <div class="row" style="margin-top:14px;flex-wrap:wrap">
           <button id="downloadJpg" type="button" class="btn primary">JPG 다운로드</button>
           <button id="resetAll" type="button" class="btn">디자인 초기화</button>
@@ -270,446 +279,451 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
 </div>
 
 <script>
-(() => {
+(()=>{
 "use strict";
-const $ = id => document.getElementById(id);
-const STORAGE_KEY = "dd_feed_style";
-let photoData = "";
-let lastKeywords = [];
-let shownTopics = [];
-let previousTopicIds = [];
+const $=id=>document.getElementById(id);
+const STORAGE_KEY="dd_feed_style";
+let photoData="";
+let lastKeywords=[];
 
-const defaults = {
-  kicker:"TODAY'S INSIGHT",
-  headline:"작은 습관이\n큰 변화를 만든다",
-  subtitle:"매일의 작은 실천이 내일의 나를 만듭니다.",
-  fontSize:48,alignment:"left",accent:"#d5f477",
-  gradientHeight:45,gradientOpacity:88,gradientSpread:68,
-  imageDarkness:0,contentBottom:7,
-  caption:"작은 습관이 모여 큰 변화를 만듭니다. 오늘부터 실천할 수 있는 것 하나를 시작해 보세요.",
-  hashtags:"#좋은습관 #자기계발 #동기부여"
+const defaults={
+ kicker:"TODAY'S INSIGHT",
+ headline:"작은 습관이\n큰 변화를 만든다",
+ subtitle:"매일의 작은 실천이 내일의 나를 만듭니다.",
+ fontSize:48,alignment:"left",accent:"#d5f477",
+ gradientHeight:45,gradientOpacity:88,gradientSpread:68,
+ imageDarkness:0,contentBottom:7,
+ caption:"작은 습관이 모여 큰 변화를 만듭니다. 오늘부터 실천할 수 있는 것 하나를 시작해 보세요.",
+ hashtags:"#좋은습관 #자기계발 #동기부여"
 };
-const fields = Object.keys(defaults);
+const fields=Object.keys(defaults);
 
-const topicIdeas = [
-  {category:"AI · 미래",title:"AI가 바꾸는 우리의 일상",desc:"인공지능 변화, 우리는 무엇을 준비해야 할까?",caption:"AI는 우리의 일과 생활을 어떻게 바꾸고 있을까요? 지금 알아두면 좋을 변화와 활용법을 살펴봅니다.",image:"https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1000&q=85"},
-  {category:"돈 · 경제",title:"돈을 모으는 사람들의 작은 습관",desc:"매일의 소비 습관에서 시작하는 현실적인 재테크.",caption:"큰돈을 모으는 일은 작은 습관에서 시작될 수 있습니다. 나의 소비를 돌아보고 실천할 수 있는 방법을 찾아보세요.",image:"https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=1000&q=85"},
-  {category:"심리 · 관계",title:"사람들이 나를 좋아하게 되는 순간",desc:"관계를 더 편안하게 만드는 대화 습관.",caption:"좋은 관계는 거창한 말보다 작은 행동에서 시작됩니다. 일상에서 실천할 수 있는 소통 습관을 알아봅니다.",image:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=85"},
-  {category:"자기계발",title:"꾸준한 사람이 결국 달라지는 이유",desc:"작은 행동을 반복하는 힘에 관한 이야기.",caption:"처음부터 완벽할 필요는 없습니다. 오늘 할 수 있는 작은 행동 하나를 꾸준히 이어가는 방법을 생각해 봅니다.",image:"https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1000&q=85"},
-  {category:"과학 · 기술",title:"미래에는 무엇이 달라질까?",desc:"새로운 기술이 일상에 가져올 변화와 가능성.",caption:"기술은 빠르게 발전하고 있습니다. 앞으로 우리의 일상에서 달라질 수 있는 것들과 기대되는 변화를 살펴봅니다.",image:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=85"},
-  {category:"라이프스타일",title:"집중력을 높이는 환경 만들기",desc:"집중하기 쉬운 공간과 생활 습관.",caption:"집중이 잘되지 않을 때는 의지만 탓하기보다 주변 환경부터 살펴보세요. 작은 변화로 시작할 수 있는 방법을 소개합니다.",image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=85"},
-  {category:"소비 트렌드",title:"사람들은 왜 작은 사치에 끌릴까?",desc:"소비 심리와 일상의 행복 사이를 들여다보기.",caption:"사람들이 어떤 순간에 소비를 통해 만족감을 느끼는지 생각해 봅니다. 나에게 진짜 가치 있는 소비는 무엇일까요?",image:"https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1000&q=85"},
-  {category:"건강한 습관",title:"아침 시간을 바꾸면 생기는 일",desc:"무리하지 않고 하루를 시작하는 생활 아이디어.",caption:"아침을 완벽하게 보낼 필요는 없습니다. 나에게 맞는 작은 루틴 하나를 정하고 부담 없이 시작해 보세요.",image:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1000&q=85"},
-  {category:"디지털 라이프",title:"스마트폰을 덜 보는 현실적인 방법",desc:"디지털 기기와 조금 더 건강하게 거리 두기.",caption:"스마트폰 사용을 무조건 줄이기보다 언제, 왜 사용하는지 먼저 살펴보세요. 일상에서 시도할 수 있는 작은 방법을 소개합니다.",image:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85"},
-  {category:"성장",title:"실패한 뒤 다시 시작하는 방법",desc:"실패를 다음 시도를 위한 경험으로 바라보기.",caption:"실패했다고 모든 것이 끝난 것은 아닙니다. 경험을 정리하고 다음 행동을 작게 정하는 것부터 시작해 보세요.",image:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85"},
-  {category:"환경 · 사회",title:"일상에서 실천하는 작은 환경 보호",desc:"부담 없이 시작할 수 있는 생활 속 실천.",caption:"환경을 위한 변화는 일상 속 작은 선택에서도 시작될 수 있습니다. 지금 생활에서 실천할 수 있는 한 가지를 찾아보세요.",image:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=85"},
-  {category:"여행 · 발견",title:"익숙한 곳을 새롭게 여행하는 법",desc:"멀리 떠나지 않아도 새로운 경험을 발견하기.",caption:"새로운 경험을 위해 꼭 멀리 갈 필요는 없습니다. 익숙한 동네에서도 색다른 장소와 이야기를 발견할 수 있습니다.",image:"https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1000&q=85"}
-];
-
-function setStatus(id,message){$(id).textContent=message;}
+function setStatus(id,message){$(id).textContent=message}
 function getState(){
-  const state={};
-  fields.forEach(id=>state[id]=$(id).type==="range"?Number($(id).value):$(id).value);
-  return state;
+ const state={};
+ fields.forEach(id=>state[id]=$(id).type==="range"?Number($(id).value):$(id).value);
+ return state;
 }
 function applyState(state){
-  fields.forEach(id=>{if(state[id]!==undefined)$(id).value=state[id];});
-  updatePreview();
+ fields.forEach(id=>{if(state[id]!==undefined)$(id).value=state[id]});
+ updatePreview();
 }
 function readableText(hex){
-  const rgb=hex.match(/[0-9a-f]{2}/gi);
-  if(!rgb||rgb.length<3)return "#20221d";
-  const [r,g,b]=rgb.slice(0,3).map(x=>parseInt(x,16));
-  return (r*299+g*587+b*114)/1000>150?"#20221d":"#ffffff";
+ const rgb=hex.match(/[0-9a-f]{2}/gi);
+ if(!rgb||rgb.length<3)return "#20221d";
+ const [r,g,b]=rgb.slice(0,3).map(x=>parseInt(x,16));
+ return (r*299+g*587+b*114)/1000>150?"#20221d":"#ffffff";
 }
 function updatePreview(){
-  const accent=$("accent").value;
-  const height=Number($("gradientHeight").value);
-  const opacity=Number($("gradientOpacity").value)/100;
-  const spread=Number($("gradientSpread").value);
-  const darkness=Number($("imageDarkness").value)/100;
-  const fontSize=Number($("fontSize").value);
+ const accent=$("accent").value;
+ const height=Number($("gradientHeight").value);
+ const opacity=Number($("gradientOpacity").value)/100;
+ const spread=Number($("gradientSpread").value);
+ const darkness=Number($("imageDarkness").value)/100;
+ const fontSize=Number($("fontSize").value);
 
-  $("previewKicker").textContent=$("kicker").value.trim();
-  $("previewKicker").classList.toggle("hidden",!$("kicker").value.trim());
-  $("previewHeadline").textContent=$("headline").value;
-  $("previewSubtitle").textContent=$("subtitle").value;
-  $("previewSubtitle").classList.toggle("hidden",!$("subtitle").value);
-  $("previewHeadline").style.fontSize=`clamp(${Math.round(fontSize*.52)}px,${fontSize/390*100}vw,${fontSize}px)`;
-  $("preview").className="preview align-"+$("alignment").value;
-  $("preview").style.setProperty("--accent",accent);
-  $("previewKicker").style.background=accent;
-  $("previewKicker").style.color=readableText(accent);
-  $("gradient").style.height=height+"%";
-  $("gradient").style.background=`linear-gradient(to top,rgba(0,0,0,${opacity}) 0%,rgba(0,0,0,${opacity*.72}) ${Math.max(8,100-spread)}%,rgba(0,0,0,${opacity*.22}) ${spread}%,rgba(0,0,0,0) 100%)`;
-  $("dimLayer").style.background=`rgba(0,0,0,${darkness})`;
-  $("posterContent").style.bottom=$("contentBottom").value+"%";
-
-  $("fontValue").textContent=fontSize+"px";
-  $("accentValue").textContent=accent;
-  $("gradientHeightValue").textContent=height+"%";
-  $("gradientOpacityValue").textContent=Math.round(opacity*100)+"%";
-  $("gradientSpreadValue").textContent=spread+"%";
-  $("imageDarknessValue").textContent=Math.round(darkness*100)+"%";
-  $("contentBottomValue").textContent=$("contentBottom").value+"%";
+ $("previewKicker").textContent=$("kicker").value.trim();
+ $("previewKicker").classList.toggle("hidden",!$("kicker").value.trim());
+ $("previewHeadline").textContent=$("headline").value;
+ $("previewSubtitle").textContent=$("subtitle").value;
+ $("previewSubtitle").classList.toggle("hidden",!$("subtitle").value);
+ $("previewHeadline").style.fontSize=`clamp(${Math.round(fontSize*.52)}px,${fontSize/390*100}vw,${fontSize}px)`;
+ $("preview").className="preview align-"+$("alignment").value;
+ $("preview").style.setProperty("--accent",accent);
+ $("previewKicker").style.background=accent;
+ $("previewKicker").style.color=readableText(accent);
+ $("gradient").style.height=height+"%";
+ $("gradient").style.background=`linear-gradient(to top,rgba(0,0,0,${opacity}) 0%,rgba(0,0,0,${opacity*.72}) ${Math.max(8,100-spread)}%,rgba(0,0,0,${opacity*.22}) ${spread}%,rgba(0,0,0,0) 100%)`;
+ $("dimLayer").style.background=`rgba(0,0,0,${darkness})`;
+ $("posterContent").style.bottom=$("contentBottom").value+"%";
+ $("fontValue").textContent=fontSize+"px";
+ $("accentValue").textContent=accent;
+ $("gradientHeightValue").textContent=height+"%";
+ $("gradientOpacityValue").textContent=Math.round(opacity*100)+"%";
+ $("gradientSpreadValue").textContent=spread+"%";
+ $("imageDarknessValue").textContent=Math.round(darkness*100)+"%";
+ $("contentBottomValue").textContent=$("contentBottom").value+"%";
 }
 
-function shuffle(items){
-  const copy=[...items];
-  for(let i=copy.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [copy[i],copy[j]]=[copy[j],copy[i]];
-  }
-  return copy;
-}
-function renderTopics(){
-  const container=$("topicCards");
-  container.replaceChildren();
-  shownTopics.forEach(topic=>{
-    const card=document.createElement("article");
-    card.className="topic-card";
-    const img=document.createElement("img");
-    img.src=topic.image;
-    img.alt=topic.title;
-    img.loading="lazy";
-    img.crossOrigin="anonymous";
-    img.onerror=()=>{img.alt="사진을 불러오지 못했습니다.";img.style.display="none";};
-
-    const body=document.createElement("div");
-    body.className="topic-card-body";
-    const category=document.createElement("div");
-    category.className="topic-category";
-    category.textContent=topic.category;
-    const title=document.createElement("div");
-    title.className="topic-title";
-    title.textContent=topic.title;
-    const desc=document.createElement("div");
-    desc.className="topic-desc";
-    desc.textContent=topic.desc;
-    const button=document.createElement("button");
-    button.type="button";
-    button.className="btn primary";
-    button.textContent="이 주제로 만들기";
-    button.addEventListener("click",()=>useTopic(topic));
-    body.append(category,title,desc,button);
-    card.append(img,body);
-    container.appendChild(card);
-  });
-  setStatus("topicStatus",`${shownTopics.length}개의 아이디어를 표시하고 있어요.`);
-}
-function refreshTopics(){
-  let pool=topicIdeas.filter(item=>!previousTopicIds.includes(item.title));
-  if(pool.length<3){previousTopicIds=[];pool=[...topicIdeas];}
-  shownTopics=shuffle(pool).slice(0,3);
-  previousTopicIds=[...previousTopicIds,...shownTopics.map(item=>item.title)].slice(-9);
-  renderTopics();
-}
 function useTopic(topic){
-  $("headline").value=topic.title;
-  $("subtitle").value=topic.desc;
-  $("caption").value=topic.caption;
-  photoData=topic.image;
-
+ $("headline").value=topic.title||"";
+ $("subtitle").value=topic.desc||"";
+ $("caption").value=topic.caption||topic.desc||"";
+ const image=typeof topic.image==="string"?topic.image:"";
+ photoData="";
+ if(image){
   $("previewPhoto").onload=()=>{
-    $("previewPhoto").classList.remove("hidden");
-    $("placeholder").classList.add("hidden");
-    setStatus("photoStatus","주제 사진이 적용됐어요.");
+   $("previewPhoto").classList.remove("hidden");
+   $("placeholder").classList.add("hidden");
+   setStatus("photoStatus","주제 사진이 적용됐어요.");
   };
   $("previewPhoto").onerror=()=>{
-    $("previewPhoto").classList.add("hidden");
-    $("placeholder").classList.remove("hidden");
-    setStatus("photoStatus","사진을 불러오지 못했어요. 직접 사진을 업로드해 주세요.");
-    photoData="";
+   $("previewPhoto").classList.add("hidden");
+   $("placeholder").classList.remove("hidden");
+   setStatus("photoStatus","사진을 불러오지 못했어요. 직접 업로드해 주세요.");
+   photoData="";
   };
   $("previewPhoto").crossOrigin="anonymous";
-  $("previewPhoto").src=topic.image;
-
-  updatePreview();
-  extractKeywords();
-  setStatus("topicStatus",`“${topic.title}” 주제를 편집기에 적용했어요.`);
-  $("headline").scrollIntoView({behavior:"smooth",block:"center"});
-}
-function makeCustomTopic(){
-  const title=$("customTopic").value.trim();
-  if(!title){setStatus("topicStatus","먼저 원하는 주제를 입력해 주세요.");return;}
-  const photo=shuffle(topicIdeas)[0].image;
-  useTopic({
-    category:"직접 입력한 주제",
-    title,
-    desc:"직접 입력한 주제로 게시물 초안을 만들어요.",
-    caption:`${title}\n\n이 주제에서 사람들이 알아두면 좋을 점은 무엇일까요? 핵심 내용과 도움이 되는 정보를 정리해 보세요.`,
-    image:photo
-  });
-  setStatus("topicStatus","주제 초안을 만들었어요. 사진은 미리 준비된 목록에서 선택했어요.");
-}
-
-function extractKeywords(){
-  const source=[$("headline").value,$("subtitle").value,$("caption").value].join(" ");
-  const stop=new Set(["그리고","하지만","그래서","오늘","이것","저것","그것","정말","너무","하는","하면","해서","있는","있다","없다","입니다","합니다","됩니다","하세요","해보세요","부터","까지","대한","통해","위해","같은","우리","나는","저는","그냥","조금","매일","이런","저런","그런","것을","것이","수는","수도","으로","에서","에게","처럼","보다","때문","the","and","for","with","that","this","from","your","you","are","was","have","has","will","can","not","but","about","into","just"]);
-  const normalized=source.replace(/#[\p{L}\p{N}_]+/gu," ").replace(/https?:\/\/\S+/gi," ").toLowerCase();
-  const words=normalized.match(/[\p{Script=Hangul}]{2,}|[a-z][a-z0-9]{2,}/gu)||[];
-  const counts=new Map();
-  words.forEach(word=>{if(!stop.has(word)&&!(/^\d+$/.test(word)))counts.set(word,(counts.get(word)||0)+1);});
-  const ranked=[...counts.entries()].sort((a,b)=>b[1]-a[1]||b[0].length-a[0].length).map(x=>x[0]);
-  const result=[];
-  for(const word of ranked){
-    if(result.some(old=>old===word||(word.length>=3&&old.length>=3&&(old.includes(word)||word.includes(old)))))continue;
-    result.push(word);
-    if(result.length>=8)break;
-  }
-  lastKeywords=result;
-  renderKeywordChips(result);
-  if(result.length){
-    const tags=result.map(w=>"#"+w.replace(/[^\p{L}\p{N}_]/gu,""));
-    const old=$("hashtags").value.trim().split(/\s+/).filter(x=>/^#[\p{L}\p{N}_]+$/u.test(x));
-    $("hashtags").value=[...new Set([...tags,...old])].slice(0,15).join(" ");
-    setStatus("copyStatus","키워드를 추출했어요. 해시태그를 확인해 주세요.");
-  }else{
-    setStatus("copyStatus","키워드가 부족해요. 제목이나 본문을 입력해 주세요.");
-  }
-}
-function renderKeywordChips(words){
-  const container=$("keywordChips");
-  container.replaceChildren();
-  if(!words.length){
-    const span=document.createElement("span");
-    span.className="muted";
-    span.textContent="제목이나 본문에서 키워드를 추출하세요.";
-    container.appendChild(span);
-    return;
-  }
-  words.forEach(word=>{
-    const button=document.createElement("button");
-    button.type="button";
-    button.className="chip";
-    button.textContent=word+" +";
-    button.addEventListener("click",()=>{
-      const tag="#"+word.replace(/[^\p{L}\p{N}_]/gu,"");
-      const tags=$("hashtags").value.trim().split(/\s+/).filter(Boolean);
-      if(!tags.includes(tag))tags.push(tag);
-      $("hashtags").value=tags.join(" ");
-    });
-    container.appendChild(button);
-  });
-}
-function saveState(){
-  try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));
-    setStatus("copyStatus","설정을 이 브라우저에 저장했어요.");
-  }catch(e){setStatus("copyStatus","저장에 실패했어요.");}
-}
-function loadState(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    applyState(raw?{...defaults,...JSON.parse(raw)}:defaults);
-  }catch(e){applyState(defaults);}
-}
-async function copyText(text){
-  try{
-    if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
-    else{
-      const area=document.createElement("textarea");
-      area.value=text;area.style.position="fixed";area.style.opacity="0";
-      document.body.appendChild(area);area.select();
-      const ok=document.execCommand("copy");area.remove();
-      if(!ok)throw new Error("copy failed");
-    }
-    return true;
-  }catch(e){return false;}
-}
-function loadImage(src){
-  return new Promise((resolve,reject)=>{
-    const img=new Image();
-    if(/^https?:\/\//i.test(src))img.crossOrigin="anonymous";
-    img.onload=()=>resolve(img);
-    img.onerror=()=>reject(new Error("사진을 불러오지 못했어요. 다른 사진을 선택해 주세요."));
-    img.src=src;
-  });
-}
-function wrapText(ctx,text,maxWidth){
-  const lines=[];
-  String(text||"").split("\n").forEach(paragraph=>{
-    if(!paragraph){lines.push("");return;}
-    let line="";
-    for(const char of paragraph){
-      const test=line+char;
-      if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=char;}
-      else line=test;
-    }
-    lines.push(line);
-  });
-  return lines.length?lines:[""];
-}
-function roundedRect(ctx,x,y,w,h,r){
-  ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
-}
-
-$("loginForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  setStatus("loginStatus","로그인 중...");
-  try{
-    const response=await fetch("/api/admin-login",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      credentials:"same-origin",
-      body:JSON.stringify({token:$("password").value})
-    });
-    const result=await response.json().catch(()=>({}));
-    if(!response.ok)throw new Error(result.error||result.message||"로그인에 실패했어요.");
-    $("loginScreen").classList.add("hidden");
-    $("app").classList.remove("hidden");
-    loadState();
-    refreshTopics();
-  }catch(error){
-    setStatus("loginStatus",error.message||"로그인에 실패했어요.");
-  }
-});
-$("logoutBtn").addEventListener("click",async()=>{
-  try{await fetch("/api/admin-logout",{method:"POST",credentials:"same-origin"});}catch(e){}
-  $("app").classList.add("hidden");
-  $("loginScreen").classList.remove("hidden");
-  $("password").value="";
-});
-$("refreshTopics").addEventListener("click",refreshTopics);
-$("makeCustomTopic").addEventListener("click",makeCustomTopic);
-$("customTopic").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();makeCustomTopic();}});
-$("extractKeywords").addEventListener("click",extractKeywords);
-
-$("photo").addEventListener("change",event=>{
-  const file=event.target.files&&event.target.files[0];
-  if(!file)return;
-  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-    setStatus("photoStatus","JPG, PNG, WebP 파일만 사용할 수 있어요.");event.target.value="";return;
-  }
-  if(file.size>12*1024*1024){
-    setStatus("photoStatus","파일이 12MB를 초과해요.");event.target.value="";return;
-  }
-  const reader=new FileReader();
-  reader.onload=()=>{
-    photoData=reader.result;
-    $("previewPhoto").removeAttribute("crossorigin");
-    $("previewPhoto").src=photoData;
-    $("previewPhoto").classList.remove("hidden");
-    $("placeholder").classList.add("hidden");
-    setStatus("photoStatus",file.name);
-  };
-  reader.onerror=()=>setStatus("photoStatus","이미지를 읽을 수 없어요.");
-  reader.readAsDataURL(file);
-});
-$("clearPhoto").addEventListener("click",()=>{
-  photoData="";$("photo").value="";
+  $("previewPhoto").src=image;
+  photoData=image;
+ }else{
   $("previewPhoto").removeAttribute("src");
   $("previewPhoto").classList.add("hidden");
   $("placeholder").classList.remove("hidden");
-  setStatus("photoStatus","이미지가 선택되지 않았어요.");
+  setStatus("photoStatus","사진을 직접 업로드해 주세요.");
+ }
+ updatePreview();
+ extractKeywords();
+ $("headline").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function makeCard({category,title,desc,image,action,link}){
+ const card=document.createElement("article");
+ card.className="topic-card";
+ if(image){
+  const img=document.createElement("img");
+  img.src=image;img.alt=title||"";img.loading="lazy";
+  img.onerror=()=>img.remove();
+  card.appendChild(img);
+ }
+ const body=document.createElement("div");
+ body.className="topic-card-body";
+ const cat=document.createElement("div");
+ cat.className="topic-category";cat.textContent=category||"콘텐츠";
+ const heading=document.createElement("div");
+ heading.className="topic-title";heading.textContent=title||"제목 없음";
+ const detail=document.createElement("div");
+ detail.className="topic-desc";detail.textContent=desc||"";
+ body.append(cat,heading,detail);
+ if(link){
+  const a=document.createElement("a");
+  a.className="btn";a.textContent="원문 기사 보기";
+  a.href=link;a.target="_blank";a.rel="noopener noreferrer";
+  body.appendChild(a);
+ }
+ if(action){
+  const button=document.createElement("button");
+  button.type="button";button.className="btn primary";
+  button.textContent="이 주제로 만들기";
+  button.addEventListener("click",action);
+  body.appendChild(button);
+ }
+ card.appendChild(body);
+ return card;
+}
+
+async function generateMemeTopics(){
+ const button=$("generateMemeTopics");
+ button.disabled=true;
+ setStatus("memeStatus","재미있는 밈 주제를 만드는 중...");
+ try{
+  const response=await fetch("/api/meme-topics",{
+   method:"POST",credentials:"same-origin",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({})
+  });
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.error||"밈 주제를 가져오지 못했어요.");
+  if(!Array.isArray(result.topics))throw new Error("서버 응답 형식이 올바르지 않아요.");
+  const container=$("memeCards");container.replaceChildren();
+  result.topics.forEach(topic=>{
+   container.appendChild(makeCard({
+    category:topic.category||"공감 밈",
+    title:topic.title,desc:topic.desc,
+    action:()=>useTopic({
+     title:topic.title,desc:topic.desc,
+     caption:topic.caption||topic.desc,image:""
+    })
+   }));
+  });
+  setStatus("memeStatus",result.topics.length+"개의 AI 밈 주제를 만들었어요.");
+ }catch(error){
+  setStatus("memeStatus",(error.message||"주제 생성 실패")+" · API 설정과 관리자 로그인을 확인해 주세요.");
+ }finally{button.disabled=false}
+}
+
+async function searchNews(){
+ const button=$("searchNews");
+ button.disabled=true;
+ setStatus("newsStatus","실제 뉴스 피드를 확인하는 중...");
+ try{
+  const query=$("newsQuery").value.trim()||"한국 주요 뉴스";
+  const response=await fetch("/api/news?query="+encodeURIComponent(query),{
+   method:"GET",credentials:"same-origin"
+  });
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.error||"뉴스를 가져오지 못했어요.");
+  const articles=Array.isArray(result.articles)?result.articles:[];
+  const container=$("newsCards");container.replaceChildren();
+  articles.forEach(article=>{
+   const date=article.pubDate?new Date(article.pubDate).toLocaleString("ko-KR"):"";
+   container.appendChild(makeCard({
+    category:[article.source,date].filter(Boolean).join(" · "),
+    title:article.title,
+    desc:article.description||"실제 뉴스 기사",
+    link:article.link,
+    action:()=>useTopic({
+     title:article.title||"",
+     desc:article.source||"최신 뉴스",
+     caption:[article.title,article.source,article.link].filter(Boolean).join("\n"),
+     image:""
+    })
+   }));
+  });
+  setStatus("newsStatus",articles.length
+   ?articles.length+"개의 실제 뉴스 기사를 가져왔어요."
+   :"검색 결과가 없어요. 다른 검색어를 입력해 보세요.");
+ }catch(error){
+  setStatus("newsStatus",(error.message||"뉴스 검색 실패")+" · 로그인 및 /api/news 설정을 확인해 주세요.");
+ }finally{button.disabled=false}
+}
+
+function extractKeywords(){
+ const source=[$("headline").value,$("subtitle").value,$("caption").value].join(" ");
+ const stop=new Set(["그리고","하지만","그래서","오늘","정말","너무","하는","하면","해서","있는","있다","없다","입니다","합니다","됩니다","하세요","부터","까지","대한","통해","위해","같은","우리","나는","저는","그냥","조금","이런","저런","그런","것을","것이","으로","에서","에게","처럼","보다","때문","the","and","for","with","that","this","from","your","you","are","was","have","will","can","not","but","about"]);
+ const normalized=source.replace(/#[\p{L}\p{N}_]+/gu," ").replace(/https?:\/\/\S+/gi," ").toLowerCase();
+ const words=normalized.match(/[\p{Script=Hangul}]{2,}|[a-z][a-z0-9]{2,}/gu)||[];
+ const counts=new Map();
+ words.forEach(word=>{if(!stop.has(word))counts.set(word,(counts.get(word)||0)+1)});
+ const ranked=[...counts.entries()].sort((a,b)=>b[1]-a[1]||b[0].length-a[0].length).map(x=>x[0]);
+ const result=[];
+ for(const word of ranked){
+  if(result.some(old=>old===word||(word.length>=3&&old.length>=3&&(old.includes(word)||word.includes(old)))))continue;
+  result.push(word);if(result.length>=8)break;
+ }
+ lastKeywords=result;
+ renderKeywordChips(result);
+ if(result.length){
+  const tags=result.map(w=>"#"+w.replace(/[^\p{L}\p{N}_]/gu,""));
+  const old=$("hashtags").value.trim().split(/\s+/).filter(x=>/^#[\p{L}\p{N}_]+$/u.test(x));
+  $("hashtags").value=[...new Set([...tags,...old])].slice(0,15).join(" ");
+  setStatus("copyStatus","키워드를 추출했어요. 해시태그를 확인해 주세요.");
+ }else setStatus("copyStatus","키워드가 부족해요. 제목이나 본문을 입력해 주세요.");
+}
+function renderKeywordChips(words){
+ const container=$("keywordChips");container.replaceChildren();
+ if(!words.length){
+  const span=document.createElement("span");span.className="muted";
+  span.textContent="제목이나 본문에서 키워드를 추출하세요.";
+  container.appendChild(span);return;
+ }
+ words.forEach(word=>{
+  const button=document.createElement("button");
+  button.type="button";button.className="chip";button.textContent=word+" +";
+  button.addEventListener("click",()=>{
+   const tag="#"+word.replace(/[^\p{L}\p{N}_]/gu,"");
+   const tags=$("hashtags").value.trim().split(/\s+/).filter(Boolean);
+   if(!tags.includes(tag))tags.push(tag);
+   $("hashtags").value=tags.join(" ");
+  });
+  container.appendChild(button);
+ });
+}
+function saveState(){
+ try{
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));
+  setStatus("copyStatus","설정을 이 브라우저에 저장했어요.");
+ }catch(e){setStatus("copyStatus","저장에 실패했어요.")}
+}
+function loadState(){
+ try{
+  const raw=localStorage.getItem(STORAGE_KEY);
+  applyState(raw?{...defaults,...JSON.parse(raw)}:defaults);
+ }catch(e){applyState(defaults)}
+}
+async function copyText(text){
+ try{
+  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+  else{
+   const area=document.createElement("textarea");
+   area.value=text;area.style.position="fixed";area.style.opacity="0";
+   document.body.appendChild(area);area.select();
+   const ok=document.execCommand("copy");area.remove();
+   if(!ok)throw new Error("copy failed");
+  }
+  return true;
+ }catch(e){return false}
+}
+function loadImage(src){
+ return new Promise((resolve,reject)=>{
+  const img=new Image();
+  if(/^https?:\/\//i.test(src))img.crossOrigin="anonymous";
+  img.onload=()=>resolve(img);
+  img.onerror=()=>reject(new Error("사진을 불러오지 못했어요. 직접 업로드한 사진을 사용해 보세요."));
+  img.src=src;
+ });
+}
+function wrapText(ctx,text,maxWidth){
+ const lines=[];
+ String(text||"").split("\n").forEach(paragraph=>{
+  if(!paragraph){lines.push("");return}
+  let line="";
+  for(const char of paragraph){
+   const test=line+char;
+   if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=char}
+   else line=test;
+  }
+  lines.push(line);
+ });
+ return lines.length?lines:[""];
+}
+function roundedRect(ctx,x,y,w,h,r){
+ ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
+ ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);
+ ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+}
+
+$("loginForm").addEventListener("submit",async event=>{
+ event.preventDefault();setStatus("loginStatus","로그인 중...");
+ try{
+  const response=await fetch("/api/admin-login",{
+   method:"POST",headers:{"Content-Type":"application/json"},
+   credentials:"same-origin",
+   body:JSON.stringify({token:$("password").value})
+  });
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.error||result.message||"로그인에 실패했어요.");
+  $("loginScreen").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  loadState();
+  generateMemeTopics();
+  searchNews();
+ }catch(error){setStatus("loginStatus",error.message||"로그인에 실패했어요.")}
+});
+$("logoutBtn").addEventListener("click",async()=>{
+ try{await fetch("/api/admin-logout",{method:"POST",credentials:"same-origin"})}catch(e){}
+ $("app").classList.add("hidden");
+ $("loginScreen").classList.remove("hidden");
+ $("password").value="";
+});
+$("generateMemeTopics").addEventListener("click",generateMemeTopics);
+$("searchNews").addEventListener("click",searchNews);
+$("newsQuery").addEventListener("keydown",e=>{
+ if(e.key==="Enter"){e.preventDefault();searchNews()}
+});
+$("extractKeywords").addEventListener("click",extractKeywords);
+
+$("photo").addEventListener("change",event=>{
+ const file=event.target.files&&event.target.files[0];
+ if(!file)return;
+ if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+  setStatus("photoStatus","JPG, PNG, WebP 파일만 사용할 수 있어요.");event.target.value="";return;
+ }
+ if(file.size>12*1024*1024){
+  setStatus("photoStatus","파일이 12MB를 초과해요.");event.target.value="";return;
+ }
+ const reader=new FileReader();
+ reader.onload=()=>{
+  photoData=reader.result;
+  $("previewPhoto").removeAttribute("crossorigin");
+  $("previewPhoto").src=photoData;
+  $("previewPhoto").classList.remove("hidden");
+  $("placeholder").classList.add("hidden");
+  setStatus("photoStatus",file.name);
+ };
+ reader.onerror=()=>setStatus("photoStatus","이미지를 읽을 수 없어요.");
+ reader.readAsDataURL(file);
+});
+$("clearPhoto").addEventListener("click",()=>{
+ photoData="";$("photo").value="";
+ $("previewPhoto").removeAttribute("src");
+ $("previewPhoto").classList.add("hidden");
+ $("placeholder").classList.remove("hidden");
+ setStatus("photoStatus","이미지가 선택되지 않았어요.");
 });
 fields.forEach(id=>{
-  $(id).addEventListener("input",updatePreview);
-  $(id).addEventListener("change",updatePreview);
+ $(id).addEventListener("input",updatePreview);
+ $(id).addEventListener("change",updatePreview);
 });
 document.querySelectorAll(".color-preset").forEach(button=>{
-  button.addEventListener("click",()=>{$("accent").value=button.dataset.color;updatePreview();});
+ button.addEventListener("click",()=>{$("accent").value=button.dataset.color;updatePreview()});
 });
-$("defaultAccent").addEventListener("click",()=>{$("accent").value=defaults.accent;updatePreview();});
+$("defaultAccent").addEventListener("click",()=>{$("accent").value=defaults.accent;updatePreview()});
 $("saveDraft").addEventListener("click",saveState);
 $("copyHashtags").addEventListener("click",async()=>{
-  const ok=await copyText($("hashtags").value);
-  setStatus("copyStatus",ok?"해시태그를 복사했어요.":"복사에 실패했어요.");
+ const ok=await copyText($("hashtags").value);
+ setStatus("copyStatus",ok?"해시태그를 복사했어요.":"복사에 실패했어요.");
 });
 $("copyCaption").addEventListener("click",async()=>{
-  const text=[$("caption").value.trim(),$("hashtags").value.trim()].filter(Boolean).join("\n\n");
-  const ok=await copyText(text);
-  setStatus("copyStatus",ok?"본문과 해시태그를 복사했어요.":"복사에 실패했어요.");
+ const text=[$("caption").value.trim(),$("hashtags").value.trim()].filter(Boolean).join("\n\n");
+ const ok=await copyText(text);
+ setStatus("copyStatus",ok?"본문과 해시태그를 복사했어요.":"복사에 실패했어요.");
 });
 $("resetAll").addEventListener("click",()=>{
-  if(!confirm("디자인 설정을 기본값으로 되돌릴까요?"))return;
-  applyState(defaults);lastKeywords=[];renderKeywordChips([]);
-  setStatus("copyStatus","기본 디자인을 불러왔어요. 저장 버튼을 눌러 적용하세요.");
+ if(!confirm("디자인 설정을 기본값으로 되돌릴까요?"))return;
+ applyState(defaults);lastKeywords=[];renderKeywordChips([]);
+ setStatus("copyStatus","기본 디자인을 불러왔어요. 저장 버튼을 눌러 적용하세요.");
 });
 
 $("downloadJpg").addEventListener("click",async()=>{
-  setStatus("exportStatus","JPG 이미지를 만드는 중...");
-  try{
-    const width=1080,height=1350;
-    const canvas=document.createElement("canvas");
-    canvas.width=width;canvas.height=height;
-    const ctx=canvas.getContext("2d");
-    ctx.fillStyle="#dfe3d5";ctx.fillRect(0,0,width,height);
-
-    if(photoData){
-      const img=await loadImage(photoData);
-      const scale=Math.max(width/img.width,height/img.height);
-      const sw=width/scale,sh=height/scale;
-      ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,width,height);
-    }else{
-      const bg=ctx.createLinearGradient(0,0,width,height);
-      bg.addColorStop(0,"#eef1e5");bg.addColorStop(1,"#bfc8b1");
-      ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);
-    }
-
-    const darkness=Number($("imageDarkness").value)/100;
-    if(darkness>0){ctx.fillStyle=`rgba(0,0,0,${darkness})`;ctx.fillRect(0,0,width,height);}
-
-    const gh=height*Number($("gradientHeight").value)/100;
-    const opacity=Number($("gradientOpacity").value)/100;
-    const spread=Number($("gradientSpread").value)/100;
-    const grad=ctx.createLinearGradient(0,height-gh,0,height);
-    grad.addColorStop(0,"rgba(0,0,0,0)");
-    grad.addColorStop(Math.min(.7,Math.max(.05,spread*.7)),`rgba(0,0,0,${opacity*.22})`);
-    grad.addColorStop(.78,`rgba(0,0,0,${opacity*.72})`);
-    grad.addColorStop(1,`rgba(0,0,0,${opacity})`);
-    ctx.fillStyle=grad;ctx.fillRect(0,height-gh,width,gh);
-
-    const align=$("alignment").value;
-    const margin=width*.07;
-    const textX=align==="left"?margin:align==="right"?width-margin:width/2;
-    ctx.textAlign=align;ctx.textBaseline="alphabetic";
-    const fontSize=Number($("fontSize").value)*(width/390);
-    const titleLines=wrapText(ctx,$("headline").value,width*.86);
-    const subtitleLines=wrapText(ctx,$("subtitle").value,width*.86);
-    const subtitle=$("subtitle").value;
-    const kicker=$("kicker").value;
-    const titleLineHeight=fontSize*1.13;
-    const subtitleLineHeight=38;
-    const total=titleLines.length*titleLineHeight+(subtitle?subtitleLines.length*subtitleLineHeight+18:0)+(kicker?64:0);
-    let y=height-height*Number($("contentBottom").value)/100-total-30;
-
-    if(kicker){
-      ctx.font="900 22px Arial,sans-serif";
-      const pillWidth=Math.min(width*.82,ctx.measureText(kicker).width+38);
-      const pillX=align==="left"?margin:align==="right"?width-margin-pillWidth:(width-pillWidth)/2;
-      roundedRect(ctx,pillX,y,pillWidth,42,21);
-      ctx.fillStyle=$("accent").value;ctx.fill();
-      ctx.fillStyle=readableText($("accent").value);
-      ctx.textAlign="center";ctx.fillText(kicker,pillX+pillWidth/2,y+28);
-      ctx.textAlign=align;y+=58;
-    }
-
-    ctx.fillStyle="#fff";
-    ctx.font=`900 ${fontSize}px Arial,"Apple SD Gothic Neo",sans-serif`;
-    ctx.shadowColor="rgba(0,0,0,.18)";ctx.shadowBlur=12;
-    titleLines.forEach(line=>{ctx.fillText(line,textX,y+fontSize);y+=titleLineHeight;});
-    ctx.shadowBlur=0;
-
-    if(subtitle){
-      y+=18;ctx.font="500 30px Arial,sans-serif";ctx.fillStyle="rgba(255,255,255,.93)";
-      subtitleLines.forEach(line=>{ctx.fillText(line,textX,y+30);y+=subtitleLineHeight;});
-    }
-    ctx.textAlign=align;ctx.font="700 17px Arial,sans-serif";ctx.fillStyle="rgba(255,255,255,.76)";
-    ctx.fillText("DOLLARDOLLAR",textX,height-height*.025);
-
-    const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.94));
-    if(!blob)throw new Error("이미지를 만들지 못했어요.");
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");a.href=url;a.download="dollardollar-post.jpg";
-    document.body.appendChild(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),1500);
-    setStatus("exportStatus","JPG 다운로드가 시작됐어요.");
-  }catch(error){
-    setStatus("exportStatus",(error.message||"내보내기에 실패했어요.")+" 원격 사진은 제공 서버의 CORS 정책 때문에 저장이 제한될 수 있어요. 직접 업로드한 사진을 사용해 보세요.");
+ setStatus("exportStatus","JPG 이미지를 만드는 중...");
+ try{
+  const width=1080,height=1350;
+  const canvas=document.createElement("canvas");
+  canvas.width=width;canvas.height=height;
+  const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#dfe3d5";ctx.fillRect(0,0,width,height);
+  if(photoData){
+   const img=await loadImage(photoData);
+   const scale=Math.max(width/img.width,height/img.height);
+   const sw=width/scale,sh=height/scale;
+   ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,width,height);
+  }else{
+   const bg=ctx.createLinearGradient(0,0,width,height);
+   bg.addColorStop(0,"#eef1e5");bg.addColorStop(1,"#bfc8b1");
+   ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);
   }
+  const darkness=Number($("imageDarkness").value)/100;
+  if(darkness>0){ctx.fillStyle=`rgba(0,0,0,${darkness})`;ctx.fillRect(0,0,width,height)}
+  const gh=height*Number($("gradientHeight").value)/100;
+  const opacity=Number($("gradientOpacity").value)/100;
+  const spread=Number($("gradientSpread").value)/100;
+  const grad=ctx.createLinearGradient(0,height-gh,0,height);
+  grad.addColorStop(0,"rgba(0,0,0,0)");
+  grad.addColorStop(Math.min(.7,Math.max(.05,spread*.7)),`rgba(0,0,0,${opacity*.22})`);
+  grad.addColorStop(.78,`rgba(0,0,0,${opacity*.72})`);
+  grad.addColorStop(1,`rgba(0,0,0,${opacity})`);
+  ctx.fillStyle=grad;ctx.fillRect(0,height-gh,width,gh);
+
+  const align=$("alignment").value,margin=width*.07;
+  const textX=align==="left"?margin:align==="right"?width-margin:width/2;
+  ctx.textAlign=align;ctx.textBaseline="alphabetic";
+  const fontSize=Number($("fontSize").value)*(width/390);
+  const titleLines=wrapText(ctx,$("headline").value,width*.86);
+  const subtitle=$("subtitle").value;
+  const subtitleLines=wrapText(ctx,subtitle,width*.86);
+  const kicker=$("kicker").value;
+  const titleLineHeight=fontSize*1.13,subtitleLineHeight=38;
+  const total=titleLines.length*titleLineHeight+(subtitle?subtitleLines.length*subtitleLineHeight+18:0)+(kicker?64:0);
+  let y=height-height*Number($("contentBottom").value)/100-total-30;
+  if(kicker){
+   ctx.font="900 22px Arial,sans-serif";
+   const pillWidth=Math.min(width*.82,ctx.measureText(kicker).width+38);
+   const pillX=align==="left"?margin:align==="right"?width-margin-pillWidth:(width-pillWidth)/2;
+   roundedRect(ctx,pillX,y,pillWidth,42,21);ctx.fillStyle=$("accent").value;ctx.fill();
+   ctx.fillStyle=readableText($("accent").value);ctx.textAlign="center";
+   ctx.fillText(kicker,pillX+pillWidth/2,y+28);ctx.textAlign=align;y+=58;
+  }
+  ctx.fillStyle="#fff";ctx.font=`900 ${fontSize}px Arial,"Apple SD Gothic Neo",sans-serif`;
+  ctx.shadowColor="rgba(0,0,0,.18)";ctx.shadowBlur=12;
+  titleLines.forEach(line=>{ctx.fillText(line,textX,y+fontSize);y+=titleLineHeight});
+  ctx.shadowBlur=0;
+  if(subtitle){
+   y+=18;ctx.font="500 30px Arial,sans-serif";ctx.fillStyle="rgba(255,255,255,.93)";
+   subtitleLines.forEach(line=>{ctx.fillText(line,textX,y+30);y+=subtitleLineHeight});
+  }
+  ctx.textAlign=align;ctx.font="700 17px Arial,sans-serif";ctx.fillStyle="rgba(255,255,255,.76)";
+  ctx.fillText("DOLLARDOLLAR",textX,height-height*.025);
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.94));
+  if(!blob)throw new Error("이미지를 만들지 못했어요.");
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="dollardollar-post.jpg";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  setStatus("exportStatus","JPG 다운로드가 시작됐어요.");
+ }catch(error){
+  setStatus("exportStatus",(error.message||"내보내기에 실패했어요.")+" 원격 사진은 CORS 정책으로 저장이 제한될 수 있어요.");
+ }
 });
 
 renderKeywordChips([]);
@@ -718,3 +732,4 @@ updatePreview();
 </script>
 </body>
 </html>
+```
