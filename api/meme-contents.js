@@ -1,31 +1,50 @@
+import { timingSafeEqual } from "node:crypto";
+
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (!["GET", "POST"].includes(req.method)) {
     res.setHeader("Allow", "GET, POST");
-    return res.status(405).json({
-      error: "Method not allowed",
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SECRET_KEY;
+  const adminToken = process.env.ADMIN_TOKEN;
+  const suppliedToken = req.headers["x-admin-token"];
 
-  if (!url || !key) {
+  if (!adminToken) {
+    return res.status(500).json({ error: "Admin authentication is not configured" });
+  }
+
+  const supplied = typeof suppliedToken === "string"
+    ? Buffer.from(suppliedToken)
+    : Buffer.alloc(0);
+  const expected = Buffer.from(adminToken);
+
+  if (
+    supplied.length !== expected.length ||
+    !timingSafeEqual(supplied, expected)
+  ) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SECRET_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
     return res.status(500).json({
-      error: "Supabase environment variables are missing",
+      error: "Supabase environment variables are missing"
     });
   }
 
   try {
-    const baseUrl = url.replace(/\/+$/, "");
-    const endpoint = `${baseUrl}/rest/v1/meme_contents`;
+    const endpoint =
+      `${supabaseUrl.replace(/\/+$/, "")}/rest/v1/meme_contents`;
 
     const headers = {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
       "Content-Type": "application/json",
-      Accept: "application/json",
+      Accept: "application/json"
     };
 
     if (req.method === "GET") {
@@ -34,22 +53,20 @@ export default async function handler(req, res) {
         { headers }
       );
 
-      const data = await response.json();
-
       if (!response.ok) {
-        return res.status(response.status).json({
-          error: "Failed to load contents",
-          details: data,
+        return res.status(502).json({
+          error: "Failed to load contents"
         });
       }
 
-      return res.status(200).json({ items: data });
+      return res.status(200).json({
+        items: await response.json()
+      });
     }
 
-    const body =
-      typeof req.body === "string"
-        ? JSON.parse(req.body)
-        : req.body;
+    const body = typeof req.body === "string"
+      ? JSON.parse(req.body)
+      : req.body;
 
     if (
       !body ||
@@ -59,8 +76,22 @@ export default async function handler(req, res) {
       !body.source_url.trim()
     ) {
       return res.status(400).json({
-        error: "title and source_url are required",
+        error: "title and source_url are required"
       });
+    }
+
+    let expiresAt = null;
+
+    if (body.expires_at) {
+      const date = new Date(body.expires_at);
+
+      if (Number.isNaN(date.getTime())) {
+        return res.status(400).json({
+          error: "Invalid expiration date"
+        });
+      }
+
+      expiresAt = date.toISOString();
     }
 
     const item = {
@@ -74,31 +105,30 @@ export default async function handler(req, res) {
       rights_checked_at: null,
       approved_by: null,
       approved_at: null,
-      expires_at: body.expires_at || null,
+      expires_at: expiresAt
     };
 
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         ...headers,
-        Prefer: "return=representation",
+        Prefer: "return=representation"
       },
-      body: JSON.stringify(item),
+      body: JSON.stringify(item)
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      return res.status(response.status).json({
-        error: "Failed to save content",
-        details: data,
+      return res.status(502).json({
+        error: "Failed to save content"
       });
     }
 
-    return res.status(201).json({ items: data });
+    return res.status(201).json({
+      items: await response.json()
+    });
   } catch {
-    return res.status(500).json({
-      error: "Server error while contacting Supabase",
+    return res.status(400).json({
+      error: "Invalid request or database connection error"
     });
   }
 }
