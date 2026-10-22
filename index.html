@@ -3,212 +3,240 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>DollarDollar · 밈 관리자</title>
+<title>DollarDollar · Feed Studio</title>
 <style>
-:root{
-  --lime:#d5f477;
-  --ink:#20221c;
-  --muted:#77796f;
-  --line:#e7e8e1;
-  --paper:#f7f8f2;
-  --danger:#a83232;
+:root {
+  --lime: #d5f477;
+  --ink: #20221c;
+  --muted: #74766d;
+  --line: #e5e7dc;
+  --paper: #f5f6ef;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px 5%;background:#fff;border-bottom:1px solid var(--line)
+header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 17px 5%; background: white; border-bottom: 1px solid var(--line);
 }
-.brand{font-size:21px;font-weight:900;letter-spacing:-1px}
-.brand span{background:var(--lime);padding:3px 7px;border-radius:7px}
-.tag,.muted{font-size:13px;color:var(--muted)}
-main{width:min(950px,92%);margin:32px auto 60px}
-h1{font-size:clamp(27px,5vw,38px);margin:0 0 8px}
-h2{font-size:19px;margin:0 0 12px}
-h3{font-size:16px}
-.intro{color:var(--muted);line-height:1.6;margin-bottom:25px}
-.card{
-  background:#fff;border:1px solid var(--line);
-  border-radius:18px;padding:24px;margin-bottom:18px
+.brand { font-size: 22px; font-weight: 950; letter-spacing: -1px; }
+.brand span { background: var(--lime); padding: 3px 7px; border-radius: 7px; }
+main { width: min(1150px, 94%); margin: 30px auto 60px; }
+h1 { font-size: clamp(28px, 4vw, 38px); margin: 0 0 8px; }
+h2 { font-size: 19px; margin: 0 0 10px; }
+p { line-height: 1.6; }
+.note { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.card {
+  background: white; border: 1px solid var(--line);
+  border-radius: 18px; padding: 22px; margin: 18px 0;
 }
-label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}
-input,textarea{
-  width:100%;padding:12px;border:1px solid #dfe0d7;
-  border-radius:10px;font:inherit;background:#fff;color:var(--ink)
+.hidden { display: none !important; }
+label { display: block; font-size: 13px; font-weight: 750; margin: 14px 0 7px; }
+input, textarea, select {
+  width: 100%; padding: 11px 12px; border: 1px solid #dfe1d7;
+  border-radius: 10px; background: white; color: var(--ink); font: inherit;
 }
-textarea{min-height:85px;resize:vertical}
-input:focus,textarea:focus{outline:2px solid var(--lime)}
-button{
-  border:0;border-radius:10px;padding:11px 14px;background:var(--ink);
-  color:#fff;font:inherit;font-weight:750;cursor:pointer
+input[type="checkbox"], input[type="radio"] { width: auto; }
+input[type="range"] { padding: 0; accent-color: #718c32; }
+textarea { min-height: 76px; resize: vertical; }
+button {
+  padding: 11px 15px; border: 0; border-radius: 10px;
+  background: var(--ink); color: white; font: inherit;
+  font-weight: 750; cursor: pointer;
 }
-button.primary{background:var(--lime);color:var(--ink)}
-button.warn{background:#fff0cf;color:#694a00}
-button.danger{background:var(--danger)}
-button:disabled{opacity:.55;cursor:wait}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
-.hidden{display:none!important}
-#message{
-  padding:12px 14px;border-radius:10px;margin:15px 0;
-  background:#f0f0e8;line-height:1.5;overflow-wrap:anywhere
+button.primary { background: var(--lime); color: var(--ink); }
+button.light { background: #eff0e9; color: var(--ink); }
+button:disabled { opacity: .55; }
+.actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+.message {
+  padding: 12px; border-radius: 10px; background: #eceee5;
+  font-size: 13px; margin: 16px 0;
 }
-#message.error{color:var(--danger);background:#fff0f0}
-#message.success{background:#eff8d8}
-.item{padding:18px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
-.item-title{font-weight:800;font-size:16px;margin-bottom:7px}
-.item-meta{font-size:13px;color:var(--muted);line-height:1.7}
-.item a{color:#454a31;overflow-wrap:anywhere}
-.status{
-  display:inline-block;margin:9px 7px 0 0;padding:5px 9px;
-  border-radius:20px;background:#f0f0e8;font-size:12px;font-weight:750
+.message.error { background: #ffeded; color: #8b2222; }
+.message.good { background: #eff8d8; color: #39451e; }
+.editor {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .8fr);
+  gap: 24px; align-items: start;
 }
-.status.approved{background:#eff8d8}
-.status.hold{background:#fff0cf}
-.note{font-size:13px;color:var(--muted);line-height:1.7}
-.candidate{
-  padding:15px;margin:12px 0;background:#fafbf6;
-  border:1px solid var(--line);border-radius:12px
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.full { grid-column: 1 / -1; }
+.rangehead { display: flex; justify-content: space-between; font-size: 13px; }
+.preview-wrap { position: sticky; top: 20px; }
+.preview {
+  position: relative; display: flex; align-items: flex-end;
+  width: 100%; max-width: 440px; aspect-ratio: 4 / 5;
+  margin: 12px auto; overflow: hidden; border-radius: 14px;
+  background: #45483d center / cover no-repeat;
 }
-.candidate-title{font-weight:800;overflow-wrap:anywhere;margin-bottom:8px}
-.trend-grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;margin-top:18px
+.preview-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: rgba(0,0,0,.55);
 }
-.trend-card{
-  padding:16px;border:1px solid var(--line);
-  border-radius:13px;background:#fafbf6
+.preview-content {
+  position: relative; width: 100%; padding: 25px 22px;
+  color: white; white-space: pre-wrap; overflow-wrap: anywhere;
 }
-.trend-card p{font-size:13px;color:var(--muted);line-height:1.6}
-.trend-card button{width:100%}
-footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
-@media(max-width:520px){
-  header{padding:16px 4%}
-  main{margin-top:24px}
-  .card{padding:18px}
-  .actions button{flex:1}
-  .tag{text-align:right}
-  .trend-grid{grid-template-columns:1fr}
+.preview-content.boxed { background: rgba(0,0,0,.48); }
+.kicker {
+  color: var(--lime); font-size: 11px; font-weight: 900;
+  letter-spacing: 2px; margin-bottom: 12px;
+}
+.preview-title {
+  font-size: 30px; font-weight: 900; line-height: 1.16;
+  letter-spacing: -.8px; margin: 0 0 12px;
+}
+.preview-sub { font-size: 13px; line-height: 1.55; margin: 0; }
+.swatches { display: flex; flex-wrap: wrap; gap: 12px; }
+.swatch { display: flex; align-items: center; gap: 5px; }
+footer { padding: 25px; text-align: center; color: var(--muted); font-size: 12px; }
+@media(max-width:760px) {
+  .editor { grid-template-columns: 1fr; }
+  .preview-wrap { position: static; }
+  header { padding: 15px 4%; }
+  main { width: 92%; margin-top: 22px; }
+  .card { padding: 17px; }
+}
+@media(max-width:430px) {
+  .controls { grid-template-columns: 1fr; }
+  .full { grid-column: auto; }
 }
 </style>
 </head>
 <body>
 <header>
   <div class="brand">Dollar<span>Dollar</span></div>
-  <div class="tag">PRIVATE CONTENT ADMIN</div>
+  <small>PRIVATE FEED STUDIO</small>
 </header>
 
 <main>
-  <h1>밈 콘텐츠 관리</h1>
-  <p class="intro">
-    TikTok에서 밈을 찾고, 권리 증빙을 검토하고, 콘텐츠를 관리해.
-  </p>
-
-  <div id="message" role="status" aria-live="polite">
+  <h1>피드 스튜디오</h1>
+  <p class="note">사진과 글을 편집하고, 마음에 드는 디자인을 기본 스타일로 저장해.</p>
+  <div id="message" class="message" role="status" aria-live="polite">
     관리자 로그인이 필요해.
   </div>
 
-  <section class="card" id="loginCard">
+  <section id="loginCard" class="card">
     <h2>관리자 로그인</h2>
     <form id="loginForm">
       <label for="adminToken">관리자 비밀번호</label>
-      <input id="adminToken" type="password"
-        autocomplete="current-password" required>
+      <input id="adminToken" type="password" autocomplete="current-password" required>
       <div class="actions">
-        <button class="primary" id="loginButton" type="submit">
-          로그인
-        </button>
+        <button class="primary" id="loginButton" type="submit">로그인</button>
       </div>
     </form>
-    <p class="note">비밀번호는 로그인 요청에만 사용해.</p>
+    <p class="note">기존 관리자 비밀번호를 사용해.</p>
   </section>
 
   <div id="dashboard" class="hidden">
-
-    <!-- TikTok 밈 검색 -->
     <section class="card">
-      <h2>🔥 요즘 유행하는 밈 찾기</h2>
-      <p class="note">
-        검색어로 TikTok 영상을 찾고, 공식 Creative Center에서
-        한국 인기 해시태그와 트렌드를 확인해.
-        아래 키워드는 검색 바로가기이며 실시간 순위는 아니야.
-      </p>
+      <div>
+        <h2>기본 스타일 편집</h2>
+        <p class="note">변경 사항은 미리보기에 바로 적용돼.</p>
+      </div>
 
-      <form id="tiktokSearchForm">
-        <label for="tiktokQuery">밈·영상 검색어</label>
-        <input id="tiktokQuery" maxlength="100"
-          placeholder="예: 웃긴 영상, 한국 밈, storytime" required>
-        <div class="actions">
-          <button class="primary" type="submit">TikTok에서 검색</button>
-          <button type="button" id="trendsButton">
-            인기 트렌드 보기
-          </button>
+      <div class="editor">
+        <div class="controls">
+          <div class="full">
+            <label for="photoInput">배경 사진</label>
+            <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp">
+            <p class="note">JPG, PNG, WebP · 최대 12MB</p>
+          </div>
+
+          <div class="full">
+            <label for="headline">큰 제목</label>
+            <textarea id="headline" maxlength="180">생각을 바꾸면
+일상이 달라진다</textarea>
+          </div>
+
+          <div class="full">
+            <label for="subtext">작은 설명</label>
+            <textarea id="subtext" maxlength="300">오늘 기억할 한 가지를 짧고 분명하게 전해요.</textarea>
+          </div>
+
+          <div>
+            <label for="fontSize">제목 크기</label>
+            <div class="rangehead"><span>글자 크기</span><output id="fontSizeOut">30px</output></div>
+            <input id="fontSize" type="range" min="16" max="48" value="30">
+          </div>
+
+          <div>
+            <label for="darkness">사진 어둡기</label>
+            <div class="rangehead"><span>어두운 필터</span><output id="darknessOut">55%</output></div>
+            <input id="darkness" type="range" min="0" max="90" step="5" value="55">
+          </div>
+
+          <div class="full">
+            <label for="align">글자 정렬</label>
+            <select id="align">
+              <option value="left">왼쪽</option>
+              <option value="center">가운데</option>
+              <option value="right">오른쪽</option>
+            </select>
+          </div>
+
+          <div class="full">
+            <label>강조 색상</label>
+            <div class="swatches">
+              <label class="swatch"><input type="radio" name="accent" value="#d5f477" checked> 라임</label>
+              <label class="swatch"><input type="radio" name="accent" value="#ffffff"> 흰색</label>
+              <label class="swatch"><input type="radio" name="accent" value="#ffbd69"> 오렌지</label>
+              <label class="swatch"><input type="radio" name="accent" value="#8cc8ff"> 파랑</label>
+            </div>
+          </div>
+
+          <div class="full">
+            <label><input id="darkBox" type="checkbox" checked> 하단 반투명 검정 박스 사용</label>
+          </div>
+
+          <div class="full">
+            <label><input id="showKicker" type="checkbox" checked> DOLLAR DOLLAR 표시</label>
+          </div>
+
+          <div class="full">
+            <label for="caption">게시물 설명</label>
+            <textarea id="caption" maxlength="2200" placeholder="인스타그램 게시물 설명을 입력해."></textarea>
+          </div>
+
+          <div class="full">
+            <label for="hashtags">해시태그</label>
+            <textarea id="hashtags" maxlength="1000" placeholder="#일상 #정보 #달러달러"></textarea>
+          </div>
+
+          <div class="full actions">
+            <button type="button" class="primary" id="saveStyleButton">기본 스타일 저장</button>
+            <button type="button" id="downloadButton">JPG 이미지 저장</button>
+            <button type="button" class="light" id="resetButton">기본값 복원</button>
+            <button type="button" class="light" id="logoutButton">로그아웃</button>
+          </div>
+          <p class="note full">
+            기본 스타일과 설명·해시태그는 현재 브라우저에 저장돼.
+            아직 서버 데이터베이스나 Instagram 자동 게시와 연결된 상태는 아니야.
+          </p>
         </div>
-      </form>
 
-      <div class="trend-grid" id="trendList"></div>
-
-      <p class="note">
-        검색 결과는 후보야. 원본 영상의 상업적 이용, 수정 가능 여부,
-        저작자 표시 조건과 필요한 허가를 별도로 확인해.
-        검색 결과만으로 재사용 권리가 생기지는 않아.
-      </p>
-    </section>
-
-    <!-- 콘텐츠 등록 -->
-    <section class="card" id="registrationCard">
-      <h2>새 콘텐츠 등록</h2>
-      <form id="contentForm">
-        <label for="title">콘텐츠 제목 *</label>
-        <input id="title" maxlength="200" required>
-
-        <label for="sourceUrl">원본 콘텐츠 URL *</label>
-        <input id="sourceUrl" type="url" maxlength="2048"
-          placeholder="https://..." required>
-
-        <label for="licenseType">라이선스 종류</label>
-        <input id="licenseType" maxlength="200"
-          placeholder="예: 상업적 이용 허가 / CC BY 4.0">
-
-        <label for="evidenceUrl">권리 증빙 URL</label>
-        <input id="evidenceUrl" type="url" maxlength="2048"
-          placeholder="공식 라이선스 또는 원작자의 허가 페이지">
-
-        <label for="evidenceNotes">권리 증빙 메모</label>
-        <textarea id="evidenceNotes" maxlength="3000"
-          placeholder="권리자, 허가 내용, 상업적 이용, 수정, 출처 표시 조건"></textarea>
-
-        <label for="expiresAt">권리 만료일 (선택)</label>
-        <input id="expiresAt" type="date">
-
-        <div class="actions">
-          <button class="primary" id="saveButton" type="submit">
-            콘텐츠 등록
-          </button>
-          <button type="button" id="refreshButton">새로고침</button>
-          <button type="button" id="logoutButton">로그아웃</button>
+        <div class="preview-wrap">
+          <h2>실시간 미리보기</h2>
+          <p class="note">인스타그램 피드용 4:5 비율</p>
+          <div id="preview" class="preview">
+            <div id="shade" class="preview-shade"></div>
+            <div id="previewContent" class="preview-content boxed">
+              <div id="previewKicker" class="kicker">DOLLAR DOLLAR · TODAY</div>
+              <h3 id="previewTitle" class="preview-title">생각을 바꾸면
+일상이 달라진다</h3>
+              <p id="previewSub" class="preview-sub">오늘 기억할 한 가지를 짧고 분명하게 전해요.</p>
+            </div>
+          </div>
+          <p class="note">사진을 선택하고 어둡기, 글자 크기, 색상을 바꿔 봐.</p>
         </div>
-      </form>
-    </section>
-
-    <!-- 등록 콘텐츠 -->
-    <section class="card">
-      <h2>등록된 콘텐츠</h2>
-      <p class="note">
-        승인 버튼은 관리자 검토 상태를 변경해.
-        입력된 증빙이 실제 권리를 보장하는 것은 아니야.
-        권리가 불확실하거나 만료된 콘텐츠는 게시하지 마.
-      </p>
-      <div id="items">목록을 불러오는 중...</div>
+      </div>
     </section>
   </div>
 </main>
-
-<footer>DollarDollar · TikTok Meme Discovery</footer>
+<footer>DollarDollar · Feed Studio</footer>
 
 <script>
 "use strict";
@@ -217,11 +245,25 @@ const $ = id => document.getElementById(id);
 const loginCard = $("loginCard");
 const dashboard = $("dashboard");
 const message = $("message");
-const items = $("items");
 
-function showMessage(text, type = "") {
+let photoData = "";
+
+const defaults = {
+  headline: "생각을 바꾸면\n일상이 달라진다",
+  subtext: "오늘 기억할 한 가지를 짧고 분명하게 전해요.",
+  fontSize: 30,
+  darkness: 55,
+  align: "left",
+  accent: "#d5f477",
+  darkBox: true,
+  showKicker: true,
+  caption: "",
+  hashtags: ""
+};
+
+function say(text, type = "") {
   message.textContent = text;
-  message.className = type;
+  message.className = "message" + (type ? " " + type : "");
 }
 
 async function api(path, options = {}) {
@@ -238,281 +280,72 @@ async function api(path, options = {}) {
   try {
     data = await response.json();
   } catch {
-    throw new Error("서버 응답을 읽을 수 없어. 배포 상태를 확인해 줘.");
+    throw new Error("서버 응답을 읽지 못했어.");
   }
 
   if (!response.ok) {
-    if (response.status === 401) {
-      loginCard.classList.remove("hidden");
-      dashboard.classList.add("hidden");
-    }
-
-    const errors = {
-      401: "로그인이 만료됐어. 다시 로그인해 줘.",
-      409: "승인 조건을 충족하지 못했어. 증빙과 만료일을 확인해 줘.",
-      502: "서버 또는 데이터베이스 요청에 실패했어."
-    };
-
-    throw new Error(errors[response.status] || data.error ||
-      "요청에 실패했어.");
+    throw new Error(data.error || "요청에 실패했어.");
   }
-
   return data;
 }
 
-function addText(parent, tag, value, className = "") {
-  const el = document.createElement(tag);
-  el.textContent = value ?? "";
-  if (className) el.className = className;
-  parent.appendChild(el);
-  return el;
+function getState() {
+  return {
+    headline: $("headline").value,
+    subtext: $("subtext").value,
+    fontSize: Number($("fontSize").value),
+    darkness: Number($("darkness").value),
+    align: $("align").value,
+    accent: document.querySelector('input[name="accent"]:checked').value,
+    darkBox: $("darkBox").checked,
+    showKicker: $("showKicker").checked,
+    caption: $("caption").value,
+    hashtags: $("hashtags").value
+  };
 }
 
-function addSafeLink(parent, label, value) {
-  if (!value) return;
+function applyState(s = defaults) {
+  $("headline").value = s.headline ?? defaults.headline;
+  $("subtext").value = s.subtext ?? defaults.subtext;
+  $("fontSize").value = s.fontSize ?? defaults.fontSize;
+  $("darkness").value = s.darkness ?? defaults.darkness;
+  $("align").value = s.align ?? defaults.align;
+  $("darkBox").checked = s.darkBox ?? defaults.darkBox;
+  $("showKicker").checked = s.showKicker ?? defaults.showKicker;
+  $("caption").value = s.caption ?? "";
+  $("hashtags").value = s.hashtags ?? "";
 
-  try {
-    const url = new URL(value);
-    if (!["https:", "http:"].includes(url.protocol)) return;
-
-    const link = document.createElement("a");
-    link.href = url.href;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = label;
-    parent.appendChild(link);
-  } catch {
-    // 유효하지 않은 주소는 링크로 만들지 않아.
-  }
-}
-
-function addActionButton(parent, label, className, callback) {
-  const button = addText(parent, "button", label, className);
-  button.type = "button";
-  button.addEventListener("click", callback);
-  return button;
-}
-
-/* TikTok 검색 바로가기 */
-const memeTrends = [
-  {
-    name: "한국 인기 밈",
-    desc: "한국어 밈과 반응 영상 검색",
-    query: "한국 밈 웃긴 영상"
-  },
-  {
-    name: "모몽가",
-    desc: "캐릭터 밈과 패러디",
-    query: "모몽가 밈"
-  },
-  {
-    name: "스토리타임",
-    desc: "경험담·웃긴 썰 형식",
-    query: "스토리타임 웃긴 썰"
-  },
-  {
-    name: "웃긴 상황극",
-    desc: "짧은 코미디와 공감 상황",
-    query: "웃긴 상황극 밈"
-  },
-  {
-    name: "AI 밈",
-    desc: "AI 캐릭터와 합성 코미디",
-    query: "AI 밈 웃긴 영상"
-  },
-  {
-    name: "동물 밈",
-    desc: "고양이·강아지 반응 영상",
-    query: "웃긴 고양이 밈"
-  },
-  {
-    name: "댄스 챌린지",
-    desc: "유행하는 춤과 챌린지",
-    query: "틱톡 댄스 챌린지"
-  },
-  {
-    name: "해외 밈",
-    desc: "영어권 밈과 리액션",
-    query: "viral memes funny"
-  }
-];
-
-const trendList = $("trendList");
-
-for (const trend of memeTrends) {
-  const card = document.createElement("article");
-  card.className = "trend-card";
-
-  addText(card, "div", trend.name, "candidate-title");
-  addText(card, "p", trend.desc);
-
-  addActionButton(card, "TikTok에서 찾기", "primary", () => {
-    const url = "https://www.tiktok.com/search?q=" +
-      encodeURIComponent(trend.query);
-
-    window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  trendList.appendChild(card);
-}
-
-$("tiktokSearchForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const query = $("tiktokQuery").value.trim();
-  if (!query) return;
-
-  window.open(
-    "https://www.tiktok.com/search?q=" + encodeURIComponent(query),
-    "_blank",
-    "noopener,noreferrer"
+  const radio = document.querySelector(
+    'input[name="accent"][value="' + (s.accent || defaults.accent) + '"]'
   );
-});
-
-$("trendsButton").addEventListener("click", () => {
-  window.open(
-    "https://ads.tiktok.com/creative/creativeCenter/trends/hashtag?countryCode=KR&period=7&region=KR",
-    "_blank",
-    "noopener,noreferrer"
-  );
-});
-
-/* 콘텐츠 목록 렌더링 */
-function renderItems(list) {
-  items.replaceChildren();
-
-  if (!Array.isArray(list) || list.length === 0) {
-    addText(items, "p", "아직 등록된 콘텐츠가 없어.", "note");
-    return;
-  }
-
-  for (const item of list) {
-    const article = document.createElement("article");
-    article.className = "item";
-
-    addText(article, "div", item.title || "제목 없음", "item-title");
-    addText(
-      article,
-      "div",
-      "상태: " + (item.review_status || "미지정"),
-      "item-meta"
-    );
-
-    const source = document.createElement("div");
-    source.className = "item-meta";
-    addSafeLink(source, "원본 콘텐츠 열기", item.source_url);
-    article.appendChild(source);
-
-    if (item.license_type) {
-      addText(article, "div", "라이선스: " + item.license_type, "item-meta");
-    }
-
-    if (item.rights_evidence_url) {
-      const evidence = document.createElement("div");
-      evidence.className = "item-meta";
-      addSafeLink(evidence, "권리 증빙 열기", item.rights_evidence_url);
-      article.appendChild(evidence);
-    }
-
-    if (item.rights_evidence_notes) {
-      addText(
-        article, "p",
-        "증빙 메모: " + item.rights_evidence_notes,
-        "item-meta"
-      );
-    }
-
-    if (item.expires_at) {
-      addText(article, "div", "만료일: " + item.expires_at, "item-meta");
-    }
-
-    if (item.review_reason) {
-      addText(article, "div", "검토 메모: " + item.review_reason, "item-meta");
-    }
-
-    const statusText =
-      item.review_status === "approved" ? "관리자 승인 상태" :
-      item.review_status === "hold" ? "보류 상태" :
-      "검토 대기";
-
-    const statusClass =
-      item.review_status === "approved" ? "approved" :
-      item.review_status === "hold" ? "hold" : "";
-
-    addText(article, "span", statusText, "status " + statusClass);
-
-    const actions = document.createElement("div");
-    actions.className = "actions";
-
-    addActionButton(actions, "검토 승인", "primary",
-      () => changeStatus(item.id, "approve"));
-
-    addActionButton(actions, "보류", "warn",
-      () => changeStatus(item.id, "hold"));
-
-    addActionButton(actions, "삭제", "danger",
-      () => changeStatus(item.id, "delete"));
-
-    article.appendChild(actions);
-    items.appendChild(article);
-  }
+  if (radio) radio.checked = true;
+  render();
 }
 
-/* 데이터베이스에서 목록 불러오기 */
-async function loadItems() {
-  items.textContent = "목록을 불러오는 중...";
-  const data = await api("/api/meme-contents");
-  renderItems(data.items);
+function render() {
+  const s = getState();
+
+  $("previewTitle").textContent = s.headline;
+  $("previewSub").textContent = s.subtext;
+  $("previewTitle").style.fontSize = s.fontSize + "px";
+  $("previewContent").style.textAlign = s.align;
+  $("previewContent").classList.toggle("boxed", s.darkBox);
+  $("previewKicker").style.color = s.accent;
+  $("previewKicker").hidden = !s.showKicker;
+  $("shade").style.background = "rgba(0,0,0," + (s.darkness / 100) + ")";
+  $("preview").style.backgroundImage = photoData
+    ? 'url("' + photoData + '")'
+    : "none";
+  $("preview").style.backgroundColor = "#45483d";
+
+  $("fontSizeOut").textContent = s.fontSize + "px";
+  $("darknessOut").textContent = s.darkness + "%";
 }
 
-/* 승인·보류·삭제 */
-async function changeStatus(id, action) {
-  let reason = "";
-
-  if (action === "hold") {
-    reason = prompt("보류 사유를 입력해 줘:") || "관리자 보류";
-  }
-
-  if (action === "delete" &&
-      !confirm("이 콘텐츠를 영구 삭제할까?")) {
-    return;
-  }
-
-  try {
-    const body = action === "delete"
-      ? { id }
-      : {
-          id,
-          action,
-          ...(action === "hold" ? { reason } : {})
-        };
-
-    await api("/api/meme-contents", {
-      method: action === "delete" ? "DELETE" : "PATCH",
-      body: JSON.stringify(body)
-    });
-
-    showMessage(
-      action === "delete"
-        ? "콘텐츠를 삭제했어."
-        : action === "hold"
-          ? "콘텐츠를 보류했어."
-          : "관리자 검토 상태가 변경됐어. 실제 권리 검증은 별도로 필요해.",
-      "success"
-    );
-
-    await loadItems();
-  } catch (error) {
-    showMessage(error.message, "error");
-  }
-}
-
-/* 로그인 */
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
-
-  const button = $("loginButton");
-  button.disabled = true;
+  $("loginButton").disabled = true;
+  say("로그인 확인 중...");
 
   try {
     await api("/api/admin-login", {
@@ -520,93 +353,171 @@ $("loginForm").addEventListener("submit", async event => {
       body: JSON.stringify({ token: $("adminToken").value })
     });
 
-    $("adminToken").value = "";
     loginCard.classList.add("hidden");
     dashboard.classList.remove("hidden");
-    showMessage("로그인 성공.", "success");
-
-    await loadItems();
-  } catch (error) {
     $("adminToken").value = "";
-    showMessage(error.message, "error");
+
+    let saved = null;
+    try {
+      saved = JSON.parse(localStorage.getItem("dd_feed_style") || "null");
+    } catch {}
+
+    applyState(saved || defaults);
+    say("로그인 성공! 피드 스타일을 편집해 봐.", "good");
+  } catch (error) {
+    say(error.message, "error");
   } finally {
-    button.disabled = false;
+    $("loginButton").disabled = false;
   }
 });
 
-/* 새 콘텐츠 등록 */
-$("contentForm").addEventListener("submit", async event => {
-  event.preventDefault();
+[
+  "headline", "subtext", "fontSize", "darkness", "align",
+  "darkBox", "showKicker", "caption", "hashtags"
+].forEach(id => $(id).addEventListener("input", render));
 
-  const button = $("saveButton");
-  button.disabled = true;
+document.querySelectorAll('input[name="accent"]').forEach(input => {
+  input.addEventListener("change", render);
+});
 
-  const date = $("expiresAt").value;
+$("photoInput").addEventListener("change", event => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
 
-  const body = {
-    title: $("title").value.trim(),
-    source_url: $("sourceUrl").value.trim(),
-    license_type: $("licenseType").value.trim() || null,
-    rights_evidence_url: $("evidenceUrl").value.trim() || null,
-    rights_evidence_notes: $("evidenceNotes").value.trim() || null,
-    expires_at: date
-      ? new Date(date + "T23:59:59.000Z").toISOString()
-      : null
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    say("JPG, PNG 또는 WebP 사진을 선택해 줘.", "error");
+    return;
+  }
+
+  if (file.size > 12 * 1024 * 1024) {
+    say("사진은 12MB 이하로 선택해 줘.", "error");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    photoData = reader.result;
+    render();
+    say("사진을 불러왔어.", "good");
   };
+  reader.onerror = () => say("사진을 읽지 못했어.", "error");
+  reader.readAsDataURL(file);
+});
 
+$("saveStyleButton").addEventListener("click", () => {
   try {
-    await api("/api/meme-contents", {
-      method: "POST",
-      body: JSON.stringify(body)
-    });
-
-    event.target.reset();
-    showMessage("콘텐츠 등록 완료. 검토 대기 상태야.", "success");
-    await loadItems();
-  } catch (error) {
-    showMessage(error.message, "error");
-  } finally {
-    button.disabled = false;
+    localStorage.setItem("dd_feed_style", JSON.stringify(getState()));
+    say("기본 스타일을 이 브라우저에 저장했어.", "good");
+  } catch {
+    say("저장에 실패했어. 브라우저 저장 공간을 확인해 줘.", "error");
   }
 });
 
-/* 목록 새로고침 */
-$("refreshButton").addEventListener("click", async () => {
-  try {
-    await loadItems();
-    showMessage("목록을 새로 불러왔어.", "success");
-  } catch (error) {
-    showMessage(error.message, "error");
-  }
+$("resetButton").addEventListener("click", () => {
+  applyState(defaults);
+  photoData = "";
+  $("photoInput").value = "";
+  localStorage.removeItem("dd_feed_style");
+  say("기본값으로 복원했어.", "good");
 });
 
-/* 로그아웃 */
 $("logoutButton").addEventListener("click", async () => {
-  const button = $("logoutButton");
-  button.disabled = true;
-
   try {
-    const response = await fetch("/api/admin-logout", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({})
-    });
+    await api("/api/admin-logout", { method: "POST", body: "{}" });
+  } catch {}
+  dashboard.classList.add("hidden");
+  loginCard.classList.remove("hidden");
+  say("로그아웃했어.");
+});
 
-    if (!response.ok) throw new Error("로그아웃 요청에 실패했어.");
+$("downloadButton").addEventListener("click", () => {
+  const s = getState();
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1350;
+  const ctx = canvas.getContext("2d");
 
-    dashboard.classList.add("hidden");
-    loginCard.classList.remove("hidden");
-    $("adminToken").value = "";
-    items.replaceChildren();
+  function drawText() {
+    const gradient = ctx.createLinearGradient(0, 0, 0, 1350);
+    gradient.addColorStop(0, "rgba(0,0,0,0.02)");
+    gradient.addColorStop(1, "rgba(0,0,0," + s.darkness / 100 + ")");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 1080, 1350);
 
-    showMessage("로그아웃 완료.", "success");
-  } catch (error) {
-    showMessage(error.message, "error");
-  } finally {
-    button.disabled = false;
+    const boxTop = 820;
+    if (s.darkBox) {
+      ctx.fillStyle = "rgba(0,0,0,.48)";
+      ctx.fillRect(0, boxTop, 1080, 530);
+    }
+
+    const padding = 72;
+    const x = s.align === "left" ? padding :
+      s.align === "right" ? 1008 : 540;
+
+    ctx.textAlign = s.align;
+
+    if (s.showKicker) {
+      ctx.fillStyle = s.accent;
+      ctx.font = "900 28px Arial,sans-serif";
+      ctx.fillText("DOLLAR DOLLAR · TODAY", x, boxTop + 65, 936);
+    }
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 " + (s.fontSize * 2.15) + "px Arial,sans-serif";
+
+    let y = boxTop + (s.showKicker ? 145 : 90);
+    const maxWidth = 936;
+
+    for (const line of s.headline.split("\n")) {
+      ctx.fillText(line, x, y, maxWidth);
+      y += s.fontSize * 2.4;
+    }
+
+    ctx.fillStyle = "#eeeeee";
+    ctx.font = "32px Arial,sans-serif";
+    for (const line of s.subtext.split("\n")) {
+      ctx.fillText(line, x, y, maxWidth);
+      y += 44;
+    }
+
+    canvas.toBlob(blob => {
+      if (!blob) {
+        say("이미지 생성에 실패했어.", "error");
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "dollardollar-feed.jpg";
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+      say("JPG 이미지를 저장했어.", "good");
+    }, "image/jpeg", 0.92);
+  }
+
+  ctx.fillStyle = "#45483d";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  if (photoData) {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.max(1080 / img.width, 1350 / img.height);
+      const width = img.width * scale;
+      const height = img.height * scale;
+      ctx.drawImage(img, (1080 - width) / 2, (1350 - height) / 2, width, height);
+      drawText();
+    };
+    img.onerror = () => {
+      say("사진을 이미지로 변환하지 못했어.", "error");
+    };
+    img.src = photoData;
+  } else {
+    drawText();
   }
 });
+
+render();
 </script>
 </body>
 </html>
