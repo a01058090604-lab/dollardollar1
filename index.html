@@ -3,521 +3,897 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>DollarDollar · Feed Studio</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f8f4">
+<title>DollarDollar Studio</title>
 <style>
 :root {
-  --lime: #d5f477;
-  --ink: #20221c;
-  --muted: #74766d;
-  --line: #e5e7dc;
-  --paper: #f5f6ef;
+  --bg:#f7f8f4;
+  --card:#fff;
+  --ink:#20221d;
+  --muted:#77796f;
+  --line:#e6e8df;
+  --accent:#d5f477;
+  --radius:22px;
 }
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 body {
-  margin: 0; background: var(--paper); color: var(--ink);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
 }
-header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 17px 5%; background: white; border-bottom: 1px solid var(--line);
+button,input,textarea,select { font:inherit; }
+button { cursor:pointer; }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.hidden { display:none!important; }
+.wrap { max-width:1180px; margin:auto; padding:24px; }
+.top {
+  display:flex; justify-content:space-between; align-items:center;
+  gap:16px; margin-bottom:24px;
 }
-.brand { font-size: 22px; font-weight: 950; letter-spacing: -1px; }
-.brand span { background: var(--lime); padding: 3px 7px; border-radius: 7px; }
-main { width: min(1150px, 94%); margin: 30px auto 60px; }
-h1 { font-size: clamp(28px, 4vw, 38px); margin: 0 0 8px; }
-h2 { font-size: 19px; margin: 0 0 10px; }
-p { line-height: 1.6; }
-.note { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.brand { display:flex; align-items:center; gap:10px; font-weight:900; font-size:22px; }
+.logo {
+  display:grid; place-items:center; width:42px; height:42px;
+  border-radius:14px; background:var(--accent); font-size:23px;
+}
+.muted { color:var(--muted); font-size:13px; line-height:1.6; }
 .card {
-  background: white; border: 1px solid var(--line);
-  border-radius: 18px; padding: 22px; margin: 18px 0;
+  background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:22px; min-width:0;
 }
-.hidden { display: none !important; }
-label { display: block; font-size: 13px; font-weight: 750; margin: 14px 0 7px; }
-input, textarea, select {
-  width: 100%; padding: 11px 12px; border: 1px solid #dfe1d7;
-  border-radius: 10px; background: white; color: var(--ink); font: inherit;
+.login { max-width:420px; margin:9vh auto; }
+h1 { font-size:clamp(26px,4vw,38px); margin:0 0 8px; letter-spacing:-1.2px; }
+h2 { font-size:18px; margin:0 0 16px; }
+h3 { font-size:15px; margin:0 0 12px; }
+.grid {
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);
+  gap:20px; align-items:start;
 }
-input[type="checkbox"], input[type="radio"] { width: auto; }
-input[type="range"] { padding: 0; accent-color: #718c32; }
-textarea { min-height: 76px; resize: vertical; }
-button {
-  padding: 11px 15px; border: 0; border-radius: 10px;
-  background: var(--ink); color: white; font: inherit;
-  font-weight: 750; cursor: pointer;
+.stack { display:flex; flex-direction:column; gap:16px; }
+.field { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+label { font-size:13px; font-weight:750; }
+input[type="text"],input[type="password"],textarea,select {
+  width:100%; border:1px solid var(--line); border-radius:12px;
+  background:#fff; color:var(--ink); padding:12px 13px; outline:none;
 }
-button.primary { background: var(--lime); color: var(--ink); }
-button.light { background: #eff0e9; color: var(--ink); }
-button:disabled { opacity: .55; }
-.actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
-.message {
-  padding: 12px; border-radius: 10px; background: #eceee5;
-  font-size: 13px; margin: 16px 0;
+input:focus,textarea:focus,select:focus { border-color:#9ab44b; }
+textarea { resize:vertical; min-height:100px; line-height:1.6; }
+input[type="range"] { width:100%; accent-color:#819d35; }
+input[type="color"] {
+  width:48px; height:40px; padding:3px;
+  border:1px solid var(--line); border-radius:10px; background:#fff;
 }
-.message.error { background: #ffeded; color: #8b2222; }
-.message.good { background: #eff8d8; color: #39451e; }
-.editor {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .8fr);
-  gap: 24px; align-items: start;
+.row { display:flex; gap:10px; align-items:center; }
+.row > * { min-width:0; }
+.between { justify-content:space-between; }
+.btn {
+  border:1px solid var(--line); border-radius:12px;
+  padding:11px 14px; background:white; color:var(--ink);
+  font-weight:750; transition:transform .12s;
 }
-.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
-.full { grid-column: 1 / -1; }
-.rangehead { display: flex; justify-content: space-between; font-size: 13px; }
-.preview-wrap { position: sticky; top: 20px; }
+.btn:active { transform:scale(.98); }
+.btn.primary { background:var(--accent); border-color:var(--accent); }
+.btn.dark { background:#22251f; border-color:#22251f; color:white; }
+.btn.small { padding:8px 10px; font-size:12px; }
+.btn.full { width:100%; }
+.chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.chip {
+  border:1px solid var(--line); border-radius:99px;
+  padding:6px 10px; background:#fafbf7; font-size:12px;
+}
+.section-title { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+.preview-wrap { position:sticky; top:18px; }
 .preview {
-  position: relative; display: flex; align-items: flex-end;
-  width: 100%; max-width: 440px; aspect-ratio: 4 / 5;
-  margin: 12px auto; overflow: hidden; border-radius: 14px;
-  background: #45483d center / cover no-repeat;
+  width:100%; aspect-ratio:4/5; background:#e6e8df;
+  position:relative; overflow:hidden; border-radius:18px;
+  isolation:isolate;
 }
-.preview-shade {
-  position: absolute; inset: 0; pointer-events: none;
-  background: rgba(0,0,0,.55);
+.preview-photo {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; z-index:-2;
 }
-.preview-content {
-  position: relative; width: 100%; padding: 25px 22px;
-  color: white; white-space: pre-wrap; overflow-wrap: anywhere;
+.placeholder {
+  position:absolute; inset:0; display:grid; place-items:center;
+  text-align:center; padding:24px; color:#666b5b; z-index:-3;
+  background:linear-gradient(135deg,#eef1e5,#dce1d1);
 }
-.preview-content.boxed { background: rgba(0,0,0,.48); }
+.dim-layer {
+  position:absolute; inset:0; pointer-events:none; z-index:-1;
+  background:rgba(0,0,0,0);
+}
+.gradient {
+  position:absolute; left:0; right:0; bottom:0;
+  height:45%; pointer-events:none;
+  background:linear-gradient(to top,
+    rgba(0,0,0,.88) 0%,
+    rgba(0,0,0,.60) 30%,
+    rgba(0,0,0,.24) 68%,
+    rgba(0,0,0,0) 100%);
+}
+.poster-content {
+  position:absolute; left:7%; right:7%; bottom:7%;
+  display:flex; flex-direction:column; gap:9px;
+}
 .kicker {
-  color: var(--lime); font-size: 11px; font-weight: 900;
-  letter-spacing: 2px; margin-bottom: 12px;
+  display:inline-flex; align-self:flex-start; max-width:100%;
+  background:var(--accent); color:#20221d;
+  padding:6px 10px; border-radius:99px;
+  font-size:clamp(9px,2vw,13px); font-weight:900;
 }
-.preview-title {
-  font-size: 30px; font-weight: 900; line-height: 1.16;
-  letter-spacing: -.8px; margin: 0 0 12px;
+.poster-title {
+  color:white; margin:0; font-weight:950;
+  line-height:1.12; letter-spacing:-.04em;
+  font-size:clamp(24px,5vw,48px);
+  white-space:pre-wrap; overflow-wrap:anywhere;
+  text-shadow:0 2px 16px rgba(0,0,0,.18);
 }
-.preview-sub { font-size: 13px; line-height: 1.55; margin: 0; }
-.swatches { display: flex; flex-wrap: wrap; gap: 12px; }
-.swatch { display: flex; align-items: center; gap: 5px; }
-footer { padding: 25px; text-align: center; color: var(--muted); font-size: 12px; }
-@media(max-width:760px) {
-  .editor { grid-template-columns: 1fr; }
-  .preview-wrap { position: static; }
-  header { padding: 15px 4%; }
-  main { width: 92%; margin-top: 22px; }
-  .card { padding: 17px; }
+.poster-subtitle {
+  color:rgba(255,255,255,.91); font-size:clamp(11px,2vw,16px);
+  line-height:1.5; white-space:pre-wrap; overflow-wrap:anywhere;
 }
-@media(max-width:430px) {
-  .controls { grid-template-columns: 1fr; }
-  .full { grid-column: auto; }
+.preview.align-center .poster-content { text-align:center; align-items:center; }
+.preview.align-left .poster-content { text-align:left; align-items:flex-start; }
+.preview.align-right .poster-content { text-align:right; align-items:flex-end; }
+.preview.align-center .kicker { align-self:center; }
+.preview.align-right .kicker { align-self:flex-end; }
+.preview-footer { font-size:10px; color:rgba(255,255,255,.75); font-weight:700; }
+.value { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.divider { border:0; border-top:1px solid var(--line); margin:20px 0; }
+.note { background:#f6f8ed; border:1px solid #e5ebd3; padding:12px; border-radius:12px; }
+.status { font-size:13px; min-height:20px; color:#5c732a; line-height:1.5; }
+@media(max-width:800px) {
+  .wrap { padding:14px; }
+  .grid { grid-template-columns:1fr; }
+  .preview-wrap { position:static; }
+  .preview { max-width:520px; margin:auto; }
+  .card { padding:17px; }
 }
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">Dollar<span>Dollar</span></div>
-  <small>PRIVATE FEED STUDIO</small>
-</header>
 
-<main>
-  <h1>피드 스튜디오</h1>
-  <p class="note">사진과 글을 편집하고, 마음에 드는 디자인을 기본 스타일로 저장해.</p>
-  <div id="message" class="message" role="status" aria-live="polite">
-    관리자 로그인이 필요해.
-  </div>
-
-  <section id="loginCard" class="card">
-    <h2>관리자 로그인</h2>
+<div id="loginScreen" class="wrap">
+  <div class="card login">
+    <div class="brand"><div class="logo">₩</div> DollarDollar Studio</div>
+    <p class="muted">관리자 로그인 후 콘텐츠 디자인을 시작하세요.</p>
     <form id="loginForm">
-      <label for="adminToken">관리자 비밀번호</label>
-      <input id="adminToken" type="password" autocomplete="current-password" required>
-      <div class="actions">
-        <button class="primary" id="loginButton" type="submit">로그인</button>
+      <div class="field">
+        <label for="password">관리자 비밀번호</label>
+        <input id="password" type="password" autocomplete="current-password" required>
       </div>
+      <button class="btn primary full" type="submit">로그인</button>
+      <p id="loginStatus" class="status"></p>
     </form>
-    <p class="note">기존 관리자 비밀번호를 사용해.</p>
-  </section>
+  </div>
+</div>
 
-  <div id="dashboard" class="hidden">
-    <section class="card">
-      <div>
-        <h2>기본 스타일 편집</h2>
-        <p class="note">변경 사항은 미리보기에 바로 적용돼.</p>
-      </div>
+<div id="app" class="hidden">
+  <div class="wrap">
+    <header class="top">
+      <div class="brand"><div class="logo">₩</div> DollarDollar <span class="muted">STUDIO</span></div>
+      <button id="logoutBtn" class="btn small">로그아웃</button>
+    </header>
 
-      <div class="editor">
-        <div class="controls">
-          <div class="full">
-            <label for="photoInput">배경 사진</label>
-            <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp">
-            <p class="note">JPG, PNG, WebP · 최대 12MB</p>
+    <div style="margin-bottom:22px">
+      <h1>오늘의 콘텐츠를 만들자.</h1>
+      <p class="muted">이미지를 꾸미고 키워드를 추출해 게시물 초안을 준비하세요.</p>
+    </div>
+
+    <div class="grid">
+      <div class="stack">
+
+        <section class="card">
+          <h2>01. 이미지</h2>
+          <div class="field">
+            <label for="photo">이미지 업로드</label>
+            <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+            <span class="muted">JPG, PNG, WebP · 최대 12MB</span>
+          </div>
+          <div class="row">
+            <button id="clearPhoto" class="btn small" type="button">이미지 제거</button>
+            <span id="photoStatus" class="muted">이미지가 선택되지 않았어요.</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>02. 게시물 디자인</h2>
+
+          <div class="field">
+            <label for="kicker">상단 라벨</label>
+            <input id="kicker" type="text" maxlength="50" value="TODAY'S INSIGHT" placeholder="예: TODAY'S INSIGHT">
           </div>
 
-          <div class="full">
-            <label for="headline">큰 제목</label>
-            <textarea id="headline" maxlength="180">생각을 바꾸면
-일상이 달라진다</textarea>
+          <div class="field">
+            <label for="headline">메인 제목</label>
+            <textarea id="headline" rows="3" maxlength="180" placeholder="이미지에 들어갈 제목">작은 습관이
+큰 변화를 만든다</textarea>
           </div>
 
-          <div class="full">
-            <label for="subtext">작은 설명</label>
-            <textarea id="subtext" maxlength="300">오늘 기억할 한 가지를 짧고 분명하게 전해요.</textarea>
+          <div class="field">
+            <label for="subtitle">보조 문구</label>
+            <textarea id="subtitle" rows="2" maxlength="220" placeholder="짧은 설명을 입력하세요">매일의 작은 실천이 내일의 나를 만듭니다.</textarea>
           </div>
 
-          <div>
-            <label for="fontSize">제목 크기</label>
-            <div class="rangehead"><span>글자 크기</span><output id="fontSizeOut">30px</output></div>
-            <input id="fontSize" type="range" min="16" max="48" value="30">
+          <div class="field">
+            <div class="section-title">
+              <label for="fontSize">제목 크기</label>
+              <span id="fontValue" class="value">48px</span>
+            </div>
+            <input id="fontSize" type="range" min="20" max="64" value="48">
           </div>
 
-          <div>
-            <label for="darkness">사진 어둡기</label>
-            <div class="rangehead"><span>어두운 필터</span><output id="darknessOut">55%</output></div>
-            <input id="darkness" type="range" min="0" max="90" step="5" value="55">
-          </div>
-
-          <div class="full">
-            <label for="align">글자 정렬</label>
-            <select id="align">
+          <div class="field">
+            <label for="alignment">글자 정렬</label>
+            <select id="alignment">
               <option value="left">왼쪽</option>
               <option value="center">가운데</option>
               <option value="right">오른쪽</option>
             </select>
           </div>
 
-          <div class="full">
-            <label>강조 색상</label>
-            <div class="swatches">
-              <label class="swatch"><input type="radio" name="accent" value="#d5f477" checked> 라임</label>
-              <label class="swatch"><input type="radio" name="accent" value="#ffffff"> 흰색</label>
-              <label class="swatch"><input type="radio" name="accent" value="#ffbd69"> 오렌지</label>
-              <label class="swatch"><input type="radio" name="accent" value="#8cc8ff"> 파랑</label>
+          <div class="field">
+            <label for="accent">포인트 색상</label>
+            <div class="row">
+              <input id="accent" type="color" value="#d5f477">
+              <span id="accentValue" class="value">#d5f477</span>
+              <button type="button" class="btn small" id="defaultAccent">기본 색상</button>
             </div>
           </div>
 
-          <div class="full">
-            <label><input id="darkBox" type="checkbox" checked> 하단 반투명 검정 박스 사용</label>
-          </div>
-
-          <div class="full">
-            <label><input id="showKicker" type="checkbox" checked> DOLLAR DOLLAR 표시</label>
-          </div>
-
-          <div class="full">
-            <label for="caption">게시물 설명</label>
-            <textarea id="caption" maxlength="2200" placeholder="인스타그램 게시물 설명을 입력해."></textarea>
-          </div>
-
-          <div class="full">
-            <label for="hashtags">해시태그</label>
-            <textarea id="hashtags" maxlength="1000" placeholder="#일상 #정보 #달러달러"></textarea>
-          </div>
-
-          <div class="full actions">
-            <button type="button" class="primary" id="saveStyleButton">기본 스타일 저장</button>
-            <button type="button" id="downloadButton">JPG 이미지 저장</button>
-            <button type="button" class="light" id="resetButton">기본값 복원</button>
-            <button type="button" class="light" id="logoutButton">로그아웃</button>
-          </div>
-          <p class="note full">
-            기본 스타일과 설명·해시태그는 현재 브라우저에 저장돼.
-            아직 서버 데이터베이스나 Instagram 자동 게시와 연결된 상태는 아니야.
-          </p>
-        </div>
-
-        <div class="preview-wrap">
-          <h2>실시간 미리보기</h2>
-          <p class="note">인스타그램 피드용 4:5 비율</p>
-          <div id="preview" class="preview">
-            <div id="shade" class="preview-shade"></div>
-            <div id="previewContent" class="preview-content boxed">
-              <div id="previewKicker" class="kicker">DOLLAR DOLLAR · TODAY</div>
-              <h3 id="previewTitle" class="preview-title">생각을 바꾸면
-일상이 달라진다</h3>
-              <p id="previewSub" class="preview-sub">오늘 기억할 한 가지를 짧고 분명하게 전해요.</p>
+          <div class="field">
+            <label>빠른 색상 선택</label>
+            <div class="row" style="flex-wrap:wrap">
+              <button class="btn small color-preset" data-color="#d5f477" type="button">라임</button>
+              <button class="btn small color-preset" data-color="#ffffff" type="button">화이트</button>
+              <button class="btn small color-preset" data-color="#ffcc80" type="button">오렌지</button>
+              <button class="btn small color-preset" data-color="#a9d6ff" type="button">블루</button>
+              <button class="btn small color-preset" data-color="#ffb7d5" type="button">핑크</button>
             </div>
           </div>
-          <p class="note">사진을 선택하고 어둡기, 글자 크기, 색상을 바꿔 봐.</p>
-        </div>
+        </section>
+
+        <section class="card">
+          <h2>03. 하단 그라데이션</h2>
+          <p class="muted">이미지 하단에서 위쪽으로 자연스럽게 어두워지는 효과입니다.</p>
+
+          <div class="field">
+            <div class="section-title">
+              <label for="gradientHeight">그라데이션 높이</label>
+              <span id="gradientHeightValue" class="value">45%</span>
+            </div>
+            <input id="gradientHeight" type="range" min="15" max="80" value="45">
+            <div class="row between muted"><span>낮게</span><span>높게</span></div>
+          </div>
+
+          <div class="field">
+            <div class="section-title">
+              <label for="gradientOpacity">검정색 농도</label>
+              <span id="gradientOpacityValue" class="value">88%</span>
+            </div>
+            <input id="gradientOpacity" type="range" min="0" max="100" value="88">
+            <div class="row between muted"><span>투명</span><span>진하게</span></div>
+          </div>
+
+          <div class="field">
+            <div class="section-title">
+              <label for="gradientSpread">그라데이션 퍼짐</label>
+              <span id="gradientSpreadValue" class="value">68%</span>
+            </div>
+            <input id="gradientSpread" type="range" min="20" max="90" value="68">
+          </div>
+
+          <div class="field">
+            <div class="section-title">
+              <label for="imageDarkness">전체 이미지 어둡기</label>
+              <span id="imageDarknessValue" class="value">0%</span>
+            </div>
+            <input id="imageDarkness" type="range" min="0" max="70" value="0">
+          </div>
+
+          <div class="field">
+            <div class="section-title">
+              <label for="contentBottom">글자 위치 (아래 여백)</label>
+              <span id="contentBottomValue" class="value">7%</span>
+            </div>
+            <input id="contentBottom" type="range" min="3" max="22" value="7">
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>04. 키워드 자동 추출</h2>
+            <button type="button" class="btn small" id="extractKeywords">다시 추출</button>
+          </div>
+          <p class="muted">제목과 본문에서 핵심 단어를 추출해 해시태그 초안을 만듭니다. 자동 생성 결과는 직접 수정할 수 있어요.</p>
+
+          <div class="field">
+            <label for="caption">게시물 본문</label>
+            <textarea id="caption" rows="5" placeholder="인스타그램에 게시할 본문을 입력하세요.">작은 습관이 모여 큰 변화를 만듭니다. 오늘부터 실천할 수 있는 것 하나를 시작해 보세요.</textarea>
+          </div>
+
+          <div class="field">
+            <label>추출된 키워드</label>
+            <div id="keywordChips" class="chips"></div>
+          </div>
+
+          <div class="field">
+            <div class="section-title">
+              <label for="hashtags">해시태그</label>
+              <button type="button" id="copyHashtags" class="btn small">해시태그 복사</button>
+            </div>
+            <textarea id="hashtags" rows="3" placeholder="#자기계발 #좋은습관"></textarea>
+          </div>
+
+          <div class="row" style="flex-wrap:wrap">
+            <button id="copyCaption" type="button" class="btn">본문 + 해시태그 복사</button>
+            <button id="saveDraft" type="button" class="btn primary">설정 저장</button>
+          </div>
+          <p id="copyStatus" class="status"></p>
+        </section>
+
+        <section class="card">
+          <h2>05. 내보내기</h2>
+          <div class="note muted">
+            JPG로 저장하면 현재 디자인이 이미지 파일로 내려받아집니다.
+            이 기능은 게시물 파일을 만드는 기능이며 인스타그램에 직접 게시하지는 않습니다.
+          </div>
+          <div class="row" style="margin-top:14px;flex-wrap:wrap">
+            <button id="downloadJpg" type="button" class="btn primary">JPG 다운로드</button>
+            <button id="resetAll" type="button" class="btn">디자인 초기화</button>
+          </div>
+          <p id="exportStatus" class="status"></p>
+        </section>
       </div>
-    </section>
+
+      <aside class="preview-wrap">
+        <section class="card">
+          <div class="section-title">
+            <h2>실시간 미리보기</h2>
+            <span class="muted">4:5 포맷</span>
+          </div>
+
+          <div id="preview" class="preview align-left">
+            <div class="placeholder" id="placeholder">
+              <div>
+                <div style="font-size:36px;margin-bottom:10px">✳</div>
+                <strong>이미지를 업로드하세요</strong>
+                <div class="muted">여기에서 게시물 디자인을 확인할 수 있어요.</div>
+              </div>
+            </div>
+            <img id="previewPhoto" class="preview-photo hidden" alt="게시물 배경">
+            <div id="dimLayer" class="dim-layer"></div>
+            <div id="gradient" class="gradient"></div>
+            <div id="posterContent" class="poster-content">
+              <div id="previewKicker" class="kicker">TODAY'S INSIGHT</div>
+              <h2 id="previewHeadline" class="poster-title">작은 습관이
+큰 변화를 만든다</h2>
+              <div id="previewSubtitle" class="poster-subtitle">매일의 작은 실천이 내일의 나를 만듭니다.</div>
+              <div class="preview-footer">DOLLARDOLLAR</div>
+            </div>
+          </div>
+
+          <p class="muted" style="margin-top:12px">※ 화면의 미리보기는 실제 게시물의 대략적인 배치입니다. 다운로드 이미지는 캔버스로 별도 렌더링됩니다.</p>
+        </section>
+      </aside>
+    </div>
   </div>
-</main>
-<footer>DollarDollar · Feed Studio</footer>
+</div>
 
 <script>
-"use strict";
+(() => {
+  "use strict";
 
-const $ = id => document.getElementById(id);
-const loginCard = $("loginCard");
-const dashboard = $("dashboard");
-const message = $("message");
+  const $ = id => document.getElementById(id);
+  const STORAGE_KEY = "dd_feed_style";
+  let photoData = "";
+  let photoObjectUrl = "";
+  let isLoggedIn = false;
 
-let photoData = "";
+  const defaults = {
+    kicker:"TODAY'S INSIGHT",
+    headline:"작은 습관이\n큰 변화를 만든다",
+    subtitle:"매일의 작은 실천이 내일의 나를 만듭니다.",
+    fontSize:48,
+    alignment:"left",
+    accent:"#d5f477",
+    gradientHeight:45,
+    gradientOpacity:88,
+    gradientSpread:68,
+    imageDarkness:0,
+    contentBottom:7,
+    caption:"작은 습관이 모여 큰 변화를 만듭니다. 오늘부터 실천할 수 있는 것 하나를 시작해 보세요.",
+    hashtags:"#좋은습관 #자기계발 #동기부여"
+  };
 
-const defaults = {
-  headline: "생각을 바꾸면\n일상이 달라진다",
-  subtext: "오늘 기억할 한 가지를 짧고 분명하게 전해요.",
-  fontSize: 30,
-  darkness: 55,
-  align: "left",
-  accent: "#d5f477",
-  darkBox: true,
-  showKicker: true,
-  caption: "",
-  hashtags: ""
-};
+  const fields = [
+    "kicker","headline","subtitle","fontSize","alignment","accent",
+    "gradientHeight","gradientOpacity","gradientSpread","imageDarkness",
+    "contentBottom","caption","hashtags"
+  ];
 
-function say(text, type = "") {
-  message.textContent = text;
-  message.className = "message" + (type ? " " + type : "");
-}
+  function setStatus(id, message) {
+    $(id).textContent = message;
+  }
 
-async function api(path, options = {}) {
-  const response = await fetch(path, {
-    ...options,
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {})
+  function getState() {
+    const state = {};
+    fields.forEach(id => {
+      const el = $(id);
+      state[id] = el.type === "range" ? Number(el.value) : el.value;
+    });
+    return state;
+  }
+
+  function applyState(state) {
+    fields.forEach(id => {
+      if (state[id] !== undefined && $(id)) $(id).value = state[id];
+    });
+    updatePreview();
+    renderKeywordChips(lastKeywords);
+  }
+
+  function updatePreview() {
+    const kicker = $("kicker").value.trim();
+    const headline = $("headline").value || "";
+    const subtitle = $("subtitle").value || "";
+    const accent = $("accent").value;
+    const fontSize = Number($("fontSize").value);
+    const height = Number($("gradientHeight").value);
+    const opacity = Number($("gradientOpacity").value) / 100;
+    const spread = Number($("gradientSpread").value);
+    const darkness = Number($("imageDarkness").value) / 100;
+    const bottom = Number($("contentBottom").value);
+
+    $("previewKicker").textContent = kicker;
+    $("previewKicker").classList.toggle("hidden", !kicker);
+    $("previewHeadline").textContent = headline;
+    $("previewSubtitle").textContent = subtitle;
+    $("previewSubtitle").classList.toggle("hidden", !subtitle);
+    $("previewHeadline").style.fontSize =
+      `clamp(${Math.round(fontSize * .52)}px, ${fontSize / 390 * 100}vw, ${fontSize}px)`;
+
+    $("preview").className = "preview align-" + $("alignment").value;
+    $("preview").style.setProperty("--accent", accent);
+    $("previewKicker").style.background = accent;
+    $("previewKicker").style.color = readableText(accent);
+    $("gradient").style.height = height + "%";
+    $("gradient").style.background =
+      `linear-gradient(to top,
+        rgba(0,0,0,${opacity}) 0%,
+        rgba(0,0,0,${opacity * .72}) ${Math.max(8, 100-spread)}%,
+        rgba(0,0,0,${opacity * .22}) ${spread}%,
+        rgba(0,0,0,0) 100%)`;
+    $("dimLayer").style.background = `rgba(0,0,0,${darkness})`;
+    $("posterContent").style.bottom = bottom + "%";
+
+    $("fontValue").textContent = fontSize + "px";
+    $("accentValue").textContent = accent;
+    $("gradientHeightValue").textContent = height + "%";
+    $("gradientOpacityValue").textContent = Math.round(opacity*100) + "%";
+    $("gradientSpreadValue").textContent = spread + "%";
+    $("imageDarknessValue").textContent = Math.round(darkness*100) + "%";
+    $("contentBottomValue").textContent = bottom + "%";
+  }
+
+  function readableText(hex) {
+    const rgb = hex.match(/[0-9a-f]{2}/gi);
+    if (!rgb || rgb.length < 3) return "#20221d";
+    const [r,g,b] = rgb.slice(0,3).map(x => parseInt(x,16));
+    return (r*299 + g*587 + b*114)/1000 > 150 ? "#20221d" : "#ffffff";
+  }
+
+  let lastKeywords = [];
+
+  // 제목과 본문에서 한글/영문 단어를 추출하는 간단한 브라우저 기반 방식.
+  // 이미지 자체의 내용을 분석하는 AI 기능은 포함하지 않습니다.
+  function extractKeywords() {
+    const source = [
+      $("headline").value,
+      $("subtitle").value,
+      $("caption").value
+    ].join(" ");
+
+    const stopWords = new Set([
+      "그리고","하지만","그래서","오늘","이것","저것","그것","정말","너무",
+      "하는","하면","해서","있는","있다","없다","입니다","합니다","됩니다",
+      "하세요","해보세요","부터","까지","대한","통해","위해","같은","우리",
+      "나는","저는","그냥","조금","매일","이런","저런","그런","것을","것이",
+      "수는","수도","으로","에서","에게","으로서","처럼","보다","때문",
+      "the","and","for","with","that","this","from","your","you","are",
+      "was","have","has","will","can","not","but","about","into","just"
+    ]);
+
+    const normalized = source
+      .replace(/#[\p{L}\p{N}_]+/gu, " ")
+      .replace(/https?:\/\/\S+/gi, " ")
+      .toLowerCase();
+
+    const words = normalized.match(/[\p{Script=Hangul}]{2,}|[a-z][a-z0-9]{2,}/gu) || [];
+    const counts = new Map();
+
+    words.forEach(word => {
+      if (stopWords.has(word)) return;
+      if (/^\d+$/.test(word)) return;
+      counts.set(word, (counts.get(word) || 0) + 1);
+    });
+
+    const ranked = [...counts.entries()]
+      .sort((a,b) => b[1] - a[1] || b[0].length - a[0].length)
+      .map(item => item[0]);
+
+    // 유사한 포함 단어가 지나치게 많이 잡히는 것을 줄입니다.
+    const result = [];
+    for (const word of ranked) {
+      if (result.some(existing =>
+        existing === word ||
+        (word.length >= 3 && existing.length >= 3 &&
+         (existing.includes(word) || word.includes(existing)))
+      )) continue;
+      result.push(word);
+      if (result.length >= 8) break;
+    }
+
+    lastKeywords = result;
+    renderKeywordChips(result);
+
+    if (result.length) {
+      const tags = result.map(word => "#" + word.replace(/[^\p{L}\p{N}_]/gu, ""));
+      const existing = $("hashtags").value.trim();
+      const oldTags = existing ? existing.split(/\s+/).filter(x => /^#[\p{L}\p{N}_]+$/u.test(x)) : [];
+      const merged = [...new Set([...tags, ...oldTags])].slice(0,15);
+      $("hashtags").value = merged.join(" ");
+      setStatus("copyStatus", "키워드를 추출했어요. 해시태그를 확인하고 필요하면 수정하세요.");
+    } else {
+      setStatus("copyStatus", "키워드가 충분하지 않아요. 제목이나 본문을 조금 더 입력해 주세요.");
+    }
+  }
+
+  function renderKeywordChips(words) {
+    const container = $("keywordChips");
+    container.replaceChildren();
+    if (!words || !words.length) {
+      const span = document.createElement("span");
+      span.className = "muted";
+      span.textContent = "아직 키워드가 없어요. 제목이나 본문을 입력한 뒤 다시 추출하세요.";
+      container.appendChild(span);
+      return;
+    }
+    words.forEach(word => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.textContent = word + " +";
+      chip.title = "눌러서 해시태그에 추가";
+      chip.addEventListener("click", () => {
+        const tag = "#" + word.replace(/[^\p{L}\p{N}_]/gu, "");
+        const tags = $("hashtags").value.trim().split(/\s+/).filter(Boolean);
+        if (!tags.includes(tag)) tags.push(tag);
+        $("hashtags").value = tags.join(" ");
+      });
+      container.appendChild(chip);
+    });
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
+      setStatus("copyStatus", "디자인 설정을 이 브라우저에 저장했어요.");
+    } catch (error) {
+      setStatus("copyStatus", "저장하지 못했어요. 브라우저 저장 공간을 확인해 주세요.");
+    }
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) applyState({...defaults, ...JSON.parse(raw)});
+      else applyState(defaults);
+    } catch (error) {
+      applyState(defaults);
+    }
+  }
+
+  async function copyText(text) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        const ok = document.execCommand("copy");
+        area.remove();
+        if (!ok) throw new Error("copy failed");
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async function logout() {
+    try {
+      await fetch("/api/admin-logout", {method:"POST", credentials:"same-origin"});
+    } catch {}
+    isLoggedIn = false;
+    $("app").classList.add("hidden");
+    $("loginScreen").classList.remove("hidden");
+    $("password").value = "";
+  }
+
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const password = $("password").value;
+    setStatus("loginStatus", "로그인 중...");
+
+    try {
+      const response = await fetch("/api/admin-login", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        credentials:"same-origin",
+        body:JSON.stringify({token:password})
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result.error || result.message || "로그인에 실패했어요.");
+      }
+      isLoggedIn = true;
+      $("loginScreen").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      setStatus("loginStatus", "");
+      loadState();
+    } catch (error) {
+      setStatus("loginStatus", error.message || "로그인에 실패했어요.");
     }
   });
 
-  let data = {};
-  try {
-    data = await response.json();
-  } catch {
-    throw new Error("서버 응답을 읽지 못했어.");
-  }
+  $("logoutBtn").addEventListener("click", logout);
 
-  if (!response.ok) {
-    throw new Error(data.error || "요청에 실패했어.");
-  }
-  return data;
-}
+  $("photo").addEventListener("change", event => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
 
-function getState() {
-  return {
-    headline: $("headline").value,
-    subtext: $("subtext").value,
-    fontSize: Number($("fontSize").value),
-    darkness: Number($("darkness").value),
-    align: $("align").value,
-    accent: document.querySelector('input[name="accent"]:checked').value,
-    darkBox: $("darkBox").checked,
-    showKicker: $("showKicker").checked,
-    caption: $("caption").value,
-    hashtags: $("hashtags").value
-  };
-}
+    if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
+      setStatus("photoStatus", "JPG, PNG, WebP 파일만 사용할 수 있어요.");
+      event.target.value = "";
+      return;
+    }
+    if (file.size > 12 * 1024 * 1024) {
+      setStatus("photoStatus", "파일이 12MB를 초과해요.");
+      event.target.value = "";
+      return;
+    }
 
-function applyState(s = defaults) {
-  $("headline").value = s.headline ?? defaults.headline;
-  $("subtext").value = s.subtext ?? defaults.subtext;
-  $("fontSize").value = s.fontSize ?? defaults.fontSize;
-  $("darkness").value = s.darkness ?? defaults.darkness;
-  $("align").value = s.align ?? defaults.align;
-  $("darkBox").checked = s.darkBox ?? defaults.darkBox;
-  $("showKicker").checked = s.showKicker ?? defaults.showKicker;
-  $("caption").value = s.caption ?? "";
-  $("hashtags").value = s.hashtags ?? "";
+    const reader = new FileReader();
+    reader.onload = () => {
+      photoData = reader.result;
+      $("previewPhoto").src = photoData;
+      $("previewPhoto").classList.remove("hidden");
+      $("placeholder").classList.add("hidden");
+      setStatus("photoStatus", file.name);
+    };
+    reader.onerror = () => setStatus("photoStatus", "이미지를 읽을 수 없어요.");
+    reader.readAsDataURL(file);
+  });
 
-  const radio = document.querySelector(
-    'input[name="accent"][value="' + (s.accent || defaults.accent) + '"]'
-  );
-  if (radio) radio.checked = true;
-  render();
-}
+  $("clearPhoto").addEventListener("click", () => {
+    photoData = "";
+    $("photo").value = "";
+    $("previewPhoto").removeAttribute("src");
+    $("previewPhoto").classList.add("hidden");
+    $("placeholder").classList.remove("hidden");
+    setStatus("photoStatus", "이미지가 선택되지 않았어요.");
+  });
 
-function render() {
-  const s = getState();
+  fields.forEach(id => {
+    $(id).addEventListener("input", updatePreview);
+    $(id).addEventListener("change", updatePreview);
+  });
 
-  $("previewTitle").textContent = s.headline;
-  $("previewSub").textContent = s.subtext;
-  $("previewTitle").style.fontSize = s.fontSize + "px";
-  $("previewContent").style.textAlign = s.align;
-  $("previewContent").classList.toggle("boxed", s.darkBox);
-  $("previewKicker").style.color = s.accent;
-  $("previewKicker").hidden = !s.showKicker;
-  $("shade").style.background = "rgba(0,0,0," + (s.darkness / 100) + ")";
-  $("preview").style.backgroundImage = photoData
-    ? 'url("' + photoData + '")'
-    : "none";
-  $("preview").style.backgroundColor = "#45483d";
+  // 입력을 바꾸면 미리보기만 즉시 갱신합니다.
+  // 해시태그 자동 추출은 버튼을 눌렀을 때 실행됩니다.
+  $("extractKeywords").addEventListener("click", extractKeywords);
 
-  $("fontSizeOut").textContent = s.fontSize + "px";
-  $("darknessOut").textContent = s.darkness + "%";
-}
-
-$("loginForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  $("loginButton").disabled = true;
-  say("로그인 확인 중...");
-
-  try {
-    await api("/api/admin-login", {
-      method: "POST",
-      body: JSON.stringify({ token: $("adminToken").value })
+  document.querySelectorAll(".color-preset").forEach(button => {
+    button.addEventListener("click", () => {
+      $("accent").value = button.dataset.color;
+      updatePreview();
     });
+  });
 
-    loginCard.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-    $("adminToken").value = "";
+  $("defaultAccent").addEventListener("click", () => {
+    $("accent").value = defaults.accent;
+    updatePreview();
+  });
 
-    let saved = null;
+  $("copyHashtags").addEventListener("click", async () => {
+    const ok = await copyText($("hashtags").value);
+    setStatus("copyStatus", ok ? "해시태그를 복사했어요." : "복사에 실패했어요. 직접 선택해 복사해 주세요.");
+  });
+
+  $("copyCaption").addEventListener("click", async () => {
+    const text = [$("caption").value.trim(), $("hashtags").value.trim()].filter(Boolean).join("\n\n");
+    const ok = await copyText(text);
+    setStatus("copyStatus", ok ? "본문과 해시태그를 복사했어요." : "복사에 실패했어요. 직접 선택해 복사해 주세요.");
+  });
+
+  $("saveDraft").addEventListener("click", saveState);
+
+  $("resetAll").addEventListener("click", () => {
+    if (!confirm("디자인 설정을 기본값으로 되돌릴까요?")) return;
+    applyState(defaults);
+    lastKeywords = [];
+    renderKeywordChips([]);
+    setStatus("copyStatus", "기본 디자인을 불러왔어요. 저장을 누르면 적용됩니다.");
+  });
+
+  $("downloadJpg").addEventListener("click", async () => {
+    setStatus("exportStatus", "JPG 이미지를 만드는 중...");
     try {
-      saved = JSON.parse(localStorage.getItem("dd_feed_style") || "null");
-    } catch {}
+      const width = 1080;
+      const height = 1350;
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
 
-    applyState(saved || defaults);
-    say("로그인 성공! 피드 스타일을 편집해 봐.", "good");
-  } catch (error) {
-    say(error.message, "error");
-  } finally {
-    $("loginButton").disabled = false;
-  }
-});
+      ctx.fillStyle = "#dfe3d5";
+      ctx.fillRect(0,0,width,height);
 
-[
-  "headline", "subtext", "fontSize", "darkness", "align",
-  "darkBox", "showKicker", "caption", "hashtags"
-].forEach(id => $(id).addEventListener("input", render));
-
-document.querySelectorAll('input[name="accent"]').forEach(input => {
-  input.addEventListener("change", render);
-});
-
-$("photoInput").addEventListener("change", event => {
-  const file = event.target.files && event.target.files[0];
-  if (!file) return;
-
-  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-    say("JPG, PNG 또는 WebP 사진을 선택해 줘.", "error");
-    return;
-  }
-
-  if (file.size > 12 * 1024 * 1024) {
-    say("사진은 12MB 이하로 선택해 줘.", "error");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    photoData = reader.result;
-    render();
-    say("사진을 불러왔어.", "good");
-  };
-  reader.onerror = () => say("사진을 읽지 못했어.", "error");
-  reader.readAsDataURL(file);
-});
-
-$("saveStyleButton").addEventListener("click", () => {
-  try {
-    localStorage.setItem("dd_feed_style", JSON.stringify(getState()));
-    say("기본 스타일을 이 브라우저에 저장했어.", "good");
-  } catch {
-    say("저장에 실패했어. 브라우저 저장 공간을 확인해 줘.", "error");
-  }
-});
-
-$("resetButton").addEventListener("click", () => {
-  applyState(defaults);
-  photoData = "";
-  $("photoInput").value = "";
-  localStorage.removeItem("dd_feed_style");
-  say("기본값으로 복원했어.", "good");
-});
-
-$("logoutButton").addEventListener("click", async () => {
-  try {
-    await api("/api/admin-logout", { method: "POST", body: "{}" });
-  } catch {}
-  dashboard.classList.add("hidden");
-  loginCard.classList.remove("hidden");
-  say("로그아웃했어.");
-});
-
-$("downloadButton").addEventListener("click", () => {
-  const s = getState();
-  const canvas = document.createElement("canvas");
-  canvas.width = 1080;
-  canvas.height = 1350;
-  const ctx = canvas.getContext("2d");
-
-  function drawText() {
-    const gradient = ctx.createLinearGradient(0, 0, 0, 1350);
-    gradient.addColorStop(0, "rgba(0,0,0,0.02)");
-    gradient.addColorStop(1, "rgba(0,0,0," + s.darkness / 100 + ")");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1080, 1350);
-
-    const boxTop = 820;
-    if (s.darkBox) {
-      ctx.fillStyle = "rgba(0,0,0,.48)";
-      ctx.fillRect(0, boxTop, 1080, 530);
-    }
-
-    const padding = 72;
-    const x = s.align === "left" ? padding :
-      s.align === "right" ? 1008 : 540;
-
-    ctx.textAlign = s.align;
-
-    if (s.showKicker) {
-      ctx.fillStyle = s.accent;
-      ctx.font = "900 28px Arial,sans-serif";
-      ctx.fillText("DOLLAR DOLLAR · TODAY", x, boxTop + 65, 936);
-    }
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "900 " + (s.fontSize * 2.15) + "px Arial,sans-serif";
-
-    let y = boxTop + (s.showKicker ? 145 : 90);
-    const maxWidth = 936;
-
-    for (const line of s.headline.split("\n")) {
-      ctx.fillText(line, x, y, maxWidth);
-      y += s.fontSize * 2.4;
-    }
-
-    ctx.fillStyle = "#eeeeee";
-    ctx.font = "32px Arial,sans-serif";
-    for (const line of s.subtext.split("\n")) {
-      ctx.fillText(line, x, y, maxWidth);
-      y += 44;
-    }
-
-    canvas.toBlob(blob => {
-      if (!blob) {
-        say("이미지 생성에 실패했어.", "error");
-        return;
+      if (photoData) {
+        const img = await loadImage(photoData);
+        const scale = Math.max(width/img.width, height/img.height);
+        const sw = width/scale, sh = height/scale;
+        const sx = (img.width-sw)/2, sy = (img.height-sh)/2;
+        ctx.drawImage(img,sx,sy,sw,sh,0,0,width,height);
+      } else {
+        const bg = ctx.createLinearGradient(0,0,width,height);
+        bg.addColorStop(0,"#eef1e5");
+        bg.addColorStop(1,"#bfc8b1");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0,0,width,height);
       }
 
+      const darkness = Number($("imageDarkness").value)/100;
+      if (darkness > 0) {
+        ctx.fillStyle = `rgba(0,0,0,${darkness})`;
+        ctx.fillRect(0,0,width,height);
+      }
+
+      const gh = height * Number($("gradientHeight").value)/100;
+      const opacity = Number($("gradientOpacity").value)/100;
+      const spread = Number($("gradientSpread").value)/100;
+      const grad = ctx.createLinearGradient(0,height-gh,0,height);
+      grad.addColorStop(0,"rgba(0,0,0,0)");
+      grad.addColorStop(Math.min(.98,Math.max(.05,spread)),`rgba(0,0,0,${opacity*.22})`);
+      grad.addColorStop(.78,`rgba(0,0,0,${opacity*.72})`);
+      grad.addColorStop(1,`rgba(0,0,0,${opacity})`);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0,height-gh,width,gh);
+
+      const align = $("alignment").value;
+      const margin = width*.07;
+      const textX = align==="left" ? margin : align==="right" ? width-margin : width/2;
+      ctx.textAlign = align;
+      ctx.textBaseline = "alphabetic";
+
+      const fontSize = Number($("fontSize").value) * (width/390);
+      const title = $("headline").value;
+      const subtitle = $("subtitle").value;
+      const kicker = $("kicker").value;
+      const bottom = height - height*Number($("contentBottom").value)/100;
+      let y = bottom;
+
+      ctx.font = "700 25px Arial, sans-serif";
+      const titleLines = wrapText(ctx,title,align==="center"?width*.82:width*.86);
+      const titleLineHeight = fontSize*1.13;
+      const subtitleLines = wrapText(ctx,subtitle,width*.86);
+      const subtitleLineHeight = 35;
+      const titleBlockHeight = titleLines.length*titleLineHeight;
+      const subtitleBlockHeight = subtitle ? subtitleLines.length*subtitleLineHeight : 0;
+      const kickerHeight = kicker ? 42 : 0;
+      const gap = 22;
+      y -= titleBlockHeight + subtitleBlockHeight + kickerHeight + gap*2 + 20;
+
+      if (kicker) {
+        ctx.font = "900 22px Arial, sans-serif";
+        const pillWidth = Math.min(width*.82,ctx.measureText(kicker).width+38);
+        const pillX = align==="left" ? margin : align==="right" ? width-margin-pillWidth : (width-pillWidth)/2;
+        roundedRect(ctx,pillX,y,pillWidth,42,21);
+        ctx.fillStyle = $("accent").value;
+        ctx.fill();
+        ctx.fillStyle = readableText($("accent").value);
+        ctx.textAlign = "center";
+        ctx.fillText(kicker,pillX+pillWidth/2,y+28);
+        ctx.textAlign = align;
+        y += 42 + gap;
+      }
+
+      ctx.fillStyle = "#fff";
+      ctx.font = `900 ${fontSize}px Arial, "Apple SD Gothic Neo", sans-serif`;
+      ctx.shadowColor = "rgba(0,0,0,.18)";
+      ctx.shadowBlur = 12;
+      titleLines.forEach(line => {
+        ctx.fillText(line,textX,y+fontSize);
+        y += titleLineHeight;
+      });
+      ctx.shadowBlur = 0;
+
+      if (subtitle) {
+        y += 18;
+        ctx.font = "500 30px Arial, sans-serif";
+        ctx.fillStyle = "rgba(255,255,255,.93)";
+        subtitleLines.forEach(line => {
+          ctx.fillText(line,textX,y+30);
+          y += subtitleLineHeight;
+        });
+      }
+
+      ctx.textAlign = align;
+      ctx.font = "700 17px Arial, sans-serif";
+      ctx.fillStyle = "rgba(255,255,255,.76)";
+      ctx.fillText("DOLLARDOLLAR",textX,height-height*.025);
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve,"image/jpeg",.94));
+      if (!blob) throw new Error("이미지를 만들지 못했어요.");
       const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "dollardollar-feed.jpg";
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1500);
-      say("JPG 이미지를 저장했어.", "good");
-    }, "image/jpeg", 0.92);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "dollardollar-post.jpg";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url),1500);
+      setStatus("exportStatus", "JPG 다운로드가 시작됐어요.");
+    } catch (error) {
+      setStatus("exportStatus", error.message || "내보내기에 실패했어요.");
+    }
+  });
+
+  function loadImage(src) {
+    return new Promise((resolve,reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error("이미지를 불러올 수 없어요."));
+      img.src = src;
+    });
   }
 
-  ctx.fillStyle = "#45483d";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  if (photoData) {
-    const img = new Image();
-    img.onload = () => {
-      const scale = Math.max(1080 / img.width, 1350 / img.height);
-      const width = img.width * scale;
-      const height = img.height * scale;
-      ctx.drawImage(img, (1080 - width) / 2, (1350 - height) / 2, width, height);
-      drawText();
-    };
-    img.onerror = () => {
-      say("사진을 이미지로 변환하지 못했어.", "error");
-    };
-    img.src = photoData;
-  } else {
-    drawText();
+  function wrapText(ctx,text,maxWidth) {
+    const lines = [];
+    String(text || "").split("\n").forEach(paragraph => {
+      if (!paragraph) { lines.push(""); return; }
+      let line = "";
+      for (const char of paragraph) {
+        const test = line + char;
+        if (line && ctx.measureText(test).width > maxWidth) {
+          lines.push(line);
+          line = char;
+        } else line = test;
+      }
+      lines.push(line);
+    });
+    return lines.length ? lines : [""];
   }
-});
 
-render();
+  function roundedRect(ctx,x,y,w,h,r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+
+  // 앱 화면을 열 때 로그인 API를 호출하지 않습니다.
+  // 기존 로그인 엔드포인트와 호환되도록 로그인 폼을 유지합니다.
+  // 서버의 기존 인증 정책은 변경하지 않습니다.
+})();
 </script>
 </body>
 </html>
