@@ -2,410 +2,375 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
-  <title>DollarDollar · 콘텐츠 관리자</title>
-  <style>
-    :root {
-      --lime: #d5f477;
-      --ink: #20221c;
-      --muted: #77796f;
-      --line: #e7e8e1;
-      --paper: #f7f8f2;
-      --white: #fff;
-      --danger: #a83232;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: Inter, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 20px 5%;
-      background: var(--white);
-      border-bottom: 1px solid var(--line);
-    }
-    .brand { font-size: 21px; font-weight: 900; letter-spacing: -1px; }
-    .brand span {
-      background: var(--lime);
-      padding: 3px 7px;
-      border-radius: 7px;
-    }
-    .tag {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    main { width: min(900px, 92%); margin: 35px auto 70px; }
-    h1 { font-size: clamp(27px, 5vw, 38px); margin: 0 0 8px; }
-    h2 { font-size: 19px; margin: 0 0 18px; }
-    .intro { color: var(--muted); margin: 0 0 25px; line-height: 1.6; }
-    .card {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 18px;
-      box-shadow: 0 5px 20px #22220808;
-    }
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      margin: 15px 0 7px;
-    }
-    input, textarea, select {
-      display: block;
-      width: 100%;
-      padding: 12px 13px;
-      border: 1px solid #dfe0d7;
-      border-radius: 10px;
-      font: inherit;
-      background: #fff;
-      color: var(--ink);
-    }
-    textarea { min-height: 85px; resize: vertical; }
-    input:focus, textarea:focus, select:focus {
-      outline: 2px solid var(--lime);
-      border-color: var(--ink);
-    }
-    button {
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 17px;
-      background: var(--ink);
-      color: white;
-      font: inherit;
-      font-weight: 750;
-      cursor: pointer;
-    }
-    button.primary { background: var(--lime); color: var(--ink); }
-    button:disabled { opacity: .55; cursor: wait; }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-    .hidden { display: none !important; }
-    #message {
-      padding: 12px 14px;
-      border-radius: 10px;
-      margin: 15px 0;
-      background: #f0f0e8;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-    #message.error { color: var(--danger); background: #fff0f0; }
-    #message.success { background: #eff8d8; }
-    .item {
-      padding: 17px 0;
-      border-top: 1px solid var(--line);
-      overflow-wrap: anywhere;
-    }
-    .item:first-child { border-top: 0; }
-    .item-title { font-weight: 800; font-size: 16px; margin-bottom: 7px; }
-    .item-meta { color: var(--muted); font-size: 13px; line-height: 1.7; }
-    .item a { color: #454a31; overflow-wrap: anywhere; }
-    .status {
-      display: inline-block;
-      margin-top: 9px;
-      border-radius: 20px;
-      padding: 5px 9px;
-      background: #f0f0e8;
-      font-size: 12px;
-      font-weight: 750;
-    }
-    .note { color: var(--muted); font-size: 13px; line-height: 1.7; }
-    footer { text-align: center; padding: 25px; color: var(--muted); font-size: 12px; }
-    @media (max-width: 520px) {
-      header { padding: 16px 4%; }
-      main { margin-top: 24px; }
-      .card { padding: 18px; }
-      .tag { text-align: right; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>DollarDollar · 콘텐츠 관리자</title>
+<style>
+:root{--lime:#d5f477;--ink:#20221c;--muted:#77796f;--line:#e7e8e1;--paper:#f7f8f2;--danger:#a83232}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 5%;background:#fff;border-bottom:1px solid var(--line)}
+.brand{font-size:21px;font-weight:900;letter-spacing:-1px}
+.brand span{background:var(--lime);padding:3px 7px;border-radius:7px}
+.tag,.muted{font-size:13px;color:var(--muted)}
+main{width:min(950px,92%);margin:32px auto 60px}
+h1{font-size:clamp(27px,5vw,38px);margin:0 0 8px}
+h2{font-size:19px;margin:0 0 18px}
+.intro{color:var(--muted);line-height:1.6;margin-bottom:25px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px}
+label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}
+input,textarea{width:100%;padding:12px;border:1px solid #dfe0d7;border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:85px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--lime)}
+button{border:0;border-radius:10px;padding:11px 14px;background:var(--ink);color:#fff;font:inherit;font-weight:750;cursor:pointer}
+button.primary{background:var(--lime);color:var(--ink)}
+button.warn{background:#fff0cf;color:#694a00}
+button.danger{background:var(--danger)}
+button:disabled{opacity:.55;cursor:wait}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.hidden{display:none!important}
+#message{padding:12px 14px;border-radius:10px;margin:15px 0;background:#f0f0e8;line-height:1.5;overflow-wrap:anywhere}
+#message.error{color:var(--danger);background:#fff0f0}
+#message.success{background:#eff8d8}
+.item{padding:18px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
+.item:first-child{border-top:0}
+.item-title{font-weight:800;font-size:16px;margin-bottom:7px}
+.item-meta{font-size:13px;color:var(--muted);line-height:1.7}
+.item a{color:#454a31;overflow-wrap:anywhere}
+.status{display:inline-block;margin:9px 7px 0 0;padding:5px 9px;border-radius:20px;background:#f0f0e8;font-size:12px;font-weight:750}
+.status.approved{background:#eff8d8}
+.status.hold{background:#fff0cf}
+.note{font-size:13px;color:var(--muted);line-height:1.7}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+@media(max-width:520px){header{padding:16px 4%}main{margin-top:24px}.card{padding:18px}.actions button{flex:1}.tag{text-align:right}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand">Dollar<span>Dollar</span></div>
-    <div class="tag">PRIVATE CONTENT ADMIN</div>
-  </header>
+<header>
+  <div class="brand">Dollar<span>Dollar</span></div>
+  <div class="tag">PRIVATE CONTENT ADMIN</div>
+</header>
 
-  <main>
-    <h1>콘텐츠 관리</h1>
-    <p class="intro">
-      수집한 콘텐츠와 권리 증빙 정보를 관리하는 관리자 페이지야.
-    </p>
+<main>
+  <h1>콘텐츠 관리</h1>
+  <p class="intro">콘텐츠 등록과 권리 증빙 정보를 관리하는 관리자 페이지야.</p>
+  <div id="message" role="status" aria-live="polite">관리자 로그인이 필요해.</div>
 
-    <div id="message" role="status" aria-live="polite">
-      관리자 로그인이 필요해.
-    </div>
+  <section class="card" id="loginCard">
+    <h2>관리자 로그인</h2>
+    <form id="loginForm">
+      <label for="adminToken">관리자 비밀번호</label>
+      <input id="adminToken" type="password" autocomplete="current-password" required>
+      <div class="actions">
+        <button class="primary" id="loginButton" type="submit">로그인</button>
+      </div>
+    </form>
+    <p class="note">비밀번호는 로그인 요청에만 사용해.</p>
+  </section>
 
-    <section class="card" id="loginCard">
-      <h2>관리자 로그인</h2>
-      <form id="loginForm">
-        <label for="adminToken">관리자 비밀번호</label>
-        <input id="adminToken" type="password"
-          autocomplete="current-password" required>
+  <div id="dashboard" class="hidden">
+    <section class="card">
+      <h2>새 콘텐츠 등록</h2>
+      <form id="contentForm">
+        <label for="title">콘텐츠 제목 *</label>
+        <input id="title" maxlength="200" required>
+
+        <label for="sourceUrl">원본 콘텐츠 URL *</label>
+        <input id="sourceUrl" type="url" maxlength="2048" placeholder="https://..." required>
+
+        <label for="licenseType">라이선스 종류</label>
+        <input id="licenseType" maxlength="200" placeholder="예: CC BY 4.0">
+
+        <label for="evidenceUrl">권리 증빙 URL</label>
+        <input id="evidenceUrl" type="url" maxlength="2048" placeholder="공식 라이선스 또는 허가 페이지">
+
+        <label for="evidenceNotes">권리 증빙 메모</label>
+        <textarea id="evidenceNotes" maxlength="3000" placeholder="상업적 이용 조건, 출처, 허가 범위"></textarea>
+
+        <label for="expiresAt">권리 만료일 (선택)</label>
+        <input id="expiresAt" type="date">
+
         <div class="actions">
-          <button class="primary" id="loginButton" type="submit">
-            로그인
-          </button>
+          <button class="primary" id="saveButton" type="submit">콘텐츠 등록</button>
+          <button type="button" id="refreshButton">새로고침</button>
+          <button type="button" id="logoutButton">로그아웃</button>
         </div>
       </form>
-      <p class="note">
-        비밀번호는 화면에서 로그인 요청에만 사용하며 저장하지 않아.
-      </p>
     </section>
 
-    <div id="dashboard" class="hidden">
-      <section class="card">
-        <h2>새 콘텐츠 등록</h2>
-        <form id="contentForm">
-          <label for="title">콘텐츠 제목 *</label>
-          <input id="title" maxlength="200" required>
+    <section class="card">
+      <h2>등록된 콘텐츠</h2>
+      <p class="note">
+        승인 버튼은 관리자 검토 상태만 변경해. 실제 상업적 이용 권리가 자동으로 검증되는 것은 아니며,
+        권리가 불확실한 콘텐츠는 자동 게시 대상에서 제외해야 해.
+      </p>
+      <div id="items">목록을 불러오는 중...</div>
+    </section>
+  </div>
+</main>
+<footer>DollarDollar · Rights-aware content workflow</footer>
 
-          <label for="sourceUrl">원본 콘텐츠 URL *</label>
-          <input id="sourceUrl" type="url" maxlength="2048"
-            placeholder="https://..." required>
+<script>
+const $ = id => document.getElementById(id);
+const loginCard = $("loginCard");
+const dashboard = $("dashboard");
+const message = $("message");
+const items = $("items");
 
-          <label for="licenseType">라이선스 종류</label>
-          <input id="licenseType" maxlength="200"
-            placeholder="예: CC BY 4.0">
+function showMessage(text, type="") {
+  message.textContent = text;
+  message.className = type;
+}
 
-          <label for="evidenceUrl">권리 증빙 URL</label>
-          <input id="evidenceUrl" type="url" maxlength="2048"
-            placeholder="공식 라이선스 또는 허가 페이지">
-
-          <label for="evidenceNotes">권리 증빙 메모</label>
-          <textarea id="evidenceNotes" maxlength="3000"
-            placeholder="허용된 상업적 이용 범위, 출처 등"></textarea>
-
-          <label for="expiresAt">권리 만료일 (선택)</label>
-          <input id="expiresAt" type="date">
-
-          <div class="actions">
-            <button class="primary" id="saveButton" type="submit">
-              콘텐츠 등록
-            </button>
-            <button type="button" id="refreshButton">목록 새로고침</button>
-            <button type="button" id="logoutButton">로그아웃</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="card">
-        <h2>등록된 콘텐츠</h2>
-        <p class="note">
-          등록된 항목은 기본적으로 검토 대기 상태야.
-          증빙 정보가 입력됐다고 해서 사용 권리가 자동으로 확인되는 건 아니야.
-        </p>
-        <div id="items">
-          목록을 불러오는 중...
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <footer>DollarDollar · Rights-aware content workflow</footer>
-
-  <script>
-    const loginCard = document.getElementById("loginCard");
-    const dashboard = document.getElementById("dashboard");
-    const message = document.getElementById("message");
-    const items = document.getElementById("items");
-
-    function showMessage(text, type = "") {
-      message.textContent = text;
-      message.className = type;
+async function api(path, options={}) {
+  const response = await fetch(path, {
+    ...options,
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {})
     }
+  });
 
-    async function api(path, options = {}) {
-      const response = await fetch(path, {
-        ...options,
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          ...(options.headers || {})
-        }
-      });
+  let data = {};
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("서버 응답을 읽을 수 없어. 배포 상태를 확인해 줘.");
+  }
 
-      let data;
-      try {
-        data = await response.json();
-      } catch {
-        throw new Error("서버 응답을 읽을 수 없어. 배포 상태를 확인해 줘.");
-      }
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          loginCard.classList.remove("hidden");
-          dashboard.classList.add("hidden");
-        }
-        throw new Error(
-          response.status === 401
-            ? "로그인이 만료됐어. 다시 로그인해 줘."
-            : data.error || "요청에 실패했어."
-        );
-      }
-      return data;
-    }
-
-    function addText(parent, tag, text, className) {
-      const element = document.createElement(tag);
-      element.textContent = text ?? "";
-      if (className) element.className = className;
-      parent.appendChild(element);
-      return element;
-    }
-
-    function addSafeLink(parent, label, value) {
-      if (!value) return;
-      try {
-        const url = new URL(value);
-        if (url.protocol !== "https:" && url.protocol !== "http:") return;
-        const link = document.createElement("a");
-        link.href = url.href;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = label;
-        parent.appendChild(link);
-      } catch {
-        // 올바른 URL이 아니면 링크를 표시하지 않음
-      }
-    }
-
-    function renderItems(list) {
-      items.replaceChildren();
-
-      if (!Array.isArray(list) || list.length === 0) {
-        addText(items, "p", "아직 등록된 콘텐츠가 없어.", "note");
-        return;
-      }
-
-      for (const item of list) {
-        const article = document.createElement("article");
-        article.className = "item";
-
-        addText(article, "div", item.title || "제목 없음", "item-title");
-        addText(article, "div", "상태: " + (item.review_status || "미지정"), "item-meta");
-
-        const source = document.createElement("div");
-        source.className = "item-meta";
-        addSafeLink(source, "원본 콘텐츠 열기", item.source_url);
-        article.appendChild(source);
-
-        if (item.license_type) {
-          addText(article, "div", "라이선스: " + item.license_type, "item-meta");
-        }
-
-        if (item.rights_evidence_url) {
-          const evidence = document.createElement("div");
-          evidence.className = "item-meta";
-          addSafeLink(evidence, "권리 증빙 열기", item.rights_evidence_url);
-          article.appendChild(evidence);
-        }
-
-        if (item.rights_evidence_notes) {
-          addText(article, "p", "증빙 메모: " + item.rights_evidence_notes, "item-meta");
-        }
-
-        if (item.expires_at) {
-          addText(article, "div", "만료일: " + item.expires_at, "item-meta");
-        }
-
-        addText(article, "span", "검토 필요 · 자동 승인되지 않음", "status");
-        items.appendChild(article);
-      }
-    }
-
-    async function loadItems() {
-      items.textContent = "목록을 불러오는 중...";
-      const data = await api("/api/meme-contents");
-      renderItems(data.items);
-    }
-
-    document.getElementById("loginForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const tokenInput = document.getElementById("adminToken");
-      const button = document.getElementById("loginButton");
-      const token = tokenInput.value;
-
-      button.disabled = true;
-
-      try {
-        await api("/api/admin-login", {
-          method: "POST",
-          body: JSON.stringify({ token })
-        });
-
-        tokenInput.value = "";
-        loginCard.classList.add("hidden");
-        dashboard.classList.remove("hidden");
-        showMessage("로그인 성공. 콘텐츠 목록을 불러올게.", "success");
-        await loadItems();
-      } catch (error) {
-        tokenInput.value = "";
-        showMessage(error.message, "error");
-      } finally {
-        button.disabled = false;
-      }
-    });
-
-    document.getElementById("contentForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const button = document.getElementById("saveButton");
-      button.disabled = true;
-
-      const expires = document.getElementById("expiresAt").value;
-
-      const body = {
-        title: document.getElementById("title").value.trim(),
-        source_url: document.getElementById("sourceUrl").value.trim(),
-        license_type: document.getElementById("licenseType").value.trim() || null,
-        rights_evidence_url: document.getElementById("evidenceUrl").value.trim() || null,
-        rights_evidence_notes: document.getElementById("evidenceNotes").value.trim() || null,
-        expires_at: expires ? new Date(expires + "T23:59:59.000Z").toISOString() : null
-      };
-
-      try {
-        await api("/api/meme-contents", {
-          method: "POST",
-          body: JSON.stringify(body)
-        });
-
-        event.target.reset();
-        showMessage("콘텐츠를 등록했어. 현재 상태는 검토 대기야.", "success");
-        await loadItems();
-      } catch (error) {
-        showMessage(error.message, "error");
-      } finally {
-        button.disabled = false;
-      }
-    });
-
-    document.getElementById("refreshButton").addEventListener("click", async () => {
-      try {
-        await loadItems();
-        showMessage("목록을 새로 불러왔어.", "success");
-      } catch (error) {
-        showMessage(error.message, "error");
-      }
-    });
-
-    document.getElementById("logoutButton").addEventListener("click", () => {
-      // 브라우저에서 쿠키를 직접 삭제할 수 없으므로 서버 로그아웃 API가 필요함.
-      // 대시보드만 숨기며, 실제 쿠키 만료는 서버에서 구현해야 함.
-      dashboard.classList.add("hidden");
+  if (!response.ok) {
+    if (response.status === 401) {
       loginCard.classList.remove("hidden");
-      document.getElementById("adminToken").value = "";
-      showMessage("화면에서 로그아웃했어. 서버 쿠키 만료 기능은 다음 단계에서 추가해야 해.");
+      dashboard.classList.add("hidden");
+    }
+    throw new Error(
+      response.status === 401
+        ? "로그인이 만료됐어. 다시 로그인해 줘."
+        : (data.error || "요청에 실패했어.")
+    );
+  }
+  return data;
+}
+
+function addText(parent, tag, value, className="") {
+  const el = document.createElement(tag);
+  el.textContent = value ?? "";
+  if (className) el.className = className;
+  parent.appendChild(el);
+  return el;
+}
+
+function addSafeLink(parent, label, value) {
+  if (!value) return;
+  try {
+    const url = new URL(value);
+    if (!["https:", "http:"].includes(url.protocol)) return;
+    const link = document.createElement("a");
+    link.href = url.href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = label;
+    parent.appendChild(link);
+  } catch {}
+}
+
+async function changeStatus(id, action) {
+  let reason = "";
+  if (action === "hold") {
+    reason = prompt("보류 사유를 입력해 줘:") || "관리자 보류";
+  }
+
+  if (action === "delete" && !confirm("이 콘텐츠를 영구 삭제할까?")) {
+    return;
+  }
+
+  try {
+    const data = action === "delete"
+      ? { id }
+      : { id, action, ...(action === "hold" ? { reason } : {}) };
+
+    await api("/api/meme-contents", {
+      method: action === "delete" ? "DELETE" : "PATCH",
+      body: JSON.stringify(data)
     });
-  </script>
+
+    showMessage(
+      action === "delete" ? "콘텐츠를 삭제했어."
+      : action === "hold" ? "콘텐츠를 보류했어."
+      : "검토 상태를 변경했어. 실제 권리 검증을 의미하지는 않아.",
+      "success"
+    );
+    await loadItems();
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+function renderItems(list) {
+  items.replaceChildren();
+
+  if (!Array.isArray(list) || list.length === 0) {
+    addText(items, "p", "아직 등록된 콘텐츠가 없어.", "note");
+    return;
+  }
+
+  for (const item of list) {
+    const article = document.createElement("article");
+    article.className = "item";
+
+    addText(article, "div", item.title || "제목 없음", "item-title");
+    addText(article, "div", "상태: " + (item.review_status || "미지정"), "item-meta");
+
+    const source = document.createElement("div");
+    source.className = "item-meta";
+    addSafeLink(source, "원본 콘텐츠 열기", item.source_url);
+    article.appendChild(source);
+
+    if (item.license_type) {
+      addText(article, "div", "라이선스: " + item.license_type, "item-meta");
+    }
+
+    if (item.rights_evidence_url) {
+      const evidence = document.createElement("div");
+      evidence.className = "item-meta";
+      addSafeLink(evidence, "권리 증빙 열기", item.rights_evidence_url);
+      article.appendChild(evidence);
+    }
+
+    if (item.rights_evidence_notes) {
+      addText(article, "p", "증빙 메모: " + item.rights_evidence_notes, "item-meta");
+    }
+
+    if (item.expires_at) {
+      addText(article, "div", "만료일: " + item.expires_at, "item-meta");
+    }
+
+    addText(
+      article,
+      "span",
+      item.review_status === "approved" ? "관리자 승인 상태"
+        : item.review_status === "hold" ? "보류 상태"
+        : "검토 대기",
+      "status " + (item.review_status || "")
+    );
+
+    if (item.review_reason) {
+      addText(article, "div", "메모: " + item.review_reason, "item-meta");
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const approve = addText(actions, "button", "검토 승인", "primary");
+    approve.addEventListener("click", () => changeStatus(item.id, "approve"));
+
+    const hold = addText(actions, "button", "보류", "warn");
+    hold.addEventListener("click", () => changeStatus(item.id, "hold"));
+
+    const del = addText(actions, "button", "삭제", "danger");
+    del.addEventListener("click", () => changeStatus(item.id, "delete"));
+
+    article.appendChild(actions);
+    items.appendChild(article);
+  }
+}
+
+async function loadItems() {
+  items.textContent = "목록을 불러오는 중...";
+  const data = await api("/api/meme-contents");
+  renderItems(data.items);
+}
+
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = $("loginButton");
+  button.disabled = true;
+
+  try {
+    await api("/api/admin-login", {
+      method: "POST",
+      body: JSON.stringify({ token: $("adminToken").value })
+    });
+
+    $("adminToken").value = "";
+    loginCard.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+    showMessage("로그인 성공.", "success");
+    await loadItems();
+  } catch (error) {
+    $("adminToken").value = "";
+    showMessage(error.message, "error");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("contentForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = $("saveButton");
+  button.disabled = true;
+
+  const date = $("expiresAt").value;
+  const body = {
+    title: $("title").value.trim(),
+    source_url: $("sourceUrl").value.trim(),
+    license_type: $("licenseType").value.trim() || null,
+    rights_evidence_url: $("evidenceUrl").value.trim() || null,
+    rights_evidence_notes: $("evidenceNotes").value.trim() || null,
+    expires_at: date ? new Date(date + "T23:59:59.000Z").toISOString() : null
+  };
+
+  try {
+    await api("/api/meme-contents", {
+      method: "POST",
+      body: JSON.stringify(body)
+    });
+    event.target.reset();
+    showMessage("콘텐츠를 등록했어. 검토 대기 상태야.", "success");
+    await loadItems();
+  } catch (error) {
+    showMessage(error.message, "error");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("refreshButton").addEventListener("click", async () => {
+  try {
+    await loadItems();
+    showMessage("목록을 새로 불러왔어.", "success");
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+});
+
+$("logoutButton").addEventListener("click", async () => {
+  const button = $("logoutButton");
+  button.disabled = true;
+
+  try {
+    const response = await fetch("/api/admin-logout", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+
+    if (!response.ok) throw new Error("로그아웃 API 요청 실패");
+
+    dashboard.classList.add("hidden");
+    loginCard.classList.remove("hidden");
+    $("adminToken").value = "";
+    items.replaceChildren();
+    showMessage("로그아웃 완료.", "success");
+  } catch (error) {
+    showMessage(error.message, "error");
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
 </body>
 </html>
