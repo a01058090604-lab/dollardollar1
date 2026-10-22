@@ -27,10 +27,29 @@ export default async function handler(req, res) {
     );
 
     if (!response.ok) {
+      const body = await response.text();
+      let detail = {};
+
+      try {
+        detail = JSON.parse(body);
+      } catch {}
+
       return res.status(502).json({
         ok: false,
         error: "Supabase request failed",
-        status: response.status
+        status: response.status,
+        supabaseCode:
+          typeof detail.code === "string"
+            ? detail.code
+            : undefined,
+        message:
+          typeof detail.message === "string"
+            ? detail.message
+            : undefined,
+        hint:
+          typeof detail.hint === "string"
+            ? detail.hint
+            : undefined
       });
     }
 
