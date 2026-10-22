@@ -4,283 +4,408 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DollarDollar 밈 관리자</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>DollarDollar · 콘텐츠 관리자</title>
   <style>
     :root {
       --lime: #d5f477;
-      --bg: #f7f8f2;
-      --ink: #20221b;
-      --muted: #77796e;
-      --line: #e6e8dd;
+      --ink: #20221c;
+      --muted: #77796f;
+      --line: #e7e8e1;
+      --paper: #f7f8f2;
+      --white: #fff;
+      --danger: #a83232;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: var(--bg);
+      background: var(--paper);
       color: var(--ink);
-      font-family: Arial, sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
     }
     header {
-      padding: 22px 6%;
-      background: white;
-      border-bottom: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 16px;
+      padding: 20px 5%;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
     }
-    .brand { font-size: 21px; font-weight: 900; }
+    .brand { font-size: 21px; font-weight: 900; letter-spacing: -1px; }
     .brand span {
       background: var(--lime);
-      padding: 5px 8px;
-      border-radius: 8px;
+      padding: 3px 7px;
+      border-radius: 7px;
     }
     .tag {
-      background: #f0f1e9;
-      border-radius: 99px;
-      padding: 8px 12px;
       font-size: 12px;
+      color: var(--muted);
     }
-    main { max-width: 1000px; margin: auto; padding: 32px 18px; }
-    h1 { font-size: clamp(28px, 5vw, 42px); margin-bottom: 8px; }
-    p { color: var(--muted); line-height: 1.6; }
-    .notice {
-      background: #fff7d6;
-      padding: 15px;
-      border-radius: 14px;
-      font-size: 14px;
-      line-height: 1.6;
-      margin: 22px 0;
-    }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 22px 0;
-    }
-    .stat, .panel {
-      background: white;
+    main { width: min(900px, 92%); margin: 35px auto 70px; }
+    h1 { font-size: clamp(27px, 5vw, 38px); margin: 0 0 8px; }
+    h2 { font-size: 19px; margin: 0 0 18px; }
+    .intro { color: var(--muted); margin: 0 0 25px; line-height: 1.6; }
+    .card {
+      background: var(--white);
       border: 1px solid var(--line);
       border-radius: 18px;
-      padding: 18px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 20px #22220808;
     }
-    .stat strong { display: block; font-size: 28px; margin-top: 8px; }
-    .section-title { font-size: 20px; font-weight: 800; margin: 28px 0 12px; }
-    label { display: block; font-size: 13px; font-weight: bold; margin: 14px 0 7px; }
-    input, select, textarea {
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 15px 0 7px;
+    }
+    input, textarea, select {
+      display: block;
       width: 100%;
-      padding: 12px;
-      border: 1px solid var(--line);
+      padding: 12px 13px;
+      border: 1px solid #dfe0d7;
       border-radius: 10px;
       font: inherit;
-      background: white;
+      background: #fff;
+      color: var(--ink);
     }
-    textarea { min-height: 76px; resize: vertical; }
+    textarea { min-height: 85px; resize: vertical; }
+    input:focus, textarea:focus, select:focus {
+      outline: 2px solid var(--lime);
+      border-color: var(--ink);
+    }
     button {
       border: 0;
-      border-radius: 11px;
-      padding: 12px 15px;
-      font-weight: 800;
+      border-radius: 10px;
+      padding: 12px 17px;
+      background: var(--ink);
+      color: white;
+      font: inherit;
+      font-weight: 750;
       cursor: pointer;
     }
-    .primary { background: var(--lime); color: var(--ink); }
-    .secondary { background: #f0f1e9; }
-    .danger { background: #ffe5e1; }
-    .form-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-    .item {
-      border: 1px solid var(--line);
-      padding: 16px;
-      border-radius: 14px;
-      margin-top: 12px;
+    button.primary { background: var(--lime); color: var(--ink); }
+    button:disabled { opacity: .55; cursor: wait; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .hidden { display: none !important; }
+    #message {
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 15px 0;
+      background: #f0f0e8;
+      line-height: 1.5;
       overflow-wrap: anywhere;
     }
-    .item h3 { margin: 0 0 8px; }
-    .status { font-size: 12px; font-weight: 800; }
-    .item-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-    footer { padding: 25px; text-align: center; color: var(--muted); font-size: 12px; }
+    #message.error { color: var(--danger); background: #fff0f0; }
+    #message.success { background: #eff8d8; }
+    .item {
+      padding: 17px 0;
+      border-top: 1px solid var(--line);
+      overflow-wrap: anywhere;
+    }
+    .item:first-child { border-top: 0; }
+    .item-title { font-weight: 800; font-size: 16px; margin-bottom: 7px; }
+    .item-meta { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .item a { color: #454a31; overflow-wrap: anywhere; }
+    .status {
+      display: inline-block;
+      margin-top: 9px;
+      border-radius: 20px;
+      padding: 5px 9px;
+      background: #f0f0e8;
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .note { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    footer { text-align: center; padding: 25px; color: var(--muted); font-size: 12px; }
     @media (max-width: 520px) {
-      .stats { grid-template-columns: 1fr; }
-      header { padding: 18px; }
-      main { padding: 24px 14px; }
+      header { padding: 16px 4%; }
+      main { margin-top: 24px; }
+      .card { padding: 18px; }
+      .tag { text-align: right; }
     }
   </style>
 </head>
 <body>
-<header>
-  <div class="brand"><span>DollarDollar</span> MEME</div>
-  <div class="tag">관리자 화면 · 데모</div>
-</header>
+  <header>
+    <div class="brand">Dollar<span>Dollar</span></div>
+    <div class="tag">PRIVATE CONTENT ADMIN</div>
+  </header>
 
-<main>
-  <h1>밈 콘텐츠 관리</h1>
-  <p>콘텐츠를 검토하고 권리 증거를 확인한 뒤 게시 승인 여부를 관리해.</p>
+  <main>
+    <h1>콘텐츠 관리</h1>
+    <p class="intro">
+      수집한 콘텐츠와 권리 증빙 정보를 관리하는 관리자 페이지야.
+    </p>
 
-  <div class="notice">
-    ⚠️ 현재는 화면 데모야. 입력 내용은 이 브라우저에만 저장돼.
-    실제 인스타그램 게시나 서버 권리 검증은 아직 연결되지 않았어.
-    허가 증거를 확인하기 전에는 승인하지 마.
-  </div>
+    <div id="message" role="status" aria-live="polite">
+      관리자 로그인이 필요해.
+    </div>
 
-  <div class="stats">
-    <div class="stat">전체 콘텐츠<strong id="total">0</strong></div>
-    <div class="stat">검토 대기<strong id="pending">0</strong></div>
-    <div class="stat">승인 완료<strong id="approved">0</strong></div>
-  </div>
+    <section class="card" id="loginCard">
+      <h2>관리자 로그인</h2>
+      <form id="loginForm">
+        <label for="adminToken">관리자 비밀번호</label>
+        <input id="adminToken" type="password"
+          autocomplete="current-password" required>
+        <div class="actions">
+          <button class="primary" id="loginButton" type="submit">
+            로그인
+          </button>
+        </div>
+      </form>
+      <p class="note">
+        비밀번호는 화면에서 로그인 요청에만 사용하며 저장하지 않아.
+      </p>
+    </section>
 
-  <div class="section-title">새 콘텐츠 등록</div>
-  <section class="panel">
-    <form id="contentForm">
-      <label for="title">콘텐츠 제목</label>
-      <input id="title" required placeholder="예: 오늘의 밈">
+    <div id="dashboard" class="hidden">
+      <section class="card">
+        <h2>새 콘텐츠 등록</h2>
+        <form id="contentForm">
+          <label for="title">콘텐츠 제목 *</label>
+          <input id="title" maxlength="200" required>
 
-      <label for="url">원본 콘텐츠 URL</label>
-      <input id="url" type="url" required placeholder="https://...">
+          <label for="sourceUrl">원본 콘텐츠 URL *</label>
+          <input id="sourceUrl" type="url" maxlength="2048"
+            placeholder="https://..." required>
 
-      <label for="license">라이선스 종류</label>
-      <select id="license" required>
-        <option value="">선택해 줘</option>
-        <option>상업적 재사용 허용</option>
-        <option>직접 제작</option>
-        <option>별도 서면 허가</option>
-      </select>
+          <label for="licenseType">라이선스 종류</label>
+          <input id="licenseType" maxlength="200"
+            placeholder="예: CC BY 4.0">
 
-      <label for="evidence">권리 증거 URL 또는 기록</label>
-      <textarea id="evidence" required placeholder="라이선스 페이지, 허가 기록, 증빙 정보"></textarea>
+          <label for="evidenceUrl">권리 증빙 URL</label>
+          <input id="evidenceUrl" type="url" maxlength="2048"
+            placeholder="공식 라이선스 또는 허가 페이지">
 
-      <label for="expiry">허가 만료일 (선택)</label>
-      <input id="expiry" type="date">
+          <label for="evidenceNotes">권리 증빙 메모</label>
+          <textarea id="evidenceNotes" maxlength="3000"
+            placeholder="허용된 상업적 이용 범위, 출처 등"></textarea>
 
-      <div class="form-actions">
-        <button class="primary" type="submit">검토 목록에 추가</button>
-      </div>
-    </form>
-  </section>
+          <label for="expiresAt">권리 만료일 (선택)</label>
+          <input id="expiresAt" type="date">
 
-  <div class="section-title">콘텐츠 검토 목록</div>
-  <div id="list"></div>
-</main>
+          <div class="actions">
+            <button class="primary" id="saveButton" type="submit">
+              콘텐츠 등록
+            </button>
+            <button type="button" id="refreshButton">목록 새로고침</button>
+            <button type="button" id="logoutButton">로그아웃</button>
+          </div>
+        </form>
+      </section>
 
-<footer>DollarDollar · Rights-first Meme Workflow</footer>
+      <section class="card">
+        <h2>등록된 콘텐츠</h2>
+        <p class="note">
+          등록된 항목은 기본적으로 검토 대기 상태야.
+          증빙 정보가 입력됐다고 해서 사용 권리가 자동으로 확인되는 건 아니야.
+        </p>
+        <div id="items">
+          목록을 불러오는 중...
+        </div>
+      </section>
+    </div>
+  </main>
 
-<script>
-  const STORAGE_KEY = "dollardollar_demo_items";
-  let items = [];
+  <footer>DollarDollar · Rights-aware content workflow</footer>
 
-  try {
-    items = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    if (!Array.isArray(items)) items = [];
-  } catch {
-    items = [];
-  }
+  <script>
+    const loginCard = document.getElementById("loginCard");
+    const dashboard = document.getElementById("dashboard");
+    const message = document.getElementById("message");
+    const items = document.getElementById("items");
 
-  const $ = id => document.getElementById(id);
-
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    render();
-  }
-
-  function render() {
-    $("total").textContent = items.length;
-    $("pending").textContent = items.filter(x => x.status === "검토 대기").length;
-    $("approved").textContent = items.filter(x => x.status === "승인").length;
-
-    $("list").replaceChildren();
-
-    if (!items.length) {
-      const empty = document.createElement("p");
-      empty.textContent = "아직 등록된 콘텐츠가 없어.";
-      $("list").append(empty);
-      return;
+    function showMessage(text, type = "") {
+      message.textContent = text;
+      message.className = type;
     }
 
-    items.forEach(item => {
-      const card = document.createElement("article");
-      card.className = "item";
-
-      const heading = document.createElement("h3");
-      heading.textContent = item.title;
-
-      const status = document.createElement("div");
-      status.className = "status";
-      status.textContent = "상태: " + item.status;
-
-      const details = document.createElement("p");
-      details.textContent =
-        "라이선스: " + item.license +
-        "\n원본: " + item.url +
-        "\n증거: " + item.evidence +
-        "\n만료일: " + (item.expiry || "미입력");
-
-      details.style.whiteSpace = "pre-line";
-
-      card.append(heading, status, details);
-
-      const actions = document.createElement("div");
-      actions.className = "item-actions";
-
-      const approve = document.createElement("button");
-      approve.className = "primary";
-      approve.textContent = "권리 확인 후 승인";
-      approve.addEventListener("click", () => {
-        if (item.expiry && item.expiry < new Date().toISOString().slice(0, 10)) {
-          alert("만료된 허가라 승인할 수 없어.");
-          return;
+    async function api(path, options = {}) {
+      const response = await fetch(path, {
+        ...options,
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
         }
-        if (!confirm("원본과 상업적 이용 권리 증거를 직접 확인했어?")) return;
-        item.status = "승인";
-        save();
       });
 
-      const reject = document.createElement("button");
-      reject.className = "secondary";
-      reject.textContent = "승인 취소 / 보류";
-      reject.addEventListener("click", () => {
-        item.status = "보류";
-        save();
-      });
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("서버 응답을 읽을 수 없어. 배포 상태를 확인해 줘.");
+      }
 
-      const remove = document.createElement("button");
-      remove.className = "danger";
-      remove.textContent = "삭제";
-      remove.addEventListener("click", () => {
-        if (!confirm("이 콘텐츠를 삭제할까?")) return;
-        items = items.filter(x => x.id !== item.id);
-        save();
-      });
-
-      actions.append(approve, reject, remove);
-      card.append(actions);
-      $("list").append(card);
-    });
-  }
-
-  $("contentForm").addEventListener("submit", event => {
-    event.preventDefault();
-
-    const url = $("url").value.trim();
-    const evidence = $("evidence").value.trim();
-
-    if (!/^https?:\/\//i.test(url)) {
-      alert("유효한 원본 URL을 입력해 줘.");
-      return;
+      if (!response.ok) {
+        if (response.status === 401) {
+          loginCard.classList.remove("hidden");
+          dashboard.classList.add("hidden");
+        }
+        throw new Error(
+          response.status === 401
+            ? "로그인이 만료됐어. 다시 로그인해 줘."
+            : data.error || "요청에 실패했어."
+        );
+      }
+      return data;
     }
 
-    items.unshift({
-      id: Date.now().toString(),
-      title: $("title").value.trim(),
-      url,
-      license: $("license").value,
-      evidence,
-      expiry: $("expiry").value,
-      status: "검토 대기"
+    function addText(parent, tag, text, className) {
+      const element = document.createElement(tag);
+      element.textContent = text ?? "";
+      if (className) element.className = className;
+      parent.appendChild(element);
+      return element;
+    }
+
+    function addSafeLink(parent, label, value) {
+      if (!value) return;
+      try {
+        const url = new URL(value);
+        if (url.protocol !== "https:" && url.protocol !== "http:") return;
+        const link = document.createElement("a");
+        link.href = url.href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = label;
+        parent.appendChild(link);
+      } catch {
+        // 올바른 URL이 아니면 링크를 표시하지 않음
+      }
+    }
+
+    function renderItems(list) {
+      items.replaceChildren();
+
+      if (!Array.isArray(list) || list.length === 0) {
+        addText(items, "p", "아직 등록된 콘텐츠가 없어.", "note");
+        return;
+      }
+
+      for (const item of list) {
+        const article = document.createElement("article");
+        article.className = "item";
+
+        addText(article, "div", item.title || "제목 없음", "item-title");
+        addText(article, "div", "상태: " + (item.review_status || "미지정"), "item-meta");
+
+        const source = document.createElement("div");
+        source.className = "item-meta";
+        addSafeLink(source, "원본 콘텐츠 열기", item.source_url);
+        article.appendChild(source);
+
+        if (item.license_type) {
+          addText(article, "div", "라이선스: " + item.license_type, "item-meta");
+        }
+
+        if (item.rights_evidence_url) {
+          const evidence = document.createElement("div");
+          evidence.className = "item-meta";
+          addSafeLink(evidence, "권리 증빙 열기", item.rights_evidence_url);
+          article.appendChild(evidence);
+        }
+
+        if (item.rights_evidence_notes) {
+          addText(article, "p", "증빙 메모: " + item.rights_evidence_notes, "item-meta");
+        }
+
+        if (item.expires_at) {
+          addText(article, "div", "만료일: " + item.expires_at, "item-meta");
+        }
+
+        addText(article, "span", "검토 필요 · 자동 승인되지 않음", "status");
+        items.appendChild(article);
+      }
+    }
+
+    async function loadItems() {
+      items.textContent = "목록을 불러오는 중...";
+      const data = await api("/api/meme-contents");
+      renderItems(data.items);
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const tokenInput = document.getElementById("adminToken");
+      const button = document.getElementById("loginButton");
+      const token = tokenInput.value;
+
+      button.disabled = true;
+
+      try {
+        await api("/api/admin-login", {
+          method: "POST",
+          body: JSON.stringify({ token })
+        });
+
+        tokenInput.value = "";
+        loginCard.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+        showMessage("로그인 성공. 콘텐츠 목록을 불러올게.", "success");
+        await loadItems();
+      } catch (error) {
+        tokenInput.value = "";
+        showMessage(error.message, "error");
+      } finally {
+        button.disabled = false;
+      }
     });
 
-    save();
-    event.target.reset();
-  });
+    document.getElementById("contentForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-  render();
-</script>
+      const button = document.getElementById("saveButton");
+      button.disabled = true;
+
+      const expires = document.getElementById("expiresAt").value;
+
+      const body = {
+        title: document.getElementById("title").value.trim(),
+        source_url: document.getElementById("sourceUrl").value.trim(),
+        license_type: document.getElementById("licenseType").value.trim() || null,
+        rights_evidence_url: document.getElementById("evidenceUrl").value.trim() || null,
+        rights_evidence_notes: document.getElementById("evidenceNotes").value.trim() || null,
+        expires_at: expires ? new Date(expires + "T23:59:59.000Z").toISOString() : null
+      };
+
+      try {
+        await api("/api/meme-contents", {
+          method: "POST",
+          body: JSON.stringify(body)
+        });
+
+        event.target.reset();
+        showMessage("콘텐츠를 등록했어. 현재 상태는 검토 대기야.", "success");
+        await loadItems();
+      } catch (error) {
+        showMessage(error.message, "error");
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    document.getElementById("refreshButton").addEventListener("click", async () => {
+      try {
+        await loadItems();
+        showMessage("목록을 새로 불러왔어.", "success");
+      } catch (error) {
+        showMessage(error.message, "error");
+      }
+    });
+
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      // 브라우저에서 쿠키를 직접 삭제할 수 없으므로 서버 로그아웃 API가 필요함.
+      // 대시보드만 숨기며, 실제 쿠키 만료는 서버에서 구현해야 함.
+      dashboard.classList.add("hidden");
+      loginCard.classList.remove("hidden");
+      document.getElementById("adminToken").value = "";
+      showMessage("화면에서 로그아웃했어. 서버 쿠키 만료 기능은 다음 단계에서 추가해야 해.");
+    });
+  </script>
 </body>
 </html>
