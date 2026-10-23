@@ -140,7 +140,7 @@ input[type=color]{width:48px;height:40px;padding:3px;border:1px solid var(--line
           <label for="sourceImageMode">이미지 방식</label>
           <select id="sourceImageMode">
             <option value="search">인터넷 이미지 검색</option>
-            <option value="ai">AI 이미지 생성 (API 연결 필요)</option>
+            <option value="ai">무료 사진 검색 (AI 생성 아님)</option>
             <option value="upload">직접 업로드</option>
           </select>
         </div>
@@ -540,7 +540,7 @@ async function generateMemeTopics(){
    const imageButton=document.createElement("button");
    imageButton.type="button";
    imageButton.className="btn";
-   imageButton.textContent="📷 AI 이미지 만들기";
+   imageButton.textContent="🖼️ 무료 사진 찾기";
    imageButton.addEventListener("click",()=>{
     generateTopicImage(topic,imageButton,card);
    });
@@ -556,50 +556,110 @@ async function generateMemeTopics(){
  }
 }
 
+/* 무료 이미지 검색: Wikimedia Commons */
 async function generateTopicImage(topic,button,card){
  const originalText=button.textContent;
  button.disabled=true;
- button.textContent="이미지 만드는 중...";
- setStatus("memeStatus","선택한 주제의 리얼한 이미지를 생성하고 있어요.");
+ button.textContent="무료 사진 찾는 중...";
+ setStatus("memeStatus","주제와 어울리는 무료 사진을 검색하고 있어요.");
 
  try{
-  const response=await fetch("/api/generate-image",{
-   method:"POST",
-   credentials:"same-origin",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    title:String(topic.title||""),
-    description:String(topic.description||topic.desc||"")
-   })
+  const title=String(topic.title||"");
+  const description=String(topic.description||topic.desc||"");
+  const query=[title,description].filter(Boolean).join(" ");
+
+  const params=new URLSearchParams({
+   action:"query",
+   generator:"search",
+   gsrsearch:"filetype:bitmap "+query,
+   gsrnamespace:"6",
+   gsrnamespace:"6",
+   gsrlimit:"20",
+   prop:"imageinfo",
+   iiprop:"url|extmetadata",
+   iiurlwidth:"1200",
+   format:"json",
+   origin:"*"
   });
 
-  const result=await response.json().catch(()=>({}));
+  const response=await fetch(
+   "https://commons.wikimedia.org/w/api.php?"+params.toString()
+  );
+  if(!response.ok)throw new Error("무료 사진 검색에 실패했어요.");
 
-  if(!response.ok)throw new Error(result.error||"이미지 생성에 실패했어요.");
+  const data=await response.json();
+  const pages=Object.values(data.query?.pages||{});
 
-  if(typeof result.image!=="string"||!result.image.startsWith("data:image/")){
-   throw new Error("이미지 응답 형식이 올바르지 않아요.");
+  const clean=value=>String(value||"")
+   .replace(/<[^>]*>/g," ")
+   .replace(/&nbsp;/g," ")
+   .replace(/&amp;/g,"&")
+   .trim();
+
+  const candidates=pages.map(page=>{
+   const info=page.imageinfo?.[0];
+   const meta=info?.extmetadata||{};
+   const license=clean(
+    meta.LicenseShortName?.value||meta.UsageTerms?.value||""
+   );
+   const licenseUrl=clean(meta.LicenseUrl?.value||"");
+   const artist=clean(meta.Artist?.value||meta.Credit?.value||"");
+   const filePage=info?.descriptionurl||
+    ("https://commons.wikimedia.org/wiki/"+
+     encodeURIComponent(page.title).replace(/%3A/g,":").replace(/%20/g,"_"));
+
+   return {
+    title:page.title,
+    url:info?.thumburl||info?.url,
+    filePage,
+    license,
+    licenseUrl,
+    artist
+   };
+  }).filter(item=>
+   item.url&&item.filePage&&
+   /CC0|CC BY|CC-BY|Public domain|공개 도메인/i
+    .test(item.license+" "+item.licenseUrl)
+  );
+
+  if(!candidates.length){
+   throw new Error("라이선스를 확인할 수 있는 사진이 없어요. 다른 주제로 검색해 주세요.");
   }
 
+  const selected=candidates[0];
   const img=document.createElement("img");
-  img.src=result.image;
-  img.alt=(topic.title||"AI 생성 이미지")+" — AI 생성";
+  img.src=selected.url;
+  img.alt=(title||"무료 사진")+" — Wikimedia Commons";
   img.loading="lazy";
+  img.referrerPolicy="no-referrer";
 
   const oldImage=card.querySelector(":scope > img");
   if(oldImage)oldImage.replaceWith(img);
   else card.prepend(img);
 
+  const attribution=[
+   selected.title,
+   selected.artist?"작가: "+selected.artist:"",
+   selected.license?"라이선스: "+selected.license:"",
+   selected.licenseUrl?"라이선스 안내: "+selected.licenseUrl:"",
+   "원본: "+selected.filePage
+  ].filter(Boolean).join("\n");
+
+  $("sourceTopic").value=title;
+  $("sourceUrl").value=selected.filePage;
+  $("sourceCommunity").value="Wikimedia Commons";
+  $("sourceRights").value=attribution;
+
   useTopic({
-   title:topic.title||"",
-   desc:topic.description||topic.desc||"",
-   caption:topic.caption||topic.description||topic.desc||"",
-   image:result.image
+   title,
+   desc:description,
+   caption:[topic.caption||description,attribution].filter(Boolean).join("\n\n"),
+   image:selected.url
   });
 
-  setStatus("memeStatus","이미지 생성 완료! 미리보기에서 확인하고 JPG로 저장하세요.");
+  setStatus("memeStatus","무료 사진을 적용했어요. 게시 전에 원본 페이지의 라이선스를 확인하세요.");
  }catch(error){
-  setStatus("memeStatus",(error.message||"이미지 생성 실패")+" · OPENAI_API_KEY 설정을 확인해 주세요.");
+  setStatus("memeStatus",(error.message||"무료 사진 검색 실패")+" · 검색어를 바꿔 주세요.");
  }finally{
   button.disabled=false;
   button.textContent=originalText;
@@ -670,7 +730,12 @@ $("sourceImageSearch").addEventListener("click",()=>{
  const topic=getSourceTopic();
 
  if(mode==="ai"){
-  setStatus("sourceRecordStatus","AI 이미지 생성은 이미지 생성 API 연결이 필요합니다. 현재 이 버튼은 실제 이미지를 생성하지 않습니다.");
+  window.open(
+   "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search="+encodeURIComponent(topic),
+   "_blank",
+   "noopener,noreferrer"
+  );
+  setStatus("sourceRecordStatus","무료 이미지 검색을 열었습니다. 사용 전 원본 페이지의 라이선스와 출처를 확인하세요.");
   return;
  }
 
