@@ -642,12 +642,7 @@ async function generateTopicImage(topic, button, card) {
         licenseUrl,
         artist
       };
-    }).filter(item =>
-      item.url &&
-      item.filePage &&
-      /CC0|CC BY|CC-BY|Public domain|공개 도메인/i
-        .test(item.license + " " + item.licenseUrl)
-    );
+    .filter(item => item.url && item.filePage);
 
     if (!candidates.length) {
       throw new Error(
