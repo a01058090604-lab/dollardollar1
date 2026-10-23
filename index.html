@@ -524,8 +524,8 @@ async function generateMemeTopics(){
 
   result.topics.forEach(topic=>{
    const description=topic.description||topic.desc||"";
-   container.appendChild(makeCard({
-    category:topic.category||"공감 밈",
+   const card=makeCard({
+    category:topic.category||"사건형 밈",
     title:topic.title,
     desc:description,
     action:()=>useTopic({
@@ -534,7 +534,18 @@ async function generateMemeTopics(){
      caption:topic.caption||description,
      image:""
     })
-   }));
+   });
+
+   const body=card.querySelector(".topic-card-body");
+   const imageButton=document.createElement("button");
+   imageButton.type="button";
+   imageButton.className="btn";
+   imageButton.textContent="📷 AI 이미지 만들기";
+   imageButton.addEventListener("click",()=>{
+    generateTopicImage(topic,imageButton,card);
+   });
+   body.appendChild(imageButton);
+   container.appendChild(card);
   });
 
   setStatus("memeStatus",result.topics.length+"개의 AI 밈 주제를 만들었어요.");
@@ -542,6 +553,56 @@ async function generateMemeTopics(){
   setStatus("memeStatus",(error.message||"주제 생성 실패")+" · API 설정과 관리자 로그인을 확인해 주세요.");
  }finally{
   button.disabled=false;
+ }
+}
+
+async function generateTopicImage(topic,button,card){
+ const originalText=button.textContent;
+ button.disabled=true;
+ button.textContent="이미지 만드는 중...";
+ setStatus("memeStatus","선택한 주제의 리얼한 이미지를 생성하고 있어요.");
+
+ try{
+  const response=await fetch("/api/generate-image",{
+   method:"POST",
+   credentials:"same-origin",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    title:String(topic.title||""),
+    description:String(topic.description||topic.desc||"")
+   })
+  });
+
+  const result=await response.json().catch(()=>({}));
+
+  if(!response.ok)throw new Error(result.error||"이미지 생성에 실패했어요.");
+
+  if(typeof result.image!=="string"||!result.image.startsWith("data:image/")){
+   throw new Error("이미지 응답 형식이 올바르지 않아요.");
+  }
+
+  const img=document.createElement("img");
+  img.src=result.image;
+  img.alt=(topic.title||"AI 생성 이미지")+" — AI 생성";
+  img.loading="lazy";
+
+  const oldImage=card.querySelector(":scope > img");
+  if(oldImage)oldImage.replaceWith(img);
+  else card.prepend(img);
+
+  useTopic({
+   title:topic.title||"",
+   desc:topic.description||topic.desc||"",
+   caption:topic.caption||topic.description||topic.desc||"",
+   image:result.image
+  });
+
+  setStatus("memeStatus","이미지 생성 완료! 미리보기에서 확인하고 JPG로 저장하세요.");
+ }catch(error){
+  setStatus("memeStatus",(error.message||"이미지 생성 실패")+" · OPENAI_API_KEY 설정을 확인해 주세요.");
+ }finally{
+  button.disabled=false;
+  button.textContent=originalText;
  }
 }
 
@@ -714,22 +775,19 @@ $("sourceCommunitySearch").addEventListener("click",async()=>{
   const result=await response.json().catch(()=>({}));
   if(!response.ok)throw new Error(result.error||"커뮤니티 검색 API를 사용할 수 없습니다.");
 
-  
-  // API는 posts 배열을 반환하므로 items와 호환되게 처리
-  const rawItems = Array.isArray(result.posts)
-    ? result.posts
-    : Array.isArray(result.items)
-      ? result.items
-      : [];
+  const rawItems=Array.isArray(result.posts)
+   ?result.posts
+   :Array.isArray(result.items)
+    ?result.items
+    :[];
 
-  const items = rawItems.map(post => ({
-    ...post,
-    date: post.date || post.updatedAt || "",
-    engagement: post.engagement || post.metrics || ""
+  const items=rawItems.map(post=>({
+   ...post,
+   date:post.date||post.updatedAt||"",
+   engagement:post.engagement||post.metrics||""
   }));
 
   renderCommunityTrends(items);
-
 
   setStatus("sourceRecordStatus",items.length
    ?items.length+"개의 게시물을 불러왔어요. 선택하면 제목과 원문 주소가 자동 입력됩니다."
