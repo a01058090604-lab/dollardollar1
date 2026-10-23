@@ -714,8 +714,22 @@ $("sourceCommunitySearch").addEventListener("click",async()=>{
   const result=await response.json().catch(()=>({}));
   if(!response.ok)throw new Error(result.error||"커뮤니티 검색 API를 사용할 수 없습니다.");
 
-  const items=Array.isArray(result.items)?result.items:[];
+  
+  // API는 posts 배열을 반환하므로 items와 호환되게 처리
+  const rawItems = Array.isArray(result.posts)
+    ? result.posts
+    : Array.isArray(result.items)
+      ? result.items
+      : [];
+
+  const items = rawItems.map(post => ({
+    ...post,
+    date: post.date || post.updatedAt || "",
+    engagement: post.engagement || post.metrics || ""
+  }));
+
   renderCommunityTrends(items);
+
 
   setStatus("sourceRecordStatus",items.length
    ?items.length+"개의 게시물을 불러왔어요. 선택하면 제목과 원문 주소가 자동 입력됩니다."
