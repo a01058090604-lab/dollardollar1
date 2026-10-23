@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model:
-            process.env.GROQ_MODEL || "openai/gpt-oss-20b",
+            process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
           temperature: 0.9,
           max_completion_tokens: 1600,
           response_format: {
